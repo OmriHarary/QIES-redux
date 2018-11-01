@@ -1,0 +1,10 @@
+#!/bin/bash
+
+for i in $( ls ./test/cases )
+do
+    for j in $( ls "./test/cases/$i" )
+    do
+        rm -f "./test/cases/$i/$j/output.txt"
+        rm -f "./test/cases/$i/$j/log.log"
+    done
+done

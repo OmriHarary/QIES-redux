@@ -1,0 +1,26 @@
+You are not logged in, please log in before performing any other actions. (login)
+[ ----- ]  Login as agent or planner.
+[ ----- ]  Logged in as Agent. Enter command to begin a transaction.
+[ AGENT ]  Enter service number to sell tickets for.
+[ AGENT ]  Enter number of tickets to sell.
+[ AGENT ]  11 ticket(s) sold for service 11111
+Logged in as Agent. Enter command to begin a transaction.
+[ AGENT ]  Enter service number to sell tickets for.
+[ AGENT ]  Enter number of tickets to sell.
+[ AGENT ]  11 ticket(s) sold for service 22222
+Logged in as Agent. Enter command to begin a transaction.
+[ AGENT ]  Enter service number of ticket you would like to cancel.
+[ AGENT ]  Enter number of tickets you want to cancel.
+[ AGENT ]  10 ticket(s) canceled from service 11111
+Logged in as Agent. Enter command to begin a transaction.
+[ AGENT ]  Enter service number of ticket you would like to cancel.
+[ AGENT ]  Enter number of tickets you want to cancel.
+[ AGENT ]  10 ticket(s) canceled from service 22222
+Logged in as Agent. Enter command to begin a transaction.
+[ AGENT ]  Enter service number of ticket you would like to cancel.
+[ AGENT ]  Enter number of tickets you want to cancel.
+[ AGENT ]  Cannot cancel more then 10 tickets for a single service.
+User has 0 tickets left to cancel for this service.
+Invalid number of tickets. Logged in as Agent. Enter command to begin a transaction.
+[ AGENT ]  You are not logged in, please log in before performing any other actions. (login)
+[ ----- ]  

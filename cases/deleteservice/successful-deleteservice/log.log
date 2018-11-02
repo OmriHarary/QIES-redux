@@ -1,0 +1,9 @@
+You are not logged in, please log in before performing any other actions. (login)
+[ ----- ]  Login as agent or planner.
+[ ----- ]  Logged in as Planner. Enter command to begin a transaction.
+[PLANNER]  Enter service number of the service you wish to delete.
+[PLANNER]  Enter service name of the service you wish to delete.
+[PLANNER]  Service 11111 with service name Testcreateservice was deleted
+Logged in as Planner. Enter command to begin a transaction.
+[PLANNER]  You are not logged in, please log in before performing any other actions. (login)
+[ ----- ]  

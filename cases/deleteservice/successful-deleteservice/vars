@@ -1,6 +1,6 @@
 #!/bin/bash
 
-testname="createservice constraints"
+testname="Successful deleteservice"
 frontend="./bin/frontend"
 vsl="./test/resources/valid-services-list.txt"
 input="$( dirname "${BASH_SOURCE[0]}" )/input.txt"

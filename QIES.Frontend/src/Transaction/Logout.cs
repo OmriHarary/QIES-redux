@@ -1,6 +1,6 @@
 namespace QIES.Frontend.Transaction
 {
-    class Logout
+    class Logout : Transaction
     {
         
     }

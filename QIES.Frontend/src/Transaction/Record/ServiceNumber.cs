@@ -1,6 +1,6 @@
 namespace QIES.Frontend.Transaction.Record
 {
-    class ServiceNumber
+    class ServiceNumber : RecordElement
     {
         
     }

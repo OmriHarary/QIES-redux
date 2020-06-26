@@ -1,6 +1,6 @@
 namespace QIES.Frontend.Transaction
 {
-    class ChangeTicket
+    class ChangeTicket : Transaction
     {
         
     }

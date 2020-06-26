@@ -1,6 +1,6 @@
 namespace QIES.Frontend.Session
 {
-    class PlannerSession
+    class PlannerSession : ActiveSession
     {
         
     }

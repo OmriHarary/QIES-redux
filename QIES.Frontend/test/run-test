@@ -1,0 +1,16 @@
+#!/bin/bash
+## DO NOT RUN DIRECTLY
+
+echo "Running test: $testname"
+
+"$frontend" $vsl $output < $input 1> $log 2> /dev/null
+
+result=0
+
+diff -q $output $expectedout > /dev/null
+result=$(( $result | $? ))
+
+diff -q $log $expectedlog > /dev/null
+result=$(( $result | $? << 1 ))
+
+return $result

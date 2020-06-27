@@ -1,0 +1,13 @@
+#!/bin/bash
+
+for c in $( ls ./test/cases/sellticket )
+do
+    . ./test/cases/sellticket/$c/vars
+    . ./test/run-test
+    if [[ $? == "0" ]]
+    then
+        echo "Success"
+    else
+        echo "Fail"
+    fi
+done

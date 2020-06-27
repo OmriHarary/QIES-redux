@@ -379,3 +379,5 @@ obj/
 .history
 
 # End of https://www.toptal.com/developers/gitignore/api/visualstudiocode,csharp,dotnetcore
+
+!expected.log

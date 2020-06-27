@@ -1,9 +1,9 @@
 #!/bin/bash
 
-for c in $( ls ./test/cases/logout )
+for c in $( ls ./QIES.Frontend/test/cases/logout )
 do
-    . ./test/cases/logout/$c/vars
-    . ./test/run-test
+    . ./QIES.Frontend/test/cases/logout/$c/vars
+    . ./QIES.Frontend/test/run-test
     if [[ $? == "0" ]]
     then
         echo "Success"

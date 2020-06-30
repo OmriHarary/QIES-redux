@@ -9,7 +9,7 @@ namespace QIES.Frontend
         {
             if (args.Length != 2)
             {
-                Console.WriteLine($"Incorrect number of arguments {args.Length}");
+                Console.WriteLine($"Incorrect number of arguments: {args.Length}");
                 return 1;
             }
 

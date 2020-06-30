@@ -11,10 +11,10 @@
             "preLaunchTask": "build",
             // If you have changed target frameworks, make sure to update the program path.
             "program": "${workspaceFolder}/QIES.Frontend/src/bin/Debug/net5.0/QIES.Frontend.dll",
-            "args": [],
+            "args": ["../test/resources/valid-services-list.txt", "temp"],
             "cwd": "${workspaceFolder}/QIES.Frontend/src",
             // For more information about the 'console' field, see https://aka.ms/VSCode-CS-LaunchJson-Console
-            "console": "internalConsole",
+            "console": "integratedTerminal",
             "stopAtEntry": false
         },
         {

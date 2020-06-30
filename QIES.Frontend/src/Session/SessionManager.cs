@@ -42,7 +42,19 @@ namespace QIES.Frontend.Session
 
         public void PrintTransactionSummary()
         {
-
+            try
+            {
+                using StreamWriter summaryWriter = SummaryFile.CreateText();
+                while (!TransactionQueue.IsEmpty())
+                {
+                    summaryWriter.WriteLine(TransactionQueue.Pop());
+                }
+            }
+            catch (IOException e)
+            {
+                // TODO: Actual error handling (the original didn't handle this either)
+                System.Console.Error.WriteLine(e.StackTrace);
+            }
         }
     }
 }

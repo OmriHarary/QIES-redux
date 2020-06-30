@@ -30,7 +30,7 @@ namespace QIES.Frontend.Transaction.Record
 
         public static bool IsValid(string value)
         {
-            if (value.Length == 5 && value.StartsWith('0'))
+            if (value.Length == 5 && !value.StartsWith('0'))
             {
                 foreach (char c in value)
                 {

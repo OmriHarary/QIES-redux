@@ -7,17 +7,26 @@ namespace QIES.Frontend.Transaction.Record
 
         public NumberTickets(int number)
         {
-
+            if (!IsValid(number))
+            {
+                throw new System.ArgumentException();
+            }
+            this.IsSet = true;
+            this.Number = number;
         }
 
         public override string ToString()
         {
-            return string.Empty;
+            if (IsSet)
+            {
+                return Number.ToString();
+            }
+            return Default.ToString();
         }
 
         public static bool IsValid(int value)
         {
-            return false;
+            return value >= 1 && value <= 1000;
         }
     }
 }

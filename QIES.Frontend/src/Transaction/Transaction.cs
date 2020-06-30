@@ -5,7 +5,7 @@ namespace QIES.Frontend.Transaction
 {
     public abstract class Transaction
     {
-        private TransactionRecord record;
+        protected TransactionRecord record;
 
         public abstract TransactionRecord MakeTransaction(Input input);
     }

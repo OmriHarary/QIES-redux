@@ -1,22 +1,22 @@
+using QIES.Frontend.Transaction;
 using QIES.Frontend.Transaction.Record;
 
 namespace QIES.Frontend.Session
 {
     public abstract class ActiveSession : ISession
     {
-        public void Process(SessionManager manager, TransactionQueue queue)
-        {
-            throw new System.NotImplementedException();
-        }
+        public abstract void Process(SessionManager manager, TransactionQueue queue);
 
         public TransactionRecord Logout(Input input)
         {
-            return null;
+            Logout logout = new Logout();
+            return logout.MakeTransaction(input);
         }
 
         public TransactionRecord SellTicket(Input input)
         {
-            return null;
+            SellTicket sellTicket = new SellTicket();
+            return sellTicket.MakeTransaction(input);
         }
     }
 }

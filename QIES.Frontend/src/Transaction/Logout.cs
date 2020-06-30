@@ -9,12 +9,12 @@ namespace QIES.Frontend.Transaction
 
         public Logout()
         {
-
+            this.record = new TransactionRecord(Code);
         }
 
         public override TransactionRecord MakeTransaction(Input input)
         {
-            throw new System.NotImplementedException();
+            return record;
         }
     }
 }

@@ -19,6 +19,10 @@ namespace QIES.Frontend.Transaction.Record
             this.Day = date.Substring(6);
         }
 
+        public ServiceDate()
+        {
+        }
+
         public override string ToString()
         {
             if (IsSet)

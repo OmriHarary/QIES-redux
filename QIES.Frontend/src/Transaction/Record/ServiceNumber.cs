@@ -15,6 +15,10 @@ namespace QIES.Frontend.Transaction.Record
             this.Number = number;
         }
 
+        public ServiceNumber()
+        {
+        }
+
         public override string ToString()
         {
             if (IsSet)

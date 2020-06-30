@@ -15,6 +15,10 @@ namespace QIES.Frontend.Transaction.Record
             this.Name = name;
         }
 
+        public ServiceName()
+        {
+        }
+
         public override string ToString()
         {
             if (IsSet)

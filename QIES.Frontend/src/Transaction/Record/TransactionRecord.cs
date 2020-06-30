@@ -11,12 +11,17 @@ namespace QIES.Frontend.Transaction.Record
 
         public TransactionRecord(TransactionCode code)
         {
-
+            this.Code = code;
+            this.SourceNumber = new ServiceNumber();
+            this.NumberTickets = new NumberTickets();
+            this.DestinationNumber = new ServiceNumber();
+            this.ServiceName = new ServiceName();
+            this.ServiceDate = new ServiceDate();
         }
 
         public override string ToString()
         {
-            return string.Empty;
+            return $"{Code} {SourceNumber} {NumberTickets} {DestinationNumber} {ServiceName} {ServiceDate}";
         }
     }
 }

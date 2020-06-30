@@ -9,7 +9,7 @@ namespace QIES.Frontend.Transaction
 
         public CancelTicket()
         {
-
+            this.record = new TransactionRecord(Code);
         }
 
         public override TransactionRecord MakeTransaction(Input input)

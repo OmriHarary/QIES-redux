@@ -20,7 +20,15 @@ namespace QIES.Frontend.Session
         {
             Console.WriteLine(message);
             Console.Write(Prompt);
-            return Console.ReadLine();
+            string input = Console.ReadLine();
+            if (input == null)
+            {
+                // FIXME: This is just to immitate the behaviour of java.util.Scanner.nextLine()
+                //          when the input stream ends, since for some reason the original tests
+                //          depend on it.
+                throw new System.IO.EndOfStreamException();
+            }
+            return input;
         }
     }
 }

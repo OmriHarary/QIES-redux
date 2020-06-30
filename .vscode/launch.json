@@ -15,7 +15,16 @@
             "cwd": "${workspaceFolder}/QIES.Frontend/src",
             // For more information about the 'console' field, see https://aka.ms/VSCode-CS-LaunchJson-Console
             "console": "integratedTerminal",
-            "stopAtEntry": false
+            "stopAtEntry": false,
+            "justMyCode": false,
+            "symbolOptions": {
+                "searchMicrosoftSymbolServer": true
+            },
+            "suppressJITOptimizations": true,
+            "env": {
+                "COMPlus_ZapDisable": "1",
+                "COMPlus_ReadyToRun": "0"
+            }
         },
         {
             "name": ".NET Core Attach",

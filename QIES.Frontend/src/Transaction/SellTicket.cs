@@ -3,7 +3,7 @@ using QIES.Frontend.Transaction.Record;
 
 namespace QIES.Frontend.Transaction
 {
-    class SellTicket : Transaction
+    public class SellTicket : Transaction
     {
         private const TransactionCode Code = TransactionCode.SEL;
 

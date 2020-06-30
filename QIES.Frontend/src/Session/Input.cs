@@ -1,6 +1,6 @@
 namespace QIES.Frontend.Session
 {
-    class Input
+    public class Input
     {
         public string Prompt { get; set; }
 

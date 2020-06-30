@@ -1,6 +1,6 @@
 namespace QIES.Frontend.Transaction.Record
 {
-    class ServiceDate : RecordElement
+    public class ServiceDate : RecordElement
     {
         public string Year { get; set; }
         public string Month { get; set; }

@@ -3,7 +3,7 @@ using QIES.Frontend.Transaction.Record;
 
 namespace QIES.Frontend.Transaction
 {
-    abstract class Transaction
+    public abstract class Transaction
     {
         private TransactionRecord record;
 

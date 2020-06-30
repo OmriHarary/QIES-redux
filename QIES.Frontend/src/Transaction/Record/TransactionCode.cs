@@ -1,6 +1,6 @@
 namespace QIES.Frontend.Transaction.Record
 {
-    enum TransactionCode
+    public enum TransactionCode
     {
         CRE,
         DEL,

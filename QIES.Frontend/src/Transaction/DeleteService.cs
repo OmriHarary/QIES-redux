@@ -3,7 +3,7 @@ using QIES.Frontend.Transaction.Record;
 
 namespace QIES.Frontend.Transaction
 {
-    class DeleteService : Transaction
+    public class DeleteService : Transaction
     {
         private const TransactionCode Code = TransactionCode.DEL;
 

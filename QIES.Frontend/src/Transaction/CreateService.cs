@@ -3,7 +3,7 @@ using QIES.Frontend.Transaction.Record;
 
 namespace QIES.Frontend.Transaction
 {
-    class CreateService : Transaction
+    public class CreateService : Transaction
     {
         private const TransactionCode Code = TransactionCode.CRE;
 

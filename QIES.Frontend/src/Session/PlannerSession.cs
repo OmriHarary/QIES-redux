@@ -2,7 +2,7 @@ using QIES.Frontend.Transaction.Record;
 
 namespace QIES.Frontend.Session
 {
-    class PlannerSession : ActiveSession
+    public class PlannerSession : ActiveSession
     {
         public TransactionRecord CreateService(Input input)
         {

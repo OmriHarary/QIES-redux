@@ -3,7 +3,7 @@ using QIES.Frontend.Transaction.Record;
 
 namespace QIES.Frontend.Session
 {
-    class AgentSession : ActiveSession
+    public class AgentSession : ActiveSession
     {
         private int changedTickets;
         private int totalCancelledTickets;

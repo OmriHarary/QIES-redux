@@ -2,13 +2,13 @@ using System.IO;
 
 namespace QIES.Frontend.Session
 {
-    class SessionManager
+    public class SessionManager
     {
         public ISession Session { get; set; }
-        public ValidServicesList servicesList { get; set; }
-        public TransactionQueue transactionQueue { get; set; }
-        public FileInfo summaryFile { get; set; }
-        public Input input { get; set; }
+        public ValidServicesList ServicesList { get; set; }
+        public TransactionQueue TransactionQueue { get; set; }
+        public FileInfo SummaryFile { get; set; }
+        public Input Input { get; set; }
 
         public SessionManager(string validServicesFilePath, string summaryFilePath)
         {

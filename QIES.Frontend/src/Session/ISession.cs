@@ -1,6 +1,6 @@
 namespace QIES.Frontend.Session
 {
-    interface ISession
+    public interface ISession
     {
         public void Process(SessionManager manager, TransactionQueue queue);
     }

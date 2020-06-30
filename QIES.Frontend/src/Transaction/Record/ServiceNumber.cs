@@ -1,6 +1,6 @@
 namespace QIES.Frontend.Transaction.Record
 {
-    class ServiceNumber : RecordElement
+    public class ServiceNumber : RecordElement
     {
         public string Number { get; set; }
         private const string Default = "00000";

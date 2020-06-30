@@ -1,6 +1,6 @@
 namespace QIES.Frontend.Transaction.Record
 {
-    class TransactionRecord
+    public class TransactionRecord
     {
         public TransactionCode Code { get; set; }
         public ServiceNumber SourceNumber { get; set; }

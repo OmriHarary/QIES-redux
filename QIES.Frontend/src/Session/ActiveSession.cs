@@ -2,7 +2,7 @@ using QIES.Frontend.Transaction.Record;
 
 namespace QIES.Frontend.Session
 {
-    abstract class ActiveSession : ISession
+    public abstract class ActiveSession : ISession
     {
         public void Process(SessionManager manager, TransactionQueue queue)
         {

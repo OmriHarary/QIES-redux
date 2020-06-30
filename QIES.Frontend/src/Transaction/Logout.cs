@@ -3,7 +3,7 @@ using QIES.Frontend.Transaction.Record;
 
 namespace QIES.Frontend.Transaction
 {
-    class Logout : Transaction
+    public class Logout : Transaction
     {
         private const TransactionCode Code = TransactionCode.EOS;
 

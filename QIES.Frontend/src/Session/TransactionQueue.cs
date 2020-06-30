@@ -3,7 +3,7 @@ using QIES.Frontend.Transaction.Record;
 
 namespace QIES.Frontend.Session
 {
-    class TransactionQueue
+    public class TransactionQueue
     {
         private Queue<TransactionRecord> records;
 

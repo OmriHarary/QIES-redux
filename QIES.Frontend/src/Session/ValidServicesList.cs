@@ -4,7 +4,7 @@ using QIES.Frontend.Transaction.Record;
 
 namespace QIES.Frontend.Session
 {
-    class ValidServicesList
+    public class ValidServicesList
     {
         private HashSet<ServiceNumber> validServices;
 

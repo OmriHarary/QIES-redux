@@ -3,7 +3,7 @@ using QIES.Frontend.Transaction.Record;
 
 namespace QIES.Frontend.Transaction
 {
-    class CancelTicket : Transaction
+    public class CancelTicket : Transaction
     {
         private const TransactionCode Code = TransactionCode.CAN;
 

@@ -7,7 +7,7 @@ namespace QIES.Frontend.Session
         public string Prompt
         {
             get => prompt;
-            set => prompt = $"[{value}] ";
+            set => prompt = $"[{value}]  ";
         }
         private string prompt;
 

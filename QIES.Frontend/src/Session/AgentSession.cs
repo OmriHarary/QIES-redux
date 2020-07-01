@@ -11,6 +11,11 @@ namespace QIES.Frontend.Session
         private int totalCancelledTickets;
         private Dictionary<ServiceNumber, int> cancelledTickets;
 
+        public AgentSession()
+        {
+            cancelledTickets = new Dictionary<ServiceNumber, int>();
+        }
+
         public override void Process(SessionManager manager, TransactionQueue queue)
         {
             Input input = manager.Input;
@@ -28,16 +33,22 @@ namespace QIES.Frontend.Session
                 {
                     case "sellticket":
                         record = SellTicket(input);
+                        message = goodMessage;
                         break;
                     case "changeticket":
                         record = ChangeTicket(input);
+                        message = goodMessage;
                         break;
                     case "cancelticket":
                         record = CancelTicket(input);
+                        message = goodMessage;
                         break;
                     case "logout":
                         record = Logout(input);
                         run = false;
+                        break;
+                    default:
+                        message = $"Invalid input. {goodMessage}";
                         break;
                 }
 

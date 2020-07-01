@@ -12,7 +12,7 @@ namespace QIES.Frontend.Session
             Input input = manager.Input;
             bool run = true;
             TransactionRecord record = null;
-            string goodMessage = "Logged in as Agent. Enter command to begin a transaction.";
+            string goodMessage = "Logged in as Planner. Enter command to begin a transaction.";
             string message = goodMessage;
             string command;
 
@@ -24,22 +24,30 @@ namespace QIES.Frontend.Session
                 {
                     case "sellticket":
                         record = SellTicket(input);
+                        message = goodMessage;
                         break;
                     case "changeticket":
                         record = ChangeTicket(input);
+                        message = goodMessage;
                         break;
                     case "cancelticket":
                         record = CancelTicket(input);
+                        message = goodMessage;
                         break;
                     case "createservice":
                         record = CreateService(input);
+                        message = goodMessage;
                         break;
                     case "deleteservice":
                         record = DeleteService(input);
+                        message = goodMessage;
                         break;
                     case "logout":
                         record = Logout(input);
                         run = false;
+                        break;
+                    default:
+                        message = $"Invalid input. {goodMessage}";
                         break;
                 }
 

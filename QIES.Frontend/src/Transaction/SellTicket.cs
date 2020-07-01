@@ -20,6 +20,10 @@ namespace QIES.Frontend.Transaction
             try
             {
                 serviceNumber = new ServiceNumber(serviceNumberIn);
+                if (!manager.ServicesList.IsInList(serviceNumber))
+                {
+                    throw new System.ArgumentException();
+                }
             }
             catch (System.ArgumentException)
             {

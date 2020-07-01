@@ -20,6 +20,10 @@ namespace QIES.Frontend.Transaction
             try
             {
                 sourceNumber = new ServiceNumber(sourceNumberIn);
+                if (!manager.ServicesList.IsInList(sourceNumber))
+                {
+                    throw new System.ArgumentException();
+                }
             }
             catch (System.ArgumentException)
             {
@@ -32,6 +36,10 @@ namespace QIES.Frontend.Transaction
             try
             {
                 destNumber = new ServiceNumber(destNumberIn);
+                if (!manager.ServicesList.IsInList(destNumber))
+                {
+                    throw new System.ArgumentException();
+                }
             }
             catch (System.ArgumentException)
             {

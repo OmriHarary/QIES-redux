@@ -3,7 +3,7 @@
 
 echo "Running test: $testname"
 
-"$frontend" $vsl $output < $input 1> $log 2> /dev/null
+"$frontend" $vsl $output < $input 1> $log 2> $err
 
 result=0
 

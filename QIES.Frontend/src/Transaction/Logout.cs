@@ -12,7 +12,7 @@ namespace QIES.Frontend.Transaction
             this.record = new TransactionRecord(Code);
         }
 
-        public override TransactionRecord MakeTransaction(Input input)
+        public override TransactionRecord MakeTransaction(SessionManager manager)
         {
             return record;
         }

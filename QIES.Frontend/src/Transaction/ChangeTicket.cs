@@ -13,9 +13,9 @@ namespace QIES.Frontend.Transaction
             this.record = new TransactionRecord(Code);
         }
 
-        public override TransactionRecord MakeTransaction(Input input)
+        public override TransactionRecord MakeTransaction(SessionManager manager)
         {
-            string sourceNumberIn = input.TakeInput("Enter service number of the service you want to change.");
+            string sourceNumberIn = manager.Input.TakeInput("Enter service number of the service you want to change.");
             ServiceNumber sourceNumber;
             try
             {
@@ -27,7 +27,7 @@ namespace QIES.Frontend.Transaction
                 return null;
             }
 
-            string destNumberIn = input.TakeInput("Enter service number of the service you want to change to.");
+            string destNumberIn = manager.Input.TakeInput("Enter service number of the service you want to change to.");
             ServiceNumber destNumber;
             try
             {
@@ -39,7 +39,7 @@ namespace QIES.Frontend.Transaction
                 return null;
             }
 
-            int numberTicketsIn = int.Parse(input.TakeInput("Enter number of tickets to change."));
+            int numberTicketsIn = int.Parse(manager.Input.TakeInput("Enter number of tickets to change."));
             NumberTickets numberTickets;
             try
             {

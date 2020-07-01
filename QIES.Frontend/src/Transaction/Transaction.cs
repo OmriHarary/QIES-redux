@@ -7,6 +7,6 @@ namespace QIES.Frontend.Transaction
     {
         protected TransactionRecord record;
 
-        public abstract TransactionRecord MakeTransaction(Input input);
+        public abstract TransactionRecord MakeTransaction(SessionManager manager);
     }
 }

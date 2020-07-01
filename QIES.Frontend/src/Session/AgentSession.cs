@@ -18,7 +18,6 @@ namespace QIES.Frontend.Session
 
         public override void Process(SessionManager manager, TransactionQueue queue)
         {
-            Input input = manager.Input;
             bool run = true;
             TransactionRecord record = null;
             string goodMessage = "Logged in as Agent. Enter command to begin a transaction.";
@@ -27,24 +26,24 @@ namespace QIES.Frontend.Session
 
             while (run)
             {
-                command  = input.TakeInput(message);
+                command  = manager.Input.TakeInput(message);
 
                 switch (command)
                 {
                     case "sellticket":
-                        record = SellTicket(input);
+                        record = SellTicket(manager);
                         message = goodMessage;
                         break;
                     case "changeticket":
-                        record = ChangeTicket(input);
+                        record = ChangeTicket(manager);
                         message = goodMessage;
                         break;
                     case "cancelticket":
-                        record = CancelTicket(input);
+                        record = CancelTicket(manager);
                         message = goodMessage;
                         break;
                     case "logout":
-                        record = Logout(input);
+                        record = Logout(manager);
                         run = false;
                         break;
                     default:
@@ -59,16 +58,16 @@ namespace QIES.Frontend.Session
             manager.SetSession(new NoSession());
         }
 
-        public TransactionRecord CancelTicket(Input input)
+        public TransactionRecord CancelTicket(SessionManager manager)
         {
             CancelTicket cancelTicket = new CancelTicket();
-            return cancelTicket.MakeTransaction(input);
+            return cancelTicket.MakeTransaction(manager);
         }
 
-        public TransactionRecord ChangeTicket(Input input)
+        public TransactionRecord ChangeTicket(SessionManager manager)
         {
             ChangeTicket changeTicket = new ChangeTicket();
-            return changeTicket.MakeTransaction(input);
+            return changeTicket.MakeTransaction(manager);
         }
     }
 }

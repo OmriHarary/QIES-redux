@@ -13,9 +13,9 @@ namespace QIES.Frontend.Transaction
             this.record = new TransactionRecord(Code);
         }
 
-        public override TransactionRecord MakeTransaction(Input input)
+        public override TransactionRecord MakeTransaction(SessionManager manager)
         {
-            string serviceNumberIn = input.TakeInput("Enter service number of the service you wish to create.");
+            string serviceNumberIn = manager.Input.TakeInput("Enter service number of the service you wish to create.");
             ServiceNumber serviceNumber;
             try
             {
@@ -27,7 +27,7 @@ namespace QIES.Frontend.Transaction
                 return null;
             }
 
-            string serviceDateIn = input.TakeInput("Enter service date of the service you wish to create.");
+            string serviceDateIn = manager.Input.TakeInput("Enter service date of the service you wish to create.");
             ServiceDate serviceDate;
             try
             {
@@ -39,7 +39,7 @@ namespace QIES.Frontend.Transaction
                 return null;
             }
 
-            string serviceNameIn = input.TakeInput("Enter service name of the service you wish to create.");
+            string serviceNameIn = manager.Input.TakeInput("Enter service name of the service you wish to create.");
             ServiceName serviceName;
             try
             {

@@ -7,16 +7,16 @@ namespace QIES.Frontend.Session
     {
         public abstract void Process(SessionManager manager, TransactionQueue queue);
 
-        public TransactionRecord Logout(Input input)
+        public TransactionRecord Logout(SessionManager manager)
         {
             Logout logout = new Logout();
-            return logout.MakeTransaction(input);
+            return logout.MakeTransaction(manager);
         }
 
-        public TransactionRecord SellTicket(Input input)
+        public TransactionRecord SellTicket(SessionManager manager)
         {
             SellTicket sellTicket = new SellTicket();
-            return sellTicket.MakeTransaction(input);
+            return sellTicket.MakeTransaction(manager);
         }
     }
 }

@@ -7,13 +7,13 @@ namespace QIES.Frontend.Session
     public class AgentSession : ActiveSession
     {
         public const string Prompt = " AGENT ";
-        private int changedTickets;
-        private int totalCancelledTickets;
-        private Dictionary<ServiceNumber, int> cancelledTickets;
+        public int ChangedTickets { get; set; }
+        public int TotalCancelledTickets { get; set; }
+        public Dictionary<string, int> CancelledTickets { get; private set; }
 
         public AgentSession()
         {
-            cancelledTickets = new Dictionary<ServiceNumber, int>();
+            CancelledTickets = new Dictionary<string, int>();
         }
 
         public override void Process(SessionManager manager, TransactionQueue queue)

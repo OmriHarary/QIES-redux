@@ -20,7 +20,7 @@ namespace QIES.Frontend.Transaction
             try
             {
                 sourceNumber = new ServiceNumber(sourceNumberIn);
-                if (!manager.ServicesList.IsInList(sourceNumber))
+                if (!manager.ServicesList.IsInList(sourceNumberIn))
                 {
                     throw new System.ArgumentException();
                 }
@@ -36,7 +36,7 @@ namespace QIES.Frontend.Transaction
             try
             {
                 destNumber = new ServiceNumber(destNumberIn);
-                if (!manager.ServicesList.IsInList(destNumber))
+                if (!manager.ServicesList.IsInList(destNumberIn))
                 {
                     throw new System.ArgumentException();
                 }
@@ -52,6 +52,16 @@ namespace QIES.Frontend.Transaction
             try
             {
                 numberTickets = new NumberTickets(numberTicketsIn);
+                if (manager.Session is AgentSession session)
+                {
+                    if (session.ChangedTickets + numberTicketsIn > 20)
+                    {
+                        Console.WriteLine($"Cannot change as total session changed tickets would be over 20.");
+                        Console.WriteLine($"User has {20 - session.ChangedTickets} tickets left to change this session.");
+                        throw new System.ArgumentException();
+                    }
+                    session.ChangedTickets += numberTicketsIn;
+                }
             }
             catch (System.ArgumentException)
             {
@@ -59,6 +69,7 @@ namespace QIES.Frontend.Transaction
                 return null;
             }
 
+            Console.WriteLine($"{numberTickets} ticket(s) changed from service {sourceNumber} to service {destNumber}");
             record.SourceNumber = sourceNumber;
             record.DestinationNumber = destNumber;
             record.NumberTickets = numberTickets;

@@ -10,7 +10,8 @@ Logged in as Agent. Enter command to begin a transaction.
 [ AGENT ]  Enter number of tickets to change.
 [ AGENT ]  Cannot change as total session changed tickets would be over 20.
 User has 20 tickets left to change this session.
-Invalid number of tickets.Logged in as Agent. Enter command to begin a transaction.
+Invalid number of tickets.
+Logged in as Agent. Enter command to begin a transaction.
 [ AGENT ]  Enter service number of the service you want to change.
 [ AGENT ]  Enter service number of the service you want to change to.
 [ AGENT ]  Enter number of tickets to change.

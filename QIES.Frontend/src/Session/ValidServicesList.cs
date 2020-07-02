@@ -6,11 +6,11 @@ namespace QIES.Frontend.Session
 {
     public class ValidServicesList
     {
-        private HashSet<ServiceNumber> validServices;
+        private HashSet<string> validServices;
 
         public ValidServicesList(FileInfo validServicesFile)
         {
-            validServices = new HashSet<ServiceNumber>();
+            validServices = new HashSet<string>();
             ReadServices(validServicesFile);
         }
 
@@ -24,7 +24,7 @@ namespace QIES.Frontend.Session
                 {
                     if (line != "00000")
                     {
-                        validServices.Add(new ServiceNumber(line));
+                        validServices.Add((new ServiceNumber(line)).Number);
                     }
                 }
             }
@@ -36,9 +36,14 @@ namespace QIES.Frontend.Session
 
         }
 
-        public bool IsInList(ServiceNumber service)
+        public bool IsInList(string service)
         {
             return validServices.Contains(service);
+        }
+
+        public void DeleteService(string service)
+        {
+            validServices.Remove(service);
         }
     }
 }

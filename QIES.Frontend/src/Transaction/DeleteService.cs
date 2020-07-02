@@ -20,7 +20,7 @@ namespace QIES.Frontend.Transaction
             try
             {
                 serviceNumber = new ServiceNumber(serviceNumberIn);
-                if (!manager.ServicesList.IsInList(serviceNumber))
+                if (!manager.ServicesList.IsInList(serviceNumberIn))
                 {
                     throw new System.ArgumentException();
                 }
@@ -43,6 +43,8 @@ namespace QIES.Frontend.Transaction
                 return null;
             }
 
+            Console.WriteLine($"Service {serviceNumber} with service name {serviceName} was deleted");
+            manager.ServicesList.DeleteService(serviceNumberIn);
             record.SourceNumber = serviceNumber;
             record.ServiceName = serviceName;
 

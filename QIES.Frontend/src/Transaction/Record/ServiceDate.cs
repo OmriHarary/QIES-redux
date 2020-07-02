@@ -15,7 +15,7 @@ namespace QIES.Frontend.Transaction.Record
             }
             this.IsSet = true;
             this.Year = date.Substring(0, 4);
-            this.Month = date.Substring(4, 6);
+            this.Month = date.Substring(4, 2);
             this.Day = date.Substring(6);
         }
 
@@ -35,12 +35,12 @@ namespace QIES.Frontend.Transaction.Record
         public static bool IsValid(string value)
         {
             int y = int.Parse(value.Substring(0, 4));
-            int m = int.Parse(value.Substring(4, 6));
+            int m = int.Parse(value.Substring(4, 2));
             int d = int.Parse(value.Substring(6));
 
-            return y >= 1980 && y <= 2999
-                    && m >= 1 && m <= 12
-                    && d >= 1 && d <= 31;
+            return (y >= 1980 && y <= 2999)
+                    && (m >= 1 && m <= 12)
+                    && (d >= 1 && d <= 31);
         }
     }
 }

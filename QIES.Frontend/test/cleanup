@@ -6,5 +6,6 @@ do
     do
         rm -f "./QIES.Frontend/test/cases/$i/$j/output.txt"
         rm -f "./QIES.Frontend/test/cases/$i/$j/log.log"
+        rm -f "./QIES.Frontend/test/cases/$i/$j/err.log"
     done
 done

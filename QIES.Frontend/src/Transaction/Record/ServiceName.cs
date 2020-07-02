@@ -30,13 +30,13 @@ namespace QIES.Frontend.Transaction.Record
 
         public static bool IsValid(string value)
         {
-            if (value.Length >= 3 && value.Length <= 39)
+            if ((value.Length >= 3) && (value.Length <= 39))
             {
-                if (value.StartsWith(' ') || value.EndsWith(' '))
+                if (!(value.StartsWith(' ') || value.EndsWith(' ')))
                 {
                     foreach (char c in value)
                     {
-                        if (!(char.IsLetterOrDigit(c) || c == '\'' || c == ' '))
+                        if (!((char.IsLetterOrDigit(c)) || (c == '\'') || (c == ' ')))
                         {
                             return false;
                         }

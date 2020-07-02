@@ -10,7 +10,7 @@ Queen's University School of Computing Software Quality Assurance (CISC 327) Fal
 
 ## Roadmap
 - [ ] Reimplement original Java design in C#
-  - [ ] Reimplement "frontend"
+  - [x] Reimplement "frontend"
   - [ ] Reimplement "backoffice"
 - [ ] Enhance original test suite with actual unit tests
 - [ ] Refactoring

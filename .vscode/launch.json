@@ -5,14 +5,41 @@
    "version": "0.2.0",
    "configurations": [
         {
-            "name": ".NET Core Launch (console)",
+            "name": ".NET Core Launch Frontend (console)",
             "type": "coreclr",
             "request": "launch",
-            "preLaunchTask": "build",
+            "preLaunchTask": "build frontend",
             // If you have changed target frameworks, make sure to update the program path.
             "program": "${workspaceFolder}/QIES.Frontend/src/bin/Debug/net5.0/QIES.Frontend.dll",
-            "args": ["../test/resources/valid-services-list.txt", "temp"],
+            "args": ["../test/resources/valid-services-list.txt", "../trans-summary"],
             "cwd": "${workspaceFolder}/QIES.Frontend/src",
+            // For more information about the 'console' field, see https://aka.ms/VSCode-CS-LaunchJson-Console
+            "console": "integratedTerminal",
+            "stopAtEntry": false,
+            "justMyCode": false,
+            "symbolOptions": {
+                "searchMicrosoftSymbolServer": true
+            },
+            "suppressJITOptimizations": true,
+            "env": {
+                "COMPlus_ZapDisable": "1",
+                "COMPlus_ReadyToRun": "0"
+            }
+        },
+        {
+            "name": ".NET Core Launch Backoffice (console)",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build backoffice",
+            // If you have changed target frameworks, make sure to update the program path.
+            "program": "${workspaceFolder}/QIES.Backoffice/src/bin/Debug/net5.0/QIES.Backoffice.dll",
+            "args": [
+                "../test/resources/merged_transaction_summery_file.txt",
+                "../test/resources/old_central_services_file.txt",
+                "../new-central-services",
+                "../new-valid-services"
+            ],
+            "cwd": "${workspaceFolder}/QIES.Backoffice/src",
             // For more information about the 'console' field, see https://aka.ms/VSCode-CS-LaunchJson-Console
             "console": "integratedTerminal",
             "stopAtEntry": false,

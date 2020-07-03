@@ -8,14 +8,11 @@ namespace QIES.Frontend.Transaction
     {
         private const TransactionCode Code = TransactionCode.SEL;
 
-        public SellTicket()
-        {
-            this.record = new TransactionRecord(Code);
-        }
+        public SellTicket() => this.record = new TransactionRecord(Code);
 
         public override TransactionRecord MakeTransaction(SessionManager manager)
         {
-            string serviceNumberIn = manager.Input.TakeInput("Enter service number to sell tickets for.");
+            var serviceNumberIn = manager.Input.TakeInput("Enter service number to sell tickets for.");
             ServiceNumber serviceNumber;
             try
             {
@@ -31,10 +28,12 @@ namespace QIES.Frontend.Transaction
                 return null;
             }
 
-            int numberTicketsIn = int.Parse(manager.Input.TakeInput("Enter number of tickets to sell."));
+            int numberTicketsIn;
             NumberTickets numberTickets;
             try
             {
+                if (!int.TryParse(manager.Input.TakeInput("Enter number of tickets to sell."), out numberTicketsIn))
+                    throw new System.ArgumentException();
                 numberTickets = new NumberTickets(numberTicketsIn);
             }
             catch (System.ArgumentException)

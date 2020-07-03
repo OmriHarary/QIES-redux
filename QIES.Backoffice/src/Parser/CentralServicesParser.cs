@@ -8,8 +8,8 @@ namespace QIES.Backoffice.Parser
     {
         public static CentralServicesList ParseFile(string centralServicesFilePath)
         {
-            CentralServicesList centralServices = new CentralServicesList();
-            string[] lines = new string[0];
+            var centralServices = new CentralServicesList();
+            var lines = new string[0];
             try
             {
                 lines = File.ReadAllLines(centralServicesFilePath);
@@ -20,7 +20,7 @@ namespace QIES.Backoffice.Parser
                 Console.Error.WriteLine(e.StackTrace);
             }
 
-            foreach (string line in lines)
+            foreach (var line in lines)
             {
                 centralServices.Add(ParseLine(line));
             }
@@ -30,8 +30,8 @@ namespace QIES.Backoffice.Parser
 
         private static Service ParseLine(string serviceLine)
         {
-            string[] fields = serviceLine.Split(' ', 4);
-            Service service = new Service();
+            var fields = serviceLine.Split(' ', 4);
+            var service = new Service();
 
             service.ServiceNumber = new ServiceNumber(fields[0]);
             service.ServiceCapacity = int.Parse(fields[1]);

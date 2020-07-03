@@ -8,8 +8,8 @@ namespace QIES.Backoffice.Parser
     {
         public static TransactionQueue ParseFile(string transactionSummaryFilePath)
         {
-            TransactionQueue transactionQueue = new TransactionQueue();
-            string[] lines = new string[0];
+            var transactionQueue = new TransactionQueue();
+            var lines = new string[0];
             try
             {
                 lines = File.ReadAllLines(transactionSummaryFilePath);
@@ -20,7 +20,7 @@ namespace QIES.Backoffice.Parser
                 Console.Error.WriteLine(e.StackTrace);
             }
 
-            foreach (string line in lines)
+            foreach (var line in lines)
             {
                 transactionQueue.Push(ParseLine(line));
             }
@@ -30,9 +30,9 @@ namespace QIES.Backoffice.Parser
 
         private static TransactionRecord ParseLine(string transactionLine)
         {
-            string[] tokens = transactionLine.Split(' ');
-            TransactionCode code = (TransactionCode) Enum.Parse(typeof(TransactionCode), tokens[0]);
-            TransactionRecord record = new TransactionRecord(code);
+            var tokens = transactionLine.Split(' ');
+            var code = (TransactionCode) Enum.Parse(typeof(TransactionCode), tokens[0]);
+            var record = new TransactionRecord(code);
             // TODO: Make RecordElement Defaults public and use them here for comparisons
             if (tokens[1] != "00000")
             {

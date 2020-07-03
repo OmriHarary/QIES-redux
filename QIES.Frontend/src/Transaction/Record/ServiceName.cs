@@ -19,14 +19,7 @@ namespace QIES.Frontend.Transaction.Record
         {
         }
 
-        public override string ToString()
-        {
-            if (IsSet)
-            {
-                return Name;
-            }
-            return Default;
-        }
+        public override string ToString() => IsSet ? Name : Default;
 
         public static bool IsValid(string value)
         {
@@ -34,9 +27,9 @@ namespace QIES.Frontend.Transaction.Record
             {
                 if (!(value.StartsWith(' ') || value.EndsWith(' ')))
                 {
-                    foreach (char c in value)
+                    foreach (var c in value)
                     {
-                        if (!((char.IsLetterOrDigit(c)) || (c == '\'') || (c == ' ')))
+                        if (!(char.IsLetterOrDigit(c) || (c == '\'') || (c == ' ')))
                         {
                             return false;
                         }

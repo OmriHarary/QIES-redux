@@ -55,10 +55,10 @@ namespace QIES.Backoffice
 
         private void ProcessCRE(TransactionRecord record)
         {
-            string log = "Failed to create new service. A service with that number already exists.";
+            var log = "Failed to create new service. A service with that number already exists.";
             if (!centralServicesList.Contains(record.SourceNumber))
             {
-                Service newService = new Service();
+                var newService = new Service();
                 newService.ServiceNumber = record.SourceNumber;
                 newService.ServiceName = record.ServiceName;
                 centralServicesList.Add(newService);
@@ -69,10 +69,10 @@ namespace QIES.Backoffice
 
         private void ProcessDEL(TransactionRecord record)
         {
-            string log = "Failed to delete service. Service does not exist.";
+            var log = "Failed to delete service. Service does not exist.";
             if (centralServicesList.Contains(record.SourceNumber))
             {
-                Service toDelete = centralServicesList.Get(record.SourceNumber);
+                var toDelete = centralServicesList.Get(record.SourceNumber);
                 log = "Failed to delete service. Service still has sold tickets.";
                 if (toDelete.TicketsSold.Number == 0)
                 {
@@ -85,10 +85,10 @@ namespace QIES.Backoffice
 
         private void ProcessSEL(TransactionRecord record)
         {
-            string log = "Failed to sell tickets. Service does not exist";
+            var log = "Failed to sell tickets. Service does not exist";
             if (centralServicesList.Contains(record.SourceNumber))
             {
-                Service service = centralServicesList.Get(record.SourceNumber);
+                var service = centralServicesList.Get(record.SourceNumber);
                 try
                 {
                     service.AddTickets(record.NumberTickets.Number);
@@ -104,10 +104,10 @@ namespace QIES.Backoffice
 
         private void ProcessCAN(TransactionRecord record)
         {
-            string log = "Failed to cancel tickets. The service does not exist.";
+            var log = "Failed to cancel tickets. The service does not exist.";
             if (centralServicesList.Contains(record.SourceNumber))
             {
-                Service service = centralServicesList.Get(record.SourceNumber);
+                var service = centralServicesList.Get(record.SourceNumber);
                 try
                 {
                     service.RemoveTickets(record.NumberTickets.Number);
@@ -123,15 +123,15 @@ namespace QIES.Backoffice
 
         private void ProcessCHG(TransactionRecord record)
         {
-            string log = "Failed to change tickets. Source service does not exist.";
+            var log = "Failed to change tickets. Source service does not exist.";
             if (centralServicesList.Contains(record.SourceNumber))
             {
-                Service source = centralServicesList.Get(record.SourceNumber);
+                var source = centralServicesList.Get(record.SourceNumber);
                 log = "Failed to change tickets. Destination service does not exist.";
                 if (centralServicesList.Contains(record.DestinationNumber))
                 {
-                    Service destination = centralServicesList.Get(record.DestinationNumber);
-                    int transfer = record.NumberTickets.Number;
+                    var destination = centralServicesList.Get(record.DestinationNumber);
+                    var transfer = record.NumberTickets.Number;
                     log = "Failed to change tickets. Tickets to change exceeds number of tickets sold on source service.";
                     if (transfer <= source.TicketsSold.Number)
                     {

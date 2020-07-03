@@ -19,20 +19,13 @@ namespace QIES.Frontend.Transaction.Record
         {
         }
 
-        public override string ToString()
-        {
-            if (IsSet)
-            {
-                return Number;
-            }
-            return Default;
-        }
+        public override string ToString() => IsSet ? Number : Default;
 
         public static bool IsValid(string value)
         {
-            if (value.Length == 5 && !value.StartsWith('0'))
+            if ((value.Length == 5) && !value.StartsWith('0'))
             {
-                foreach (char c in value)
+                foreach (var c in value)
                 {
                     if (!char.IsDigit(c))
                     {

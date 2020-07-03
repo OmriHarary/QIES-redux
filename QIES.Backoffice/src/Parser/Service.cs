@@ -35,9 +35,6 @@ namespace QIES.Backoffice.Parser
             TicketsSold = new NumberTickets(TicketsSold.Number - toRemove);
         }
 
-        public override string ToString()
-        {
-            return $"{ServiceNumber} {ServiceCapacity} {TicketsSold} {ServiceName}";
-        }
+        public override string ToString() => $"{ServiceNumber} {ServiceCapacity} {TicketsSold} {ServiceName}";
     }
 }

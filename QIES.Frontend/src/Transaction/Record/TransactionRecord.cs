@@ -19,9 +19,6 @@ namespace QIES.Frontend.Transaction.Record
             this.ServiceDate = new ServiceDate();
         }
 
-        public override string ToString()
-        {
-            return $"{Code} {SourceNumber} {NumberTickets} {DestinationNumber} {ServiceName} {ServiceDate}";
-        }
+        public override string ToString() => $"{Code} {SourceNumber} {NumberTickets} {DestinationNumber} {ServiceName} {ServiceDate}";
     }
 }

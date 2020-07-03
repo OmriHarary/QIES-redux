@@ -19,18 +19,8 @@ namespace QIES.Frontend.Transaction.Record
         {
         }
 
-        public override string ToString()
-        {
-            if (IsSet)
-            {
-                return Number.ToString();
-            }
-            return Default.ToString();
-        }
+        public override string ToString() => IsSet ? Number.ToString() : Default.ToString();
 
-        public static bool IsValid(int value)
-        {
-            return value >= 1 && value <= 1000;
-        }
+        public static bool IsValid(int value) => value >= 1 && value <= 1000;
     }
 }

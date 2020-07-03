@@ -6,9 +6,9 @@ namespace QIES.Frontend.Session
 
         public void Process(SessionManager manager, TransactionQueue queue)
         {
-            Input input = manager.Input;
-            bool run = true;
-            string message = "You are not logged in, please log in before performing any other actions. (login)";
+            var input = manager.Input;
+            var run = true;
+            var message = "You are not logged in, please log in before performing any other actions. (login)";
             string userInput;
 
             while (run)
@@ -24,9 +24,9 @@ namespace QIES.Frontend.Session
 
         public bool Login(SessionManager manager)
         {
-            Input input = manager.Input;
-            string message = "Login as agent or planner.";
-            string userType = input.TakeInput(message);
+            var input = manager.Input;
+            var message = "Login as agent or planner.";
+            var userType = input.TakeInput(message);
             switch (userType)
             {
                 case "agent":

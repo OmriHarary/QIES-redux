@@ -18,10 +18,10 @@ namespace QIES.Frontend.Session
 
         public override void Process(SessionManager manager, TransactionQueue queue)
         {
-            bool run = true;
+            var run = true;
+            var goodMessage = "Logged in as Agent. Enter command to begin a transaction.";
+            var message = goodMessage;
             TransactionRecord record = null;
-            string goodMessage = "Logged in as Agent. Enter command to begin a transaction.";
-            string message = goodMessage;
             string command;
 
             while (run)

@@ -8,14 +8,11 @@ namespace QIES.Frontend.Transaction
     {
         private const TransactionCode Code = TransactionCode.CHG;
 
-        public ChangeTicket()
-        {
-            this.record = new TransactionRecord(Code);
-        }
+        public ChangeTicket() => this.record = new TransactionRecord(Code);
 
         public override TransactionRecord MakeTransaction(SessionManager manager)
         {
-            string sourceNumberIn = manager.Input.TakeInput("Enter service number of the service you want to change.");
+            var sourceNumberIn = manager.Input.TakeInput("Enter service number of the service you want to change.");
             ServiceNumber sourceNumber;
             try
             {
@@ -31,7 +28,7 @@ namespace QIES.Frontend.Transaction
                 return null;
             }
 
-            string destNumberIn = manager.Input.TakeInput("Enter service number of the service you want to change to.");
+            var destNumberIn = manager.Input.TakeInput("Enter service number of the service you want to change to.");
             ServiceNumber destNumber;
             try
             {
@@ -47,10 +44,12 @@ namespace QIES.Frontend.Transaction
                 return null;
             }
 
-            int numberTicketsIn = int.Parse(manager.Input.TakeInput("Enter number of tickets to change."));
+            int numberTicketsIn;
             NumberTickets numberTickets;
             try
             {
+                if (!int.TryParse(manager.Input.TakeInput("Enter number of tickets to change."), out numberTicketsIn))
+                    throw new System.ArgumentException();
                 numberTickets = new NumberTickets(numberTicketsIn);
                 if (manager.Session is AgentSession session)
                 {

@@ -12,11 +12,11 @@ namespace QIES.Backoffice
                 return 1;
             }
 
-            string mergedTransactionFile = args[0];
-            string oldCentralFile = args[1];
-            string newCentralFile = args[2];
-            string newValidFile = args[3];
-            BackendManager backendManager = new BackendManager(mergedTransactionFile, oldCentralFile, newCentralFile, newValidFile);
+            var mergedTransactionFile = args[0];
+            var oldCentralFile = args[1];
+            var newCentralFile = args[2];
+            var newValidFile = args[3];
+            var backendManager = new BackendManager(mergedTransactionFile, oldCentralFile, newCentralFile, newValidFile);
             backendManager.Operate();
 
             return 0;

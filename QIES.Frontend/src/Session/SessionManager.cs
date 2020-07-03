@@ -20,10 +20,7 @@ namespace QIES.Frontend.Session
             this.Input = new Input(NoSession.Prompt);
         }
 
-        public void Operate()
-        {
-            Session.Process(this, TransactionQueue);
-        }
+        public void Operate() => Session.Process(this, TransactionQueue);
 
         public void SetSession(ISession value)
         {

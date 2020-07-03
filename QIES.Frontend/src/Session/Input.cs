@@ -11,10 +11,7 @@ namespace QIES.Frontend.Session
         }
         private string prompt;
 
-        public Input(string prompt)
-        {
-            this.Prompt = prompt;
-        }
+        public Input(string prompt) => this.Prompt = prompt;
 
         public string TakeInput(string message)
         {

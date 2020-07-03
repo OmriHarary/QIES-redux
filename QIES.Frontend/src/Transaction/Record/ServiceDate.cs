@@ -2,9 +2,7 @@ namespace QIES.Frontend.Transaction.Record
 {
     public class ServiceDate : RecordElement
     {
-        public string Year { get; set; }
-        public string Month { get; set; }
-        public string Day { get; set; }
+        public string Date { get; set; }
         private const string Default = "0";
 
         public ServiceDate(string date)
@@ -14,31 +12,24 @@ namespace QIES.Frontend.Transaction.Record
                 throw new System.ArgumentException();
             }
             this.IsSet = true;
-            this.Year = date.Substring(0, 4);
-            this.Month = date.Substring(4, 2);
-            this.Day = date.Substring(6);
+            this.Date = date;
         }
 
         public ServiceDate()
         {
         }
 
-        public override string ToString()
-        {
-            if (IsSet)
-            {
-                return $"{Year}{Month}{Day}";
-            }
-            return Default;
-        }
+        public override string ToString() => IsSet ? Date : Default;
 
         public static bool IsValid(string value)
         {
-            int y = int.Parse(value.Substring(0, 4));
-            int m = int.Parse(value.Substring(4, 2));
-            int d = int.Parse(value.Substring(6));
+            int y, m, d;
+            var yParse = int.TryParse(value.Substring(0, 4), out y);
+            var mParse = int.TryParse(value.Substring(4, 2), out m);
+            var dParse = int.TryParse(value.Substring(6), out d);
 
-            return (y >= 1980 && y <= 2999)
+            return (yParse && mParse && dParse)
+                    && (y >= 1980 && y <= 2999)
                     && (m >= 1 && m <= 12)
                     && (d >= 1 && d <= 31);
         }

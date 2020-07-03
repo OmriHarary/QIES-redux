@@ -13,9 +13,9 @@ namespace QIES.Frontend
                 return 1;
             }
 
-            string validServicesFilePath = args[0];
-            string summaryFilePath = args[1];
-            SessionManager sessionManager = new SessionManager(validServicesFilePath, summaryFilePath);
+            var validServicesFilePath = args[0];
+            var summaryFilePath = args[1];
+            var sessionManager = new SessionManager(validServicesFilePath, summaryFilePath);
             sessionManager.Operate();
 
             return 0;

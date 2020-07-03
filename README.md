@@ -15,3 +15,6 @@ Queen's University School of Computing Software Quality Assurance (CISC 327) Fal
 - [ ] Enhance original test suite with actual unit tests
 - [ ] Refactoring
 - [ ] ...
+
+## Special Thanks
+I would be remiss were I not to acknowledge and thank Michael (@1257mp), Otto (@KastorLorpp), and Clayton (@claywin) for their work co-authoring the original implementation with me as part of the group assignment.

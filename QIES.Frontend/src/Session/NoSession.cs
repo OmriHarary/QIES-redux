@@ -1,3 +1,5 @@
+using QIES.Common;
+
 namespace QIES.Frontend.Session
 {
     public class NoSession : ISession

@@ -1,6 +1,7 @@
 using System;
 using System.IO;
-using QIES.Backoffice.Parser.Record;
+using QIES.Common;
+using QIES.Common.Record;
 
 namespace QIES.Backoffice.Parser
 {

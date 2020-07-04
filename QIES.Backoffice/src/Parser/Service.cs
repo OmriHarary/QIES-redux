@@ -1,4 +1,4 @@
-using QIES.Backoffice.Parser.Record;
+using QIES.Common.Record;
 
 namespace QIES.Backoffice.Parser
 {

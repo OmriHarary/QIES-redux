@@ -1,6 +1,7 @@
 using System.Collections.Generic;
+using QIES.Common.Record;
 
-namespace QIES.Frontend.Session
+namespace QIES.Common
 {
     public class TransactionQueue
     {

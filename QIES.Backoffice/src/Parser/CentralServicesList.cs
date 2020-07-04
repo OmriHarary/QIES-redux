@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using QIES.Backoffice.Parser;
-using QIES.Backoffice.Parser.Record;
+using QIES.Common.Record;
 
 namespace QIES.Backoffice
 {

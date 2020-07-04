@@ -6,4 +6,8 @@
     <Version>0.1.0</Version>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\QIES.Common\src\QIES.Common.csproj" />
+  </ItemGroup>
+
 </Project>

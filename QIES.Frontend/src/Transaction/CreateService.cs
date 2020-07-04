@@ -1,6 +1,6 @@
 using System;
+using QIES.Common.Record;
 using QIES.Frontend.Session;
-using QIES.Frontend.Transaction.Record;
 
 namespace QIES.Frontend.Transaction
 {

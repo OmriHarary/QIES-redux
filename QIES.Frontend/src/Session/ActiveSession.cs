@@ -1,5 +1,6 @@
+using QIES.Common;
+using QIES.Common.Record;
 using QIES.Frontend.Transaction;
-using QIES.Frontend.Transaction.Record;
 
 namespace QIES.Frontend.Session
 {

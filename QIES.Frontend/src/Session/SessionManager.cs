@@ -1,4 +1,5 @@
 using System.IO;
+using QIES.Common;
 
 namespace QIES.Frontend.Session
 {

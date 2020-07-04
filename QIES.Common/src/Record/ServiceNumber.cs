@@ -1,4 +1,4 @@
-namespace QIES.Frontend.Transaction.Record
+namespace QIES.Common.Record
 {
     public class ServiceNumber : RecordElement
     {

@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using System.IO;
-using QIES.Frontend.Transaction.Record;
+using QIES.Common.Record;
 
 namespace QIES.Frontend.Session
 {

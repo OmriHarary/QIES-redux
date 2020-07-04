@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using QIES.Frontend.Transaction.Record;
 
 namespace QIES.Frontend.Session
 {

@@ -23,6 +23,9 @@ namespace QIES.Common.Record
 
         public static bool IsValid(string value)
         {
+            if (value.Length != 8)
+                return false;
+
             int y, m, d;
             var yParse = int.TryParse(value.Substring(0, 4), out y);
             var mParse = int.TryParse(value.Substring(4, 2), out m);

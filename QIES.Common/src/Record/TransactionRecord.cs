@@ -19,6 +19,7 @@ namespace QIES.Common.Record
             this.ServiceDate = new ServiceDate();
         }
 
-        public override string ToString() => $"{Code} {SourceNumber} {NumberTickets} {DestinationNumber} {ServiceName} {ServiceDate}";
+        public override string ToString() =>
+            $"{Code} {SourceNumber} {NumberTickets} {DestinationNumber} {ServiceName} {ServiceDate}";
     }
 }

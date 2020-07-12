@@ -5,5 +5,6 @@ You are not logged in, please log in before performing any other actions. (login
 [ AGENT ]  Enter number of tickets to sell.
 [ AGENT ]  2 ticket(s) sold for service 11111
 Logged in as Agent. Enter command to begin a transaction.
-[ AGENT ]  You are not logged in, please log in before performing any other actions. (login)
+[ AGENT ]  Logged out.
+You are not logged in, please log in before performing any other actions. (login)
 [ ----- ]  

@@ -7,8 +7,9 @@ You are not logged in, please log in before performing any other actions. (login
 Logged in as Agent. Enter command to begin a transaction.
 [ AGENT ]  Enter service number of ticket you would like to cancel.
 [ AGENT ]  Enter number of tickets you want to cancel.
-[ AGENT ]  Cannot cancel more then 10 tickets at once.
-Invalid number of tickets.
+[ AGENT ]  Cannot cancel more then 10 tickets for a single service.
+User has 10 tickets left to cancel for this service.
 Logged in as Agent. Enter command to begin a transaction.
-[ AGENT ]  You are not logged in, please log in before performing any other actions. (login)
+[ AGENT ]  Logged out.
+You are not logged in, please log in before performing any other actions. (login)
 [ ----- ]  

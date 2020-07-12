@@ -4,48 +4,45 @@ using QIES.Frontend.Session;
 
 namespace QIES.Frontend.Transaction
 {
-    public class DeleteService : Transaction
+    public class DeleteServiceRequest
+    {
+        public string ServiceNumberIn { get; set; }
+        public string ServiceNameIn { get; set; }
+        public DeleteServiceRequest(string serviceNumberIn, string serviceNameIn) =>
+            (ServiceNumberIn, ServiceNameIn) = (serviceNumberIn, serviceNameIn);
+    }
+
+    public class DeleteService
     {
         private const TransactionCode Code = TransactionCode.DEL;
 
-        public DeleteService() => this.record = new TransactionRecord(Code);
-
-        public override TransactionRecord MakeTransaction(SessionManager manager)
+        public static (TransactionRecord, string) MakeTransaction(DeleteServiceRequest request)
         {
-            var serviceNumberIn = manager.Input.TakeInput("Enter service number of the service you wish to delete.");
             ServiceNumber serviceNumber;
             try
             {
-                serviceNumber = new ServiceNumber(serviceNumberIn);
-                if (!manager.ServicesList.IsInList(serviceNumberIn))
-                {
-                    throw new System.ArgumentException();
-                }
+                serviceNumber = new ServiceNumber(request.ServiceNumberIn);
             }
             catch (System.ArgumentException)
             {
-                Console.WriteLine("Invalid service number.");
-                return null;
+                return (null, "Invalid service number.");
             }
 
-            var serviceNameIn = manager.Input.TakeInput("Enter service name of the service you wish to delete.");
             ServiceName serviceName;
             try
             {
-                serviceName = new ServiceName(serviceNameIn);
+                serviceName = new ServiceName(request.ServiceNameIn);
             }
             catch (System.ArgumentException)
             {
-                Console.WriteLine("Invalid service name.");
-                return null;
+                return (null, "Invalid service name.");
             }
 
-            Console.WriteLine($"Service {serviceNumber} with service name {serviceName} was deleted");
-            manager.ServicesList.DeleteService(serviceNumberIn);
+            var record = new TransactionRecord(Code);
             record.SourceNumber = serviceNumber;
             record.ServiceName = serviceName;
 
-            return record;
+            return (record, $"Service {serviceNumber} with service name {serviceName} was deleted");
         }
     }
 }

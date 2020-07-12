@@ -4,60 +4,57 @@ using QIES.Frontend.Session;
 
 namespace QIES.Frontend.Transaction
 {
-    public class CreateService : Transaction
+    public class CreateServiceRequest
+    {
+        public string ServiceNumberIn { get; set; }
+        public string ServiceDateIn { get; set; }
+        public string ServiceNameIn { get; set; }
+        public CreateServiceRequest(string serviceNumberIn, string serviceDateIn, string serviceNameIn) =>
+            (ServiceNumberIn, ServiceDateIn, ServiceNameIn) = (serviceNumberIn, serviceDateIn, serviceNameIn);
+    }
+
+    public class CreateService
     {
         private const TransactionCode Code = TransactionCode.CRE;
 
-        public CreateService() => this.record = new TransactionRecord(Code);
-
-        public override TransactionRecord MakeTransaction(SessionManager manager)
+        public static (TransactionRecord, string) MakeTransaction(CreateServiceRequest request)
         {
-            var serviceNumberIn = manager.Input.TakeInput("Enter service number of the service you wish to create.");
             ServiceNumber serviceNumber;
             try
             {
-                serviceNumber = new ServiceNumber(serviceNumberIn);
-                if (manager.ServicesList.IsInList(serviceNumberIn))
-                {
-                    throw new System.ArgumentException();
-                }
+                serviceNumber = new ServiceNumber(request.ServiceNumberIn);
             }
             catch (System.ArgumentException)
             {
-                Console.WriteLine("Invalid service number.");
-                return null;
+                return (null, "Invalid service number.");
             }
 
-            var serviceDateIn = manager.Input.TakeInput("Enter service date of the service you wish to create.");
             ServiceDate serviceDate;
             try
             {
-                serviceDate = new ServiceDate(serviceDateIn);
+                serviceDate = new ServiceDate(request.ServiceDateIn);
             }
             catch (System.ArgumentException)
             {
-                Console.WriteLine("Invalid service date.");
-                return null;
+                return (null, "Invalid service date.");
             }
 
-            var serviceNameIn = manager.Input.TakeInput("Enter service name of the service you wish to create.");
             ServiceName serviceName;
             try
             {
-                serviceName = new ServiceName(serviceNameIn);
+                serviceName = new ServiceName(request.ServiceNameIn);
             }
             catch (System.ArgumentException)
             {
-                Console.WriteLine("Invalid service name.");
-                return null;
+                return (null, "Invalid service name.");
             }
 
-            Console.WriteLine($"Service {serviceNumber} created on {serviceDate} with the name {serviceName}");
+            var record = new TransactionRecord(Code);
             record.SourceNumber = serviceNumber;
             record.ServiceDate = serviceDate;
             record.ServiceName = serviceName;
 
-            return record;
+            return (record, $"Service {serviceNumber} created on {serviceDate} with the name {serviceName}");
         }
     }
 }

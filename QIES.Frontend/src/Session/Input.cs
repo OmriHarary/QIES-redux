@@ -27,5 +27,16 @@ namespace QIES.Frontend.Session
             }
             return input;
         }
+
+        public int TakeNumericInput(string message)
+        {
+            var strIn = TakeInput(message);
+            int result;
+            if (!int.TryParse(strIn.Trim(), out result))
+            {
+                throw new System.IO.InvalidDataException();
+            }
+            return result;
+        }
     }
 }

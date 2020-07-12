@@ -4,76 +4,58 @@ using QIES.Frontend.Session;
 
 namespace QIES.Frontend.Transaction
 {
-    public class ChangeTicket : Transaction
+    public class ChangeTicketRequest
+    {
+        public string SourceNumberIn { get; set; }
+        public int NumberTicketsIn { get; set; }
+        public string DestinationNumberIn { get; set; }
+        public ChangeTicketRequest(string serviceNumberIn, int numberTicketsIn, string destinationNumberIn) =>
+            (SourceNumberIn, NumberTicketsIn, DestinationNumberIn) = (serviceNumberIn, numberTicketsIn, destinationNumberIn);
+    }
+
+    public class ChangeTicket
     {
         private const TransactionCode Code = TransactionCode.CHG;
 
-        public ChangeTicket() => this.record = new TransactionRecord(Code);
-
-        public override TransactionRecord MakeTransaction(SessionManager manager)
+        public static (TransactionRecord, string) MakeTransaction(ChangeTicketRequest request)
         {
-            var sourceNumberIn = manager.Input.TakeInput("Enter service number of the service you want to change.");
             ServiceNumber sourceNumber;
             try
             {
-                sourceNumber = new ServiceNumber(sourceNumberIn);
-                if (!manager.ServicesList.IsInList(sourceNumberIn))
-                {
-                    throw new System.ArgumentException();
-                }
+                sourceNumber = new ServiceNumber(request.SourceNumberIn);
             }
             catch (System.ArgumentException)
             {
-                Console.WriteLine("Invalid service number.");
-                return null;
+                return (null, "Invalid service number.");
             }
 
-            var destNumberIn = manager.Input.TakeInput("Enter service number of the service you want to change to.");
             ServiceNumber destNumber;
             try
             {
-                destNumber = new ServiceNumber(destNumberIn);
-                if (!manager.ServicesList.IsInList(destNumberIn))
-                {
-                    throw new System.ArgumentException();
-                }
+                destNumber = new ServiceNumber(request.DestinationNumberIn);
+
             }
             catch (System.ArgumentException)
             {
-                Console.WriteLine("Invalid service number.");
-                return null;
+                return (null, "Invalid service number.");
             }
 
-            int numberTicketsIn;
             NumberTickets numberTickets;
             try
             {
-                if (!int.TryParse(manager.Input.TakeInput("Enter number of tickets to change."), out numberTicketsIn))
-                    throw new System.ArgumentException();
-                numberTickets = new NumberTickets(numberTicketsIn);
-                if (manager.Session is AgentSession session)
-                {
-                    if (session.ChangedTickets + numberTicketsIn > 20)
-                    {
-                        Console.WriteLine($"Cannot change as total session changed tickets would be over 20.");
-                        Console.WriteLine($"User has {20 - session.ChangedTickets} tickets left to change this session.");
-                        throw new System.ArgumentException();
-                    }
-                    session.ChangedTickets += numberTicketsIn;
-                }
+                numberTickets = new NumberTickets(request.NumberTicketsIn);
             }
             catch (System.ArgumentException)
             {
-                Console.WriteLine("Invalid number of tickets.");
-                return null;
+                return (null, "Invalid number of tickets.");
             }
 
-            Console.WriteLine($"{numberTickets} ticket(s) changed from service {sourceNumber} to service {destNumber}");
+            var record = new TransactionRecord(Code);
             record.SourceNumber = sourceNumber;
             record.DestinationNumber = destNumber;
             record.NumberTickets = numberTickets;
 
-            return record;
+            return (record, $"{numberTickets} ticket(s) changed from service {sourceNumber} to service {destNumber}");
         }
     }
 }

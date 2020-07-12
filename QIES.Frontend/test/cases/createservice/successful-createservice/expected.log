@@ -6,5 +6,6 @@ You are not logged in, please log in before performing any other actions. (login
 [PLANNER]  Enter service name of the service you wish to create.
 [PLANNER]  Service 11211 created on 20181001 with the name ANewService
 Logged in as Planner. Enter command to begin a transaction.
-[PLANNER]  You are not logged in, please log in before performing any other actions. (login)
+[PLANNER]  Logged out.
+You are not logged in, please log in before performing any other actions. (login)
 [ ----- ]  

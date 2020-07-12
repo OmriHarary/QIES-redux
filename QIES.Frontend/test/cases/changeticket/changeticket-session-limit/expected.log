@@ -7,15 +7,15 @@ You are not logged in, please log in before performing any other actions. (login
 Logged in as Agent. Enter command to begin a transaction.
 [ AGENT ]  Enter service number of the service you want to change.
 [ AGENT ]  Enter service number of the service you want to change to.
-[ AGENT ]  Enter number of tickets to change.
+[ AGENT ]  Enter number of tickets you want to cancel.
 [ AGENT ]  Cannot change as total session changed tickets would be over 20.
 User has 20 tickets left to change this session.
-Invalid number of tickets.
 Logged in as Agent. Enter command to begin a transaction.
 [ AGENT ]  Enter service number of the service you want to change.
 [ AGENT ]  Enter service number of the service you want to change to.
-[ AGENT ]  Enter number of tickets to change.
+[ AGENT ]  Enter number of tickets you want to cancel.
 [ AGENT ]  20 ticket(s) changed from service 11111 to service 12345
 Logged in as Agent. Enter command to begin a transaction.
-[ AGENT ]  You are not logged in, please log in before performing any other actions. (login)
+[ AGENT ]  Logged out.
+You are not logged in, please log in before performing any other actions. (login)
 [ ----- ]  

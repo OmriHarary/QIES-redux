@@ -21,7 +21,7 @@ Logged in as Agent. Enter command to begin a transaction.
 [ AGENT ]  Enter number of tickets you want to cancel.
 [ AGENT ]  Cannot cancel more then 10 tickets for a single service.
 User has 0 tickets left to cancel for this service.
-Invalid number of tickets.
 Logged in as Agent. Enter command to begin a transaction.
-[ AGENT ]  You are not logged in, please log in before performing any other actions. (login)
+[ AGENT ]  Logged out.
+You are not logged in, please log in before performing any other actions. (login)
 [ ----- ]  

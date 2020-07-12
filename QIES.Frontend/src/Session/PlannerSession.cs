@@ -1,3 +1,4 @@
+using System;
 using QIES.Common;
 using QIES.Common.Record;
 using QIES.Frontend.Transaction;
@@ -18,7 +19,7 @@ namespace QIES.Frontend.Session
 
             while (run)
             {
-                command  = manager.Input.TakeInput(message);
+                command = manager.Input.TakeInput(message);
 
                 switch (command)
                 {
@@ -60,26 +61,98 @@ namespace QIES.Frontend.Session
 
         public TransactionRecord CreateService(SessionManager manager)
         {
-            CreateService createService = new CreateService();
-            return createService.MakeTransaction(manager);
+            var serviceNumberIn = manager.Input.TakeInput("Enter service number of the service you wish to create.");
+            if (manager.ServicesList.IsInList(serviceNumberIn))
+            {
+                Console.WriteLine("Requested service already exists.");
+                return null;
+            }
+
+            var serviceDateIn = manager.Input.TakeInput("Enter service date of the service you wish to create.");
+
+            var serviceNameIn = manager.Input.TakeInput("Enter service name of the service you wish to create.");
+
+            var request = new CreateServiceRequest(serviceNumberIn, serviceDateIn, serviceNameIn);
+            var (record, message) = Transaction.CreateService.MakeTransaction(request);
+            Console.WriteLine(message);
+            return record;
         }
 
         public TransactionRecord DeleteService(SessionManager manager)
         {
-            DeleteService deleteService = new DeleteService();
-            return deleteService.MakeTransaction(manager);
+            var serviceNumberIn = manager.Input.TakeInput("Enter service number of the service you wish to delete.");
+            if (!manager.ServicesList.IsInList(serviceNumberIn))
+            {
+                Console.WriteLine("Requested service does not exist.");
+                return null;
+            }
+
+            var serviceNameIn = manager.Input.TakeInput("Enter service name of the service you wish to delete.");
+
+            var request = new DeleteServiceRequest(serviceNumberIn, serviceNameIn);
+            var (record, message) = Transaction.DeleteService.MakeTransaction(request);
+            Console.WriteLine(message);
+            if (record != null)
+                manager.ServicesList.DeleteService(serviceNumberIn);
+            return record;
         }
 
         public TransactionRecord CancelTicket(SessionManager manager)
         {
-            CancelTicket cancelTicket = new CancelTicket();
-            return cancelTicket.MakeTransaction(manager);
+            var serviceNumberIn = manager.Input.TakeInput("Enter service number of ticket you would like to cancel.");
+            if (!manager.ServicesList.IsInList(serviceNumberIn))
+            {
+                Console.WriteLine("Requested service does not exist.");
+                return null;
+            }
+
+            int numberTicketsIn;
+            try
+            {
+                numberTicketsIn = manager.Input.TakeNumericInput("Enter number of tickets you want to cancel.");
+            }
+            catch (System.IO.InvalidDataException)
+            {
+                Console.WriteLine("A number was not entered.");
+                return null;
+            }
+
+            var request = new CancelTicketRequest(serviceNumberIn, numberTicketsIn);
+            var (record, message) = Transaction.CancelTicket.MakeTransaction(request);
+            Console.WriteLine(message);
+            return record;
         }
 
         public TransactionRecord ChangeTicket(SessionManager manager)
         {
-            ChangeTicket changeTicket = new ChangeTicket();
-            return changeTicket.MakeTransaction(manager);
+            var sourceNumberIn = manager.Input.TakeInput("Enter service number of the service you want to change.");
+            if (!manager.ServicesList.IsInList(sourceNumberIn))
+            {
+                Console.WriteLine("Requested service does not exist.");
+                return null;
+            }
+
+            var destinationNumberIn = manager.Input.TakeInput("Enter service number of the service you want to change to.");
+            if (!manager.ServicesList.IsInList(destinationNumberIn))
+            {
+                throw new System.ArgumentException();
+            }
+
+            int numberTicketsIn;
+            try
+            {
+                numberTicketsIn = manager.Input.TakeNumericInput("Enter number of tickets you want to cancel.");
+            }
+            catch (System.IO.InvalidDataException)
+            {
+                Console.WriteLine("A number was not entered.");
+                return null;
+            }
+
+            var request = new ChangeTicketRequest(sourceNumberIn, numberTicketsIn, destinationNumberIn);
+            var (record, message) = Transaction.ChangeTicket.MakeTransaction(request);
+            Console.WriteLine(message);
+            return record;
         }
     }
 }

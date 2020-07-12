@@ -1,0 +1,11 @@
+#!/bin/bash
+
+testname="Invalid deleteservice"
+frontend="./QIES.Cli/scripts/run.sh"
+vsl="./QIES.Cli/test/resources/valid-services-list.txt"
+input="$( dirname "${BASH_SOURCE[0]}" )/input.txt"
+output="$( dirname "${BASH_SOURCE[0]}" )/output.txt"
+expectedout="$( dirname "${BASH_SOURCE[0]}" )/expected.txt"
+log="$( dirname "${BASH_SOURCE[0]}" )/log.log"
+expectedlog="$( dirname "${BASH_SOURCE[0]}" )/expected.log"
+err="$( dirname "${BASH_SOURCE[0]}" )/err.log"

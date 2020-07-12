@@ -1,0 +1,6 @@
+#!/bin/bash
+
+for i in ./QIES.Cli/test/run-tests-*
+do
+    $i
+done

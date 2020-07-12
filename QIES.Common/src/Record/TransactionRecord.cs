@@ -2,7 +2,7 @@ namespace QIES.Common.Record
 {
     public class TransactionRecord
     {
-        public TransactionCode Code { get; set; }
+        public TransactionCode Code { get; private set; }
         public ServiceNumber SourceNumber { get; set; }
         public NumberTickets NumberTickets { get; set; }
         public ServiceNumber DestinationNumber { get; set; }

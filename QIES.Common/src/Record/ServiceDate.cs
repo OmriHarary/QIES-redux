@@ -1,9 +1,9 @@
 namespace QIES.Common.Record
 {
-    public class ServiceDate : RecordElement
+    public class ServiceDate
     {
-        public string Date { get; set; }
         private const string Default = "0";
+        public string Date { get; private set; }
 
         public ServiceDate(string date)
         {
@@ -11,15 +11,15 @@ namespace QIES.Common.Record
             {
                 throw new System.ArgumentException();
             }
-            this.IsSet = true;
             this.Date = date;
         }
 
         public ServiceDate()
         {
+            this.Date = Default;
         }
 
-        public override string ToString() => IsSet ? Date : Default;
+        public override string ToString() => Date;
 
         public static bool IsValid(string value)
         {

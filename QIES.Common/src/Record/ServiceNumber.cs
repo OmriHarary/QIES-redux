@@ -1,9 +1,9 @@
 namespace QIES.Common.Record
 {
-    public class ServiceNumber : RecordElement
+    public class ServiceNumber
     {
-        public string Number { get; set; }
         private const string Default = "00000";
+        public string Number { get; private set; }
 
         public ServiceNumber(string number)
         {
@@ -11,15 +11,15 @@ namespace QIES.Common.Record
             {
                 throw new System.ArgumentException();
             }
-            this.IsSet = true;
             this.Number = number;
         }
 
         public ServiceNumber()
         {
+            this.Number = Default;
         }
 
-        public override string ToString() => IsSet ? Number : Default;
+        public override string ToString() => Number;
 
         public static bool IsValid(string value)
         {

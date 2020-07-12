@@ -1,52 +1,46 @@
-using System;
 using QIES.Common.Record;
-using QIES.Frontend.Session;
 
 namespace QIES.Frontend.Transaction
 {
-    public class SellTicket : Transaction
+    public class SellTicketRequest
+    {
+        public string ServiceNumberIn { get; set; }
+        public int NumberTicketsIn { get; set; }
+        public SellTicketRequest(string serviceNumberIn, int numberTicketsIn) =>
+            (ServiceNumberIn, NumberTicketsIn) = (serviceNumberIn, numberTicketsIn);
+    }
+
+    public class SellTicket
     {
         private const TransactionCode Code = TransactionCode.SEL;
 
-        public SellTicket() => this.record = new TransactionRecord(Code);
-
-        public override TransactionRecord MakeTransaction(SessionManager manager)
+        public static (TransactionRecord, string) MakeTransaction(SellTicketRequest request)
         {
-            var serviceNumberIn = manager.Input.TakeInput("Enter service number to sell tickets for.");
             ServiceNumber serviceNumber;
             try
             {
-                serviceNumber = new ServiceNumber(serviceNumberIn);
-                if (!manager.ServicesList.IsInList(serviceNumberIn))
-                {
-                    throw new System.ArgumentException();
-                }
+                serviceNumber = new ServiceNumber(request.ServiceNumberIn);
             }
             catch (System.ArgumentException)
             {
-                Console.WriteLine("Invalid service number.");
-                return null;
+                return (null, "Invalid service number.");
             }
 
-            int numberTicketsIn;
             NumberTickets numberTickets;
             try
             {
-                if (!int.TryParse(manager.Input.TakeInput("Enter number of tickets to sell."), out numberTicketsIn))
-                    throw new System.ArgumentException();
-                numberTickets = new NumberTickets(numberTicketsIn);
+                numberTickets = new NumberTickets(request.NumberTicketsIn);
             }
             catch (System.ArgumentException)
             {
-                Console.WriteLine("Invalid number of tickets.");
-                return null;
+                return (null, "Invalid number of tickets.");
             }
 
-            Console.WriteLine($"{numberTickets} ticket(s) sold for service {serviceNumber}");
+            var record = new TransactionRecord(Code);
             record.SourceNumber = serviceNumber;
             record.NumberTickets = numberTickets;
 
-            return record;
+            return (record, $"{numberTickets} ticket(s) sold for service {serviceNumber}");
         }
     }
 }

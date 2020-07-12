@@ -4,75 +4,45 @@ using QIES.Frontend.Session;
 
 namespace QIES.Frontend.Transaction
 {
-    public class CancelTicket : Transaction
+    public class CancelTicketRequest
+    {
+        public string ServiceNumberIn { get; set; }
+        public int NumberTicketsIn { get; set; }
+        public CancelTicketRequest(string serviceNumberIn, int numberTicketsIn) =>
+            (ServiceNumberIn, NumberTicketsIn) = (serviceNumberIn, numberTicketsIn);
+    }
+
+    public class CancelTicket
     {
         private const TransactionCode Code = TransactionCode.CAN;
 
-        public CancelTicket() => this.record = new TransactionRecord(Code);
-
-        public override TransactionRecord MakeTransaction(SessionManager manager)
+        public static (TransactionRecord, string) MakeTransaction(CancelTicketRequest request)
         {
-            var serviceNumberIn = manager.Input.TakeInput("Enter service number of ticket you would like to cancel.");
             ServiceNumber serviceNumber;
             try
             {
-                serviceNumber = new ServiceNumber(serviceNumberIn);
-                if (!manager.ServicesList.IsInList(serviceNumberIn))
-                {
-                    throw new System.ArgumentException();
-                }
+                serviceNumber = new ServiceNumber(request.ServiceNumberIn);
             }
             catch (System.ArgumentException)
             {
-                Console.WriteLine("Invalid service number.");
-                return null;
+                return (null, "Invalid service number.");
             }
 
-            int numberTicketsIn;
             NumberTickets numberTickets;
             try
             {
-                if (!int.TryParse(manager.Input.TakeInput("Enter number of tickets you want to cancel."), out numberTicketsIn))
-                    throw new System.ArgumentException();
-                numberTickets = new NumberTickets(numberTicketsIn);
-                if (manager.Session is AgentSession session)
-                {
-                    if (!session.CancelledTickets.ContainsKey(serviceNumberIn))
-                    {
-                        session.CancelledTickets.Add(serviceNumberIn, 0);
-                    }
-                    if (numberTicketsIn > 10)
-                    {
-                        Console.WriteLine("Cannot cancel more then 10 tickets at once.");
-                        throw new System.ArgumentException();
-                    }
-                    if (session.CancelledTickets[serviceNumberIn] + numberTicketsIn > 10)
-                    {
-                        Console.WriteLine("Cannot cancel more then 10 tickets for a single service.");
-                        Console.WriteLine($"User has {10 - session.CancelledTickets[serviceNumberIn]} tickets left to cancel for this service.");
-                        throw new System.ArgumentException();
-                    }
-                    if (session.TotalCancelledTickets + numberTicketsIn > 20)
-                    {
-                        Console.WriteLine("Cannot cancel as total session canceled tickets would be over 20.");
-                        Console.WriteLine($"User has {20 - session.TotalCancelledTickets} tickets left to cancel this session.");
-                        throw new System.ArgumentException();
-                    }
-                    session.TotalCancelledTickets += numberTicketsIn;
-                    session.CancelledTickets[serviceNumberIn] += numberTicketsIn;
-                }
+                numberTickets = new NumberTickets(request.NumberTicketsIn);
             }
             catch (System.ArgumentException)
             {
-                Console.WriteLine("Invalid number of tickets.");
-                return null;
+                return (null, "Invalid number of tickets.");
             }
 
-            Console.WriteLine($"{numberTickets} ticket(s) canceled from service {serviceNumber}");
+            var record = new TransactionRecord(Code);
             record.SourceNumber = serviceNumber;
             record.NumberTickets = numberTickets;
 
-            return record;
+            return (record, $"{numberTickets} ticket(s) canceled from service {serviceNumber}");
         }
     }
 }

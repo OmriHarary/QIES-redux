@@ -1,9 +1,9 @@
 namespace QIES.Common.Record
 {
-    public class NumberTickets : RecordElement
+    public class NumberTickets
     {
-        public int Number { get; set; }
         private const int Default = 0;
+        public int Number { get; private set; }
 
         public NumberTickets(int number)
         {
@@ -11,15 +11,15 @@ namespace QIES.Common.Record
             {
                 throw new System.ArgumentException();
             }
-            this.IsSet = true;
             this.Number = number;
         }
 
         public NumberTickets()
         {
+            this.Number = Default;
         }
 
-        public override string ToString() => IsSet ? Number.ToString() : Default.ToString();
+        public override string ToString() => Number.ToString();
 
         public static bool IsValid(int value) => value >= 1 && value <= 1000;
     }

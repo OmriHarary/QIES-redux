@@ -1,9 +1,9 @@
 namespace QIES.Common.Record
 {
-    public class ServiceName : RecordElement
+    public class ServiceName
     {
-        public string Name { get; set; }
         private const string Default = "****";
+        public string Name { get; private set; }
 
         public ServiceName(string name)
         {
@@ -11,15 +11,15 @@ namespace QIES.Common.Record
             {
                 throw new System.ArgumentException();
             }
-            this.IsSet = true;
             this.Name = name;
         }
 
         public ServiceName()
         {
+            this.Name = Default;
         }
 
-        public override string ToString() => IsSet ? Name : Default;
+        public override string ToString() => Name;
 
         public static bool IsValid(string value)
         {

@@ -70,22 +70,83 @@ namespace QIES.Frontend.Session
 
         public (bool, string) ProcessCancelTicket(CancelTicketRequest request)
         {
-            return (false, "Not implemented");
+            if (ActiveLogin == LoginType.NONE)
+            {
+                return (false, "Must be logged in to cancel tickets.");
+            }
+            if (!ServicesList.IsInList(request.ServiceNumberIn))
+            {
+                return (false, "Requested service does not exist.");
+            }
+            var (record, message) = CancelTicket.MakeTransaction(request);
+            if (record != null)
+            {
+                TransactionQueue.Push(record);
+                return (true, message);
+            }
+            return (false, message);
         }
 
         public (bool, string) ProcessChangeTicket(ChangeTicketRequest request)
         {
-            return (false, "Not implemented");
+            if (ActiveLogin == LoginType.NONE)
+            {
+                return (false, "Must be logged in to change tickets.");
+            }
+            if (!ServicesList.IsInList(request.SourceNumberIn))
+            {
+                return (false, "Source service does not exist.");
+            }
+            if (!ServicesList.IsInList(request.DestinationNumberIn))
+            {
+                return (false, "Destination service does not exist.");
+            }
+            var (record, message) = ChangeTicket.MakeTransaction(request);
+            if (record != null)
+            {
+                TransactionQueue.Push(record);
+                return (true, message);
+            }
+            return (false, message);
         }
 
         public (bool, string) ProcessCreateService(CreateServiceRequest request)
         {
-            return (false, "Not implemented");
+            if (ActiveLogin != LoginType.PLANNER)
+            {
+                return (false, "Must be logged in as Planner to create services.");
+            }
+            if (ServicesList.IsInList(request.ServiceNumberIn))
+            {
+                return (false, "Requested service already exists.");
+            }
+            var (record, message) = CreateService.MakeTransaction(request);
+            if (record != null)
+            {
+                TransactionQueue.Push(record);
+                return (true, message);
+            }
+            return (false, message);
         }
 
         public (bool, string) ProcessDeleteService(DeleteServiceRequest request)
         {
-            return (false, "Not implemented");
+            if (ActiveLogin != LoginType.PLANNER)
+            {
+                return (false, "Must be logged in as Planner to delete services.");
+            }
+            if (!ServicesList.IsInList(request.ServiceNumberIn))
+            {
+                return (false, "Requested service does not exist.");
+            }
+            var (record, message) = DeleteService.MakeTransaction(request);
+            if (record != null)
+            {
+                TransactionQueue.Push(record);
+                ServicesList.DeleteService(request.ServiceNumberIn);
+                return (true, message);
+            }
+            return (false, message);
         }
 
         public void PrintTransactionSummary()

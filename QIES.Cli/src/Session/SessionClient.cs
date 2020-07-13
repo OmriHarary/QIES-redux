@@ -49,6 +49,10 @@ namespace QIES.Cli.Session
                     "login"         => Login(),
                     "logout"        => Logout(),
                     "sellticket"    => SellTicket(),
+                    "cancelticket"  => CancelTicket(),
+                    "changeticket"  => ChangeTicket(),
+                    "createservice" => CreateService(),
+                    "deleteservice" => DeleteService(),
                     "exit"          => Exit(),
                     _               => (false, "Invalid input.")
                 };
@@ -94,6 +98,55 @@ namespace QIES.Cli.Session
             }
 
             return controller.ProcessSellTicket(new SellTicketRequest(serviceNumberIn, numberTicketsIn));
+        }
+
+        public (bool, string) CancelTicket()
+        {
+            var serviceNumberIn = input.TakeInput("Enter service number of ticket you would like to cancel.");
+
+            int numberTicketsIn;
+            try
+            {
+                numberTicketsIn = input.TakeNumericInput("Enter number of tickets you want to cancel.");
+            }
+            catch (System.IO.InvalidDataException)
+            {
+                return (false, "A number was not entered.");
+            }
+
+            return controller.ProcessCancelTicket(new CancelTicketRequest(serviceNumberIn, numberTicketsIn));
+        }
+
+        public (bool, string) ChangeTicket()
+        {
+            var sourceNumberIn = input.TakeInput("Enter service number of the service you want to change.");
+            var destinationNumberIn = input.TakeInput("Enter service number of the service you want to change to.");
+            int numberTicketsIn;
+            try
+            {
+                numberTicketsIn = input.TakeNumericInput("Enter number of tickets you want to change.");
+            }
+            catch (System.IO.InvalidDataException)
+            {
+                return (false, "A number was not entered.");
+            }
+
+            return controller.ProcessChangeTicket(new ChangeTicketRequest(sourceNumberIn, numberTicketsIn, destinationNumberIn));
+        }
+
+        public (bool, string) CreateService()
+        {
+            var serviceNumberIn = input.TakeInput("Enter service number of the service you wish to create.");
+            var serviceDateIn = input.TakeInput("Enter service date of the service you wish to create.");
+            var serviceNameIn = input.TakeInput("Enter service name of the service you wish to create.");
+            return controller.ProcessCreateService(new CreateServiceRequest(serviceNumberIn, serviceDateIn, serviceNameIn));
+        }
+
+        public (bool, string) DeleteService()
+        {
+            var serviceNumberIn = input.TakeInput("Enter service number of the service you wish to delete.");
+            var serviceNameIn = input.TakeInput("Enter service name of the service you wish to delete.");
+            return controller.ProcessDeleteService(new DeleteServiceRequest(serviceNumberIn, serviceNameIn));
         }
 
         public (bool, string) Exit()

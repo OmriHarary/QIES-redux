@@ -1,12 +1,26 @@
 ﻿using System;
+using QIES.Cli.Session;
+using QIES.Frontend.Session;
 
 namespace QIES.Cli
 {
-    class Program
+    public class Program
     {
-        static void Main(string[] args)
+        public static int Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            if (args.Length != 2)
+            {
+                Console.Error.WriteLine($"Incorrect number of arguments: {args.Length}");
+                return 1;
+            }
+
+            var validServicesFilePath = args[0];
+            var summaryFilePath = args[1];
+            var sessionController = new SessionController(validServicesFilePath, summaryFilePath);
+            var sessionClient = new SessionClient(sessionController);
+            
+
+            return sessionClient.Operate();;
         }
     }
 }

@@ -1,4 +1,4 @@
-using QIES.Common;
+/* using QIES.Common;
 
 namespace QIES.Frontend.Session
 {
@@ -7,3 +7,4 @@ namespace QIES.Frontend.Session
         public void Process(SessionManager manager, TransactionQueue queue);
     }
 }
+ */

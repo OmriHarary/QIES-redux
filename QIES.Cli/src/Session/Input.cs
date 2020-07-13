@@ -1,6 +1,6 @@
 using System;
 
-namespace QIES.Frontend.Session
+namespace QIES.Cli.Session
 {
     public class Input
     {

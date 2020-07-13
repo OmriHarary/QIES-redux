@@ -46,15 +46,16 @@ namespace QIES.Cli.Session
 
                 var (success, response) = command switch
                 {
-                    "login"     => Login(),
-                    "logout"    => Logout(),
-                    "exit"      => Exit(),
-                    _           => (false, "Invalid input.")
+                    "login"         => Login(),
+                    "logout"        => Logout(),
+                    "sellticket"    => SellTicket(),
+                    "exit"          => Exit(),
+                    _               => (false, "Invalid input.")
                 };
                 run = !(command == "exit" && success);
                 if (run)
                 {
-                    message = success ? UserPrompts[activeLogin].Message : $"{response} {UserPrompts[activeLogin].Message}";
+                    message = $"{response}\n{UserPrompts[activeLogin].Message}";
                 }
             }
 
@@ -76,6 +77,23 @@ namespace QIES.Cli.Session
             this.activeLogin = activeLogin;
             this.input.Prompt = UserPrompts[activeLogin].Prompt;
             return (success, response);
+        }
+
+        public (bool, string) SellTicket()
+        {
+            var serviceNumberIn = input.TakeInput("Enter service number to sell tickets for.");
+
+            int numberTicketsIn;
+            try
+            {
+                numberTicketsIn = input.TakeNumericInput("Enter number of tickets to sell.");
+            }
+            catch (System.IO.InvalidDataException)
+            {
+                return (false, "A number was not entered.");
+            }
+
+            return controller.ProcessSellTicket(new SellTicketRequest(serviceNumberIn, numberTicketsIn));
         }
 
         public (bool, string) Exit()

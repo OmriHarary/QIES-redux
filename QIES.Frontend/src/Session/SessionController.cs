@@ -26,8 +26,8 @@ namespace QIES.Frontend.Session
             {
                 (bool, string, LoginType) response = request switch
                 {
-                    "agent"     => (true, "Logged in as agent.", LoginType.AGENT),
-                    "planner"   => (true, "Logged in as planner.", LoginType.PLANNER),
+                    "agent"     => (true, "Successfully logged in as Agent.", LoginType.AGENT),
+                    "planner"   => (true, "Successfully logged in as Planner.", LoginType.PLANNER),
                     _           => (false, "Invalid input.", LoginType.NONE)
                 };
                 ActiveLogin = response.Item3;
@@ -51,7 +51,21 @@ namespace QIES.Frontend.Session
 
         public (bool, string) ProcessSellTicket(SellTicketRequest request)
         {
-            return (false, "Not implemented");
+            if (ActiveLogin == LoginType.NONE)
+            {
+                return (false, "Must be logged in to sell tickets.");
+            }
+            if (!ServicesList.IsInList(request.ServiceNumberIn))
+            {
+                return (false, "Requested service does not exist.");
+            }
+            var (record, message) = SellTicket.MakeTransaction(request);
+            if (record != null)
+            {
+                TransactionQueue.Push(record);
+                return (true, message);
+            }
+            return (false, message);
         }
 
         public (bool, string) ProcessCancelTicket(CancelTicketRequest request)

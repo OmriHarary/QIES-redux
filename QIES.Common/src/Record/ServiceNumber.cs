@@ -20,6 +20,11 @@ namespace QIES.Common.Record
         }
 
         public override string ToString() => Number;
+        public override bool Equals(object? obj) => obj is ServiceNumber otherNumber && this.Number == otherNumber.Number;
+        public override int GetHashCode() => System.HashCode.Combine(Number);
+
+        public static bool operator ==(ServiceNumber lhs, ServiceNumber rhs) => lhs.Equals(rhs);
+        public static bool operator !=(ServiceNumber lhs, ServiceNumber rhs) => !(lhs == rhs);
 
         public static bool IsValid(string value)
         {

@@ -20,6 +20,11 @@ namespace QIES.Common.Record
         }
 
         public override string ToString() => Date;
+        public override bool Equals(object? obj) => obj is ServiceDate otherDate && this.Date == otherDate.Date;
+        public override int GetHashCode() => System.HashCode.Combine(Date);
+
+        public static bool operator ==(ServiceDate lhs, ServiceDate rhs) => lhs.Equals(rhs);
+        public static bool operator !=(ServiceDate lhs, ServiceDate rhs) => !(lhs == rhs);
 
         public static bool IsValid(string value)
         {

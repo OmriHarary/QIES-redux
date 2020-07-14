@@ -35,7 +35,7 @@ namespace QIES.Common.Record
         public override int GetHashCode() =>
             HashCode.Combine(Code, SourceNumber, NumberTickets, DestinationNumber, ServiceName, ServiceDate);
 
-        public static bool operator ==(TransactionRecord lhs, TransactionRecord rhs) => lhs.Equals(rhs);
+        public static bool operator ==(TransactionRecord lhs, TransactionRecord rhs) => lhs?.Equals(rhs) ?? rhs is null;
         public static bool operator !=(TransactionRecord lhs, TransactionRecord rhs) => !(lhs == rhs);
     }
 }

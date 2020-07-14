@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.IO;
 using QIES.Common;
 using QIES.Frontend.Transaction;
@@ -6,6 +7,10 @@ namespace QIES.Frontend.Session
 {
     public class SessionController
     {
+        private int changedTickets;
+        private int totalCancelledTickets;
+        private Dictionary<string, int> cancelledTickets;
+
         public LoginType ActiveLogin { get; set; }
         public ValidServicesList ServicesList { get; set; }
         public TransactionQueue TransactionQueue { get; set; }
@@ -18,6 +23,7 @@ namespace QIES.Frontend.Session
             this.ServicesList = new ValidServicesList(validServicesFile);
             this.TransactionQueue = new TransactionQueue();
             this.SummaryFile = new FileInfo(summaryFilePath);
+            this.cancelledTickets = new Dictionary<string, int>();
         }
 
         public (bool, string, LoginType) ProcessLogin(string request)
@@ -44,6 +50,9 @@ namespace QIES.Frontend.Session
                 ActiveLogin = LoginType.NONE;
                 TransactionQueue.Push(record);
                 PrintTransactionSummary();
+                changedTickets = 0;
+                totalCancelledTickets = 0;
+                cancelledTickets.Clear();
                 return (true, message, ActiveLogin);
             }
             return (false, "Already logged out.", ActiveLogin);
@@ -78,9 +87,24 @@ namespace QIES.Frontend.Session
             {
                 return (false, "Requested service does not exist.");
             }
+            if (!cancelledTickets.ContainsKey(request.ServiceNumberIn))
+                cancelledTickets.Add(request.ServiceNumberIn, 0);
+            if (cancelledTickets[request.ServiceNumberIn] + request.NumberTicketsIn > 10)
+            {
+                return (false, "Cannot cancel more then 10 tickets for a single service.\n" +
+                    $"User has {10 - cancelledTickets[request.ServiceNumberIn]} tickets left to cancel for this service.");
+            }
+            if (totalCancelledTickets + request.NumberTicketsIn > 20)
+            {
+                return (false, "Cannot cancel as total session canceled tickets would be over 20.\n" +
+                    $"User has {20 - totalCancelledTickets} tickets left to cancel this session.");
+            }
+
             var (record, message) = CancelTicket.MakeTransaction(request);
             if (record != null)
             {
+                totalCancelledTickets += request.NumberTicketsIn;
+                cancelledTickets[request.ServiceNumberIn] += request.NumberTicketsIn;
                 TransactionQueue.Push(record);
                 return (true, message);
             }
@@ -101,9 +125,16 @@ namespace QIES.Frontend.Session
             {
                 return (false, "Destination service does not exist.");
             }
+            if (changedTickets + request.NumberTicketsIn > 20)
+            {
+                return (false, "Cannot change as total session changed tickets would be over 20.\n" +
+                    $"User has {20 - changedTickets} tickets left to cancel this session.");
+            }
+
             var (record, message) = ChangeTicket.MakeTransaction(request);
             if (record != null)
             {
+                changedTickets += request.NumberTicketsIn;
                 TransactionQueue.Push(record);
                 return (true, message);
             }

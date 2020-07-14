@@ -96,24 +96,30 @@ namespace QIES.Frontend.Session
             {
                 return (false, "Requested service does not exist.");
             }
-            if (!cancelledTickets.ContainsKey(request.ServiceNumberIn))
-                cancelledTickets.Add(request.ServiceNumberIn, 0);
-            if (cancelledTickets[request.ServiceNumberIn] + request.NumberTicketsIn > 10)
+            if (ActiveLogin == LoginType.AGENT)
             {
-                return (false, "Cannot cancel more then 10 tickets for a single service.\n" +
-                    $"User has {10 - cancelledTickets[request.ServiceNumberIn]} tickets left to cancel for this service.");
-            }
-            if (totalCancelledTickets + request.NumberTicketsIn > 20)
-            {
-                return (false, "Cannot cancel as total session canceled tickets would be over 20.\n" +
-                    $"User has {20 - totalCancelledTickets} tickets left to cancel this session.");
+                if (!cancelledTickets.ContainsKey(request.ServiceNumberIn))
+                    cancelledTickets.Add(request.ServiceNumberIn, 0);
+                if (cancelledTickets[request.ServiceNumberIn] + request.NumberTicketsIn > 10)
+                {
+                    return (false, "Cannot cancel more then 10 tickets for a single service.\n" +
+                        $"User has {10 - cancelledTickets[request.ServiceNumberIn]} tickets left to cancel for this service.");
+                }
+                if (totalCancelledTickets + request.NumberTicketsIn > 20)
+                {
+                    return (false, "Cannot cancel as total session canceled tickets would be over 20.\n" +
+                        $"User has {20 - totalCancelledTickets} tickets left to cancel this session.");
+                }
             }
 
             var (record, message) = CancelTicket.MakeTransaction(request);
             if (record != null)
             {
-                totalCancelledTickets += request.NumberTicketsIn;
-                cancelledTickets[request.ServiceNumberIn] += request.NumberTicketsIn;
+                if (ActiveLogin == LoginType.AGENT)
+                {
+                    totalCancelledTickets += request.NumberTicketsIn;
+                    cancelledTickets[request.ServiceNumberIn] += request.NumberTicketsIn;
+                }
                 TransactionQueue.Push(record);
                 return (true, message);
             }

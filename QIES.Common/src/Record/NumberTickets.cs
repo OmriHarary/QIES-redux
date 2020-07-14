@@ -23,7 +23,7 @@ namespace QIES.Common.Record
         public override bool Equals(object? obj) => obj is NumberTickets otherNum && this.Number == otherNum.Number;
         public override int GetHashCode() => System.HashCode.Combine(Number);
 
-        public static bool operator ==(NumberTickets lhs, NumberTickets rhs) => lhs.Equals(rhs);
+        public static bool operator ==(NumberTickets lhs, NumberTickets rhs) => lhs?.Equals(rhs) ?? rhs is null;
         public static bool operator !=(NumberTickets lhs, NumberTickets rhs) => !(lhs == rhs);
 
         public static bool IsValid(int value) => value >= 1 && value <= 1000;

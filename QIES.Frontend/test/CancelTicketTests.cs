@@ -42,6 +42,20 @@ namespace QIES.Frontend.Tests
         }
 
         [Fact]
+        public void CancelTicket_NotLoggedIn_CancellationFailure()
+        {
+            var numberTickets = 1;
+            var validServiceNum = "11111";
+            controller.ServicesList.AddService(validServiceNum);
+            controller.ActiveLogin = LoginType.NONE;
+            var request = new CancelTicketRequest(validServiceNum, numberTickets);
+
+            var (success, _) = controller.ProcessCancelTicket(request);
+
+            Assert.False(success);
+        }
+
+        [Fact]
         public void CancelTicket_InvalidService_CancellationFailure()
         {
             var numberTickets = 1;

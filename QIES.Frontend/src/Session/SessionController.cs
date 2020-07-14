@@ -140,16 +140,20 @@ namespace QIES.Frontend.Session
             {
                 return (false, "Destination service does not exist.");
             }
-            if (changedTickets + request.NumberTicketsIn > 20)
+            if (ActiveLogin == LoginType.AGENT)
             {
-                return (false, "Cannot change as total session changed tickets would be over 20.\n" +
-                    $"User has {20 - changedTickets} tickets left to cancel this session.");
+                if (changedTickets + request.NumberTicketsIn > 20)
+                {
+                    return (false, "Cannot change as total session changed tickets would be over 20.\n" +
+                        $"User has {20 - changedTickets} tickets left to cancel this session.");
+                }
             }
 
             var (record, message) = ChangeTicket.MakeTransaction(request);
             if (record != null)
             {
-                changedTickets += request.NumberTicketsIn;
+                if (ActiveLogin == LoginType.AGENT)
+                    changedTickets += request.NumberTicketsIn;
                 TransactionQueue.Push(record);
                 return (true, message);
             }

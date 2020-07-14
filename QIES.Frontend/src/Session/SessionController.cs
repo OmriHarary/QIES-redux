@@ -26,6 +26,15 @@ namespace QIES.Frontend.Session
             this.cancelledTickets = new Dictionary<string, int>();
         }
 
+        public SessionController(string summaryFilePath)
+        {
+            ActiveLogin = LoginType.NONE;
+            this.ServicesList = new ValidServicesList();
+            this.TransactionQueue = new TransactionQueue();
+            this.SummaryFile = new FileInfo(summaryFilePath);
+            this.cancelledTickets = new Dictionary<string, int>();
+        }
+
         public (bool, string, LoginType) ProcessLogin(string request)
         {
             if (ActiveLogin == LoginType.NONE)

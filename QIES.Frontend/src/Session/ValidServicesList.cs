@@ -14,6 +14,11 @@ namespace QIES.Frontend.Session
             ReadServices(validServicesFile);
         }
 
+        public ValidServicesList()
+        {
+            validServices = new HashSet<string>();
+        }
+
         private void ReadServices(FileInfo validServicesFile)
         {
             try
@@ -44,6 +49,11 @@ namespace QIES.Frontend.Session
         public void DeleteService(string service)
         {
             validServices.Remove(service);
+        }
+
+        public void AddService(string service)
+        {
+            validServices.Add(service);
         }
     }
 }

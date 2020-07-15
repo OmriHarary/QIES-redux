@@ -4,20 +4,15 @@ namespace QIES.Cli.Session
 {
     public class Input
     {
-        public string Prompt
-        {
-            get => prompt;
-            set => prompt = $"[{value}]  ";
-        }
-        private string prompt;
+        public string Prompt { get; set; }
 
         public Input(string prompt) => this.Prompt = prompt;
 
         public string TakeInput(string message)
         {
             Console.WriteLine(message);
-            Console.Write(Prompt);
-            string input = Console.ReadLine();
+            Console.Write("[{Prompt}]  ");
+            string? input = Console.ReadLine();
             if (input == null)
             {
                 // FIXME: This is just to immitate the behaviour of java.util.Scanner.nextLine()

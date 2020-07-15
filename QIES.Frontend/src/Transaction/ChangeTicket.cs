@@ -15,7 +15,7 @@ namespace QIES.Frontend.Transaction
     {
         private const TransactionCode Code = TransactionCode.CHG;
 
-        public static (TransactionRecord, string) MakeTransaction(ChangeTicketRequest request)
+        public static (TransactionRecord?, string) MakeTransaction(ChangeTicketRequest request)
         {
             ServiceNumber sourceNumber;
             try

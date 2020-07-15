@@ -14,7 +14,7 @@ namespace QIES.Frontend.Transaction
     {
         private const TransactionCode Code = TransactionCode.DEL;
 
-        public static (TransactionRecord, string) MakeTransaction(DeleteServiceRequest request)
+        public static (TransactionRecord?, string) MakeTransaction(DeleteServiceRequest request)
         {
             ServiceNumber serviceNumber;
             try

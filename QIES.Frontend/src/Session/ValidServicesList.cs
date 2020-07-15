@@ -24,8 +24,8 @@ namespace QIES.Frontend.Session
             try
             {
                 using StreamReader validServicesReader = validServicesFile.OpenText();
-                string line;
-                while ((line = validServicesReader.ReadLine()) != null)
+                string? line;
+                while (!((line = validServicesReader.ReadLine()) is null))
                 {
                     if (line != "00000")
                     {

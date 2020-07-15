@@ -14,7 +14,6 @@ namespace QIES.Frontend.Session
         public LoginType ActiveLogin { get; set; }
         public ValidServicesList ServicesList { get; set; }
         public TransactionQueue TransactionQueue { get; set; }
-        public FileInfo SummaryFile { get; set; }
 
         public SessionController(string validServicesFilePath)
         {
@@ -69,8 +68,7 @@ namespace QIES.Frontend.Session
             (bool Success, string, LoginType) response = ProcessLogout(request);
             if (response.Success)
             {
-                this.SummaryFile = new FileInfo(summaryFilePath);
-                PrintTransactionSummary();
+                PrintTransactionSummary(summaryFilePath);
             }
             return response;
         }
@@ -86,7 +84,7 @@ namespace QIES.Frontend.Session
                 return (false, "Requested service does not exist.");
             }
             var (record, message) = SellTicket.MakeTransaction(request);
-            if (record != null)
+            if (!(record is null))
             {
                 TransactionQueue.Push(record);
                 return (true, message);
@@ -121,7 +119,7 @@ namespace QIES.Frontend.Session
             }
 
             var (record, message) = CancelTicket.MakeTransaction(request);
-            if (record != null)
+            if (!(record is null))
             {
                 if (ActiveLogin == LoginType.AGENT)
                 {
@@ -158,7 +156,7 @@ namespace QIES.Frontend.Session
             }
 
             var (record, message) = ChangeTicket.MakeTransaction(request);
-            if (record != null)
+            if (!(record is null))
             {
                 if (ActiveLogin == LoginType.AGENT)
                     changedTickets += request.NumberTicketsIn;
@@ -179,7 +177,7 @@ namespace QIES.Frontend.Session
                 return (false, "Requested service already exists.");
             }
             var (record, message) = CreateService.MakeTransaction(request);
-            if (record != null)
+            if (!(record is null))
             {
                 TransactionQueue.Push(record);
                 return (true, message);
@@ -198,7 +196,7 @@ namespace QIES.Frontend.Session
                 return (false, "Requested service does not exist.");
             }
             var (record, message) = DeleteService.MakeTransaction(request);
-            if (record != null)
+            if (!(record is null))
             {
                 TransactionQueue.Push(record);
                 ServicesList.DeleteService(request.ServiceNumberIn);
@@ -207,11 +205,13 @@ namespace QIES.Frontend.Session
             return (false, message);
         }
 
-        public void PrintTransactionSummary()
+        private void PrintTransactionSummary(string summaryFilePath)
         {
+            FileInfo summaryFile = new FileInfo(summaryFilePath);
+
             try
             {
-                using StreamWriter summaryWriter = SummaryFile.CreateText();
+                using StreamWriter summaryWriter = summaryFile.CreateText();
                 while (!TransactionQueue.IsEmpty())
                 {
                     summaryWriter.WriteLine(TransactionQueue.Pop());

@@ -16,22 +16,20 @@ namespace QIES.Frontend.Session
         public TransactionQueue TransactionQueue { get; set; }
         public FileInfo SummaryFile { get; set; }
 
-        public SessionController(string validServicesFilePath, string summaryFilePath)
+        public SessionController(string validServicesFilePath)
         {
             ActiveLogin = LoginType.NONE;
             var validServicesFile = new FileInfo(validServicesFilePath);
             this.ServicesList = new ValidServicesList(validServicesFile);
             this.TransactionQueue = new TransactionQueue();
-            this.SummaryFile = new FileInfo(summaryFilePath);
             this.cancelledTickets = new Dictionary<string, int>();
         }
 
-        public SessionController(string summaryFilePath)
+        public SessionController()
         {
             ActiveLogin = LoginType.NONE;
             this.ServicesList = new ValidServicesList();
             this.TransactionQueue = new TransactionQueue();
-            this.SummaryFile = new FileInfo(summaryFilePath);
             this.cancelledTickets = new Dictionary<string, int>();
         }
 
@@ -58,13 +56,23 @@ namespace QIES.Frontend.Session
                 var (record, message) = Logout.MakeTransaction(request);
                 ActiveLogin = LoginType.NONE;
                 TransactionQueue.Push(record);
-                PrintTransactionSummary();
                 changedTickets = 0;
                 totalCancelledTickets = 0;
                 cancelledTickets.Clear();
                 return (true, message, ActiveLogin);
             }
             return (false, "Already logged out.", ActiveLogin);
+        }
+
+        public (bool, string, LoginType) ProcessLogout(LogoutRequest request, string summaryFilePath)
+        {
+            (bool Success, string, LoginType) response = ProcessLogout(request);
+            if (response.Success)
+            {
+                this.SummaryFile = new FileInfo(summaryFilePath);
+                PrintTransactionSummary();
+            }
+            return response;
         }
 
         public (bool, string) ProcessSellTicket(SellTicketRequest request)

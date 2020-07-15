@@ -26,12 +26,14 @@ namespace QIES.Cli.Session
         private LoginType activeLogin;
         private Input input;
         private SessionController controller;
+        private string SummaryFilePath;
 
-        public SessionClient(SessionController controller)
+        public SessionClient(SessionController controller, string summaryFilePath)
         {
             this.activeLogin = LoginType.NONE;
             this.input = new Input(UserPrompts[activeLogin].Prompt);
             this.controller = controller;
+            this.SummaryFilePath = summaryFilePath;
         }
 
         public int Operate()
@@ -77,7 +79,7 @@ namespace QIES.Cli.Session
 
         public (bool, string) Logout()
         {
-            var (success, response, activeLogin) = controller.ProcessLogout(new LogoutRequest());
+            var (success, response, activeLogin) = controller.ProcessLogout(new LogoutRequest(), SummaryFilePath);
             this.activeLogin = activeLogin;
             this.input.Prompt = UserPrompts[activeLogin].Prompt;
             return (success, response);

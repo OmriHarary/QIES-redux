@@ -10,7 +10,7 @@ namespace QIES.Frontend.Tests
 
         public CreateServiceTests()
         {
-            controller = new SessionController("summary.file");
+            controller = new SessionController();
         }
 
         [Fact]

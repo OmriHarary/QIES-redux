@@ -11,7 +11,7 @@ namespace QIES.Frontend.Tests
 
         public SellTicketTests()
         {
-            controller = new SessionController("summary.file");
+            controller = new SessionController();
         }
 
         [Fact]

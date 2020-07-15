@@ -16,8 +16,8 @@ namespace QIES.Cli
 
             var validServicesFilePath = args[0];
             var summaryFilePath = args[1];
-            var sessionController = new SessionController(validServicesFilePath, summaryFilePath);
-            var sessionClient = new SessionClient(sessionController);
+            var sessionController = new SessionController(validServicesFilePath);
+            var sessionClient = new SessionClient(sessionController, summaryFilePath);
 
             return sessionClient.Operate();;
         }

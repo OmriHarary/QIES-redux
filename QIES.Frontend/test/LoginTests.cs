@@ -9,7 +9,7 @@ namespace QIES.Frontend.Tests
 
         public LoginTests()
         {
-            controller = new SessionController("summary.file");
+            controller = new SessionController();
         }
 
         [Fact]

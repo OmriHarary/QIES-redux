@@ -7,9 +7,9 @@ namespace QIES.Frontend.Transaction.Tests
         [Fact]
         public void MakeTransaction_ValidRequest_CreatesCorrectTransactionRecord()
         {
-            var numberTickets = 2;
+            var validNumberTickets = 2;
             var validServiceNum = "11111";
-            var request = new SellTicketRequest(validServiceNum, numberTickets);
+            var request = new SellTicketRequest(validServiceNum, validNumberTickets);
 
             var (record, _) = SellTicket.MakeTransaction(request);
 
@@ -20,9 +20,9 @@ namespace QIES.Frontend.Transaction.Tests
         [Fact]
         public void MakeTransaction_InvalidServiceNumber_CreatesNoTransactionRecord()
         {
-            var numberTickets = 1;
+            var validNumberTickets = 1;
             var invalidServiceNum = "01111";
-            var request = new SellTicketRequest(invalidServiceNum, numberTickets);
+            var request = new SellTicketRequest(invalidServiceNum, validNumberTickets);
 
             var (record, _) = SellTicket.MakeTransaction(request);
 

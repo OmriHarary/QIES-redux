@@ -15,13 +15,13 @@ namespace QIES.Frontend.Session.Tests
         [Fact]
         public void ChangeTicket_AsPlanner_ChangeSuccess()
         {
-            var numberTickets = 1;
+            var validNumberTickets = 1;
             var validSourceNum = "11111";
             var validDestNum = "11112";
             controller.ServicesList.AddService(validSourceNum);
             controller.ServicesList.AddService(validDestNum);
             controller.ActiveLogin = LoginType.PLANNER;
-            var request = new ChangeTicketRequest(validSourceNum, numberTickets, validDestNum);
+            var request = new ChangeTicketRequest(validSourceNum, validNumberTickets, validDestNum);
 
             var (success, _) = controller.ProcessChangeTicket(request);
 
@@ -31,13 +31,13 @@ namespace QIES.Frontend.Session.Tests
         [Fact]
         public void ChangeTicket_AsAgent_ChangeSuccess()
         {
-            var numberTickets = 1;
+            var validNumberTickets = 1;
             var validSourceNum = "11111";
             var validDestNum = "11112";
             controller.ServicesList.AddService(validSourceNum);
             controller.ServicesList.AddService(validDestNum);
             controller.ActiveLogin = LoginType.AGENT;
-            var request = new ChangeTicketRequest(validSourceNum, numberTickets, validDestNum);
+            var request = new ChangeTicketRequest(validSourceNum, validNumberTickets, validDestNum);
 
             var (success, _) = controller.ProcessChangeTicket(request);
 
@@ -47,13 +47,13 @@ namespace QIES.Frontend.Session.Tests
         [Fact]
         public void ChangeTicket_NotLoggedIn_ChangeFailure()
         {
-            var numberTickets = 1;
+            var validNumberTickets = 1;
             var validSourceNum = "11111";
             var validDestNum = "11112";
             controller.ServicesList.AddService(validSourceNum);
             controller.ServicesList.AddService(validDestNum);
             controller.ActiveLogin = LoginType.NONE;
-            var request = new ChangeTicketRequest(validSourceNum, numberTickets, validDestNum);
+            var request = new ChangeTicketRequest(validSourceNum, validNumberTickets, validDestNum);
 
             var (success, _) = controller.ProcessChangeTicket(request);
 
@@ -63,12 +63,12 @@ namespace QIES.Frontend.Session.Tests
         [Fact]
         public void ChangeTicket_SourceServiceDoesNotExist_ChangeFailure()
         {
-            var numberTickets = 1;
+            var validNumberTickets = 1;
             var validMissingSourceNum = "11111";
             var validDestNum = "11112";
             controller.ServicesList.AddService(validDestNum);
             controller.ActiveLogin = LoginType.AGENT;
-            var request = new ChangeTicketRequest(validMissingSourceNum, numberTickets, validDestNum);
+            var request = new ChangeTicketRequest(validMissingSourceNum, validNumberTickets, validDestNum);
 
             var (success, _) = controller.ProcessChangeTicket(request);
 
@@ -78,12 +78,12 @@ namespace QIES.Frontend.Session.Tests
         [Fact]
         public void ChangeTicket_DestinationServiceDoesNotExist_ChangeFailure()
         {
-            var numberTickets = 1;
+            var validNumberTickets = 1;
             var validSourceNum = "11111";
             var validMissingDestNum = "11112";
             controller.ServicesList.AddService(validSourceNum);
             controller.ActiveLogin = LoginType.AGENT;
-            var request = new ChangeTicketRequest(validSourceNum, numberTickets, validMissingDestNum);
+            var request = new ChangeTicketRequest(validSourceNum, validNumberTickets, validMissingDestNum);
 
             var (success, _) = controller.ProcessChangeTicket(request);
 
@@ -93,13 +93,13 @@ namespace QIES.Frontend.Session.Tests
         [Fact]
         public void ChangeTicket_AgentServiceLimitExceededSingleAsAgent_ChangeFailure()
         {
-            var numberTickets = 21;
+            var validNumberTickets = 21;
             var validSourceNum = "11111";
             var validDestNum = "11112";
             controller.ServicesList.AddService(validSourceNum);
             controller.ServicesList.AddService(validDestNum);
             controller.ActiveLogin = LoginType.AGENT;
-            var request = new ChangeTicketRequest(validSourceNum, numberTickets, validDestNum);
+            var request = new ChangeTicketRequest(validSourceNum, validNumberTickets, validDestNum);
 
             var (success, _) = controller.ProcessChangeTicket(request);
 
@@ -109,8 +109,8 @@ namespace QIES.Frontend.Session.Tests
         [Fact]
         public void ChangeTicket_AgentServiceLimitExceededMultipleAsAgent_ChangeFailure()
         {
-            var numberTickets1 = 10;
-            var numberTickets2 = 11;
+            var validNumberTickets1 = 10;
+            var validNumberTickets2 = 11;
             var validSourceNum1 = "11111";
             var validDestNum1 = "11112";
             var validSourceNum2 = "11113";
@@ -120,8 +120,8 @@ namespace QIES.Frontend.Session.Tests
             controller.ServicesList.AddService(validSourceNum2);
             controller.ServicesList.AddService(validDestNum2);
             controller.ActiveLogin = LoginType.AGENT;
-            var request1 = new ChangeTicketRequest(validSourceNum1, numberTickets1, validDestNum1);
-            var request2 = new ChangeTicketRequest(validSourceNum2, numberTickets2, validDestNum2);
+            var request1 = new ChangeTicketRequest(validSourceNum1, validNumberTickets1, validDestNum1);
+            var request2 = new ChangeTicketRequest(validSourceNum2, validNumberTickets2, validDestNum2);
 
             _ = controller.ProcessChangeTicket(request2);
             var (success, _) = controller.ProcessChangeTicket(request2);
@@ -132,13 +132,13 @@ namespace QIES.Frontend.Session.Tests
         [Fact]
         public void ChangeTicket_AgentServiceLimitExceededSingleAsPlanner_ChangeSuccess()
         {
-            var numberTickets = 21;
+            var validNumberTickets = 21;
             var validSourceNum = "11111";
             var validDestNum = "11112";
             controller.ServicesList.AddService(validSourceNum);
             controller.ServicesList.AddService(validDestNum);
             controller.ActiveLogin = LoginType.PLANNER;
-            var request = new ChangeTicketRequest(validSourceNum, numberTickets, validDestNum);
+            var request = new ChangeTicketRequest(validSourceNum, validNumberTickets, validDestNum);
 
             var (success, _) = controller.ProcessChangeTicket(request);
 
@@ -148,8 +148,8 @@ namespace QIES.Frontend.Session.Tests
         [Fact]
         public void ChangeTicket_AgentServiceLimitExceededMultipleAsPlanner_ChangeSuccess()
         {
-            var numberTickets1 = 10;
-            var numberTickets2 = 11;
+            var validNumberTickets1 = 10;
+            var validNumberTickets2 = 11;
             var validSourceNum1 = "11111";
             var validDestNum1 = "11112";
             var validSourceNum2 = "11113";
@@ -159,8 +159,8 @@ namespace QIES.Frontend.Session.Tests
             controller.ServicesList.AddService(validSourceNum2);
             controller.ServicesList.AddService(validDestNum2);
             controller.ActiveLogin = LoginType.PLANNER;
-            var request1 = new ChangeTicketRequest(validSourceNum1, numberTickets1, validDestNum1);
-            var request2 = new ChangeTicketRequest(validSourceNum2, numberTickets2, validDestNum2);
+            var request1 = new ChangeTicketRequest(validSourceNum1, validNumberTickets1, validDestNum1);
+            var request2 = new ChangeTicketRequest(validSourceNum2, validNumberTickets2, validDestNum2);
 
             _ = controller.ProcessChangeTicket(request2);
             var (success, _) = controller.ProcessChangeTicket(request2);
@@ -171,13 +171,13 @@ namespace QIES.Frontend.Session.Tests
         [Fact]
         public void ChangeTicket_BadRequest_ChangeFailure()
         {
-            var numberTickets = 0;
+            var validNumberTickets = 0;
             var validSourceNum = "11111";
             var validDestNum = "11112";
             controller.ServicesList.AddService(validSourceNum);
             controller.ServicesList.AddService(validDestNum);
             controller.ActiveLogin = LoginType.AGENT;
-            var request = new ChangeTicketRequest(validSourceNum, numberTickets, validDestNum);
+            var request = new ChangeTicketRequest(validSourceNum, validNumberTickets, validDestNum);
 
             var (success, _) = controller.ProcessChangeTicket(request);
 

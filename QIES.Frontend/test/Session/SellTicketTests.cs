@@ -15,11 +15,11 @@ namespace QIES.Frontend.Session.Tests
         [Fact]
         public void SellTicket_AsPlanner_SaleSuccess()
         {
-            var numberTickets = 1;
+            var validNumberTickets = 1;
             var validServiceNum = "11111";
             controller.ServicesList.AddService(validServiceNum);
             controller.ActiveLogin = LoginType.PLANNER;
-            var request = new SellTicketRequest(validServiceNum, numberTickets);
+            var request = new SellTicketRequest(validServiceNum, validNumberTickets);
 
             var (success, _) = controller.ProcessSellTicket(request);
 
@@ -29,11 +29,11 @@ namespace QIES.Frontend.Session.Tests
         [Fact]
         public void SellTicket_AsAgent_SaleSuccess()
         {
-            var numberTickets = 1;
+            var validNumberTickets = 1;
             var validServiceNum = "11111";
             controller.ServicesList.AddService(validServiceNum);
             controller.ActiveLogin = LoginType.AGENT;
-            var request = new SellTicketRequest(validServiceNum, numberTickets);
+            var request = new SellTicketRequest(validServiceNum, validNumberTickets);
 
             var (success, _) = controller.ProcessSellTicket(request);
 
@@ -43,11 +43,11 @@ namespace QIES.Frontend.Session.Tests
         [Fact]
         public void SellTicket_NotLoggedIn_SaleFailure()
         {
-            var numberTickets = 1;
+            var validNumberTickets = 1;
             var validServiceNum = "11111";
             controller.ServicesList.AddService(validServiceNum);
             controller.ActiveLogin = LoginType.NONE;
-            var request = new SellTicketRequest(validServiceNum, numberTickets);
+            var request = new SellTicketRequest(validServiceNum, validNumberTickets);
 
             var (success, _) = controller.ProcessSellTicket(request);
 
@@ -57,10 +57,10 @@ namespace QIES.Frontend.Session.Tests
         [Fact]
         public void SellTicket_ServiceDoesNotExist_SaleFailure()
         {
-            var numberTickets = 1;
+            var validNumberTickets = 1;
             var validMissingServiceNum = "11111";
             controller.ActiveLogin = LoginType.AGENT;
-            var request = new SellTicketRequest(validMissingServiceNum, numberTickets);
+            var request = new SellTicketRequest(validMissingServiceNum, validNumberTickets);
 
             var (success, _) = controller.ProcessSellTicket(request);
 
@@ -70,11 +70,11 @@ namespace QIES.Frontend.Session.Tests
         [Fact]
         public void SellTicket_BadRequest_SaleFailure()
         {
-            var numberTickets = 0;
+            var validNumberTickets = 0;
             var validServiceNum = "11111";
             controller.ServicesList.AddService(validServiceNum);
             controller.ActiveLogin = LoginType.AGENT;
-            var request = new SellTicketRequest(validServiceNum, numberTickets);
+            var request = new SellTicketRequest(validServiceNum, validNumberTickets);
 
             var (success, _) = controller.ProcessSellTicket(request);
 

@@ -15,11 +15,11 @@ namespace QIES.Frontend.Session.Tests
         [Fact]
         public void CancelTicket_AsPlanner_CancellationSuccess()
         {
-            var numberTickets = 1;
+            var validNumberTickets = 1;
             var validServiceNum = "11111";
             controller.ServicesList.AddService(validServiceNum);
             controller.ActiveLogin = LoginType.PLANNER;
-            var request = new CancelTicketRequest(validServiceNum, numberTickets);
+            var request = new CancelTicketRequest(validServiceNum, validNumberTickets);
 
             var (success, _) = controller.ProcessCancelTicket(request);
 
@@ -29,11 +29,11 @@ namespace QIES.Frontend.Session.Tests
         [Fact]
         public void CancelTicket_AsAgent_CancellationSuccess()
         {
-            var numberTickets = 1;
+            var validNumberTickets = 1;
             var validServiceNum = "11111";
             controller.ServicesList.AddService(validServiceNum);
             controller.ActiveLogin = LoginType.AGENT;
-            var request = new CancelTicketRequest(validServiceNum, numberTickets);
+            var request = new CancelTicketRequest(validServiceNum, validNumberTickets);
 
             var (success, _) = controller.ProcessCancelTicket(request);
 
@@ -43,11 +43,11 @@ namespace QIES.Frontend.Session.Tests
         [Fact]
         public void CancelTicket_NotLoggedIn_CancellationFailure()
         {
-            var numberTickets = 1;
+            var validNumberTickets = 1;
             var validServiceNum = "11111";
             controller.ServicesList.AddService(validServiceNum);
             controller.ActiveLogin = LoginType.NONE;
-            var request = new CancelTicketRequest(validServiceNum, numberTickets);
+            var request = new CancelTicketRequest(validServiceNum, validNumberTickets);
 
             var (success, _) = controller.ProcessCancelTicket(request);
 
@@ -57,10 +57,10 @@ namespace QIES.Frontend.Session.Tests
         [Fact]
         public void CancelTicket_ServiceDoesNotExist_CancellationFailure()
         {
-            var numberTickets = 1;
+            var validNumberTickets = 1;
             var validMissingServiceNum = "11111";
             controller.ActiveLogin = LoginType.AGENT;
-            var request = new CancelTicketRequest(validMissingServiceNum, numberTickets);
+            var request = new CancelTicketRequest(validMissingServiceNum, validNumberTickets);
 
             var (success, _) = controller.ProcessCancelTicket(request);
 
@@ -70,11 +70,11 @@ namespace QIES.Frontend.Session.Tests
         [Fact]
         public void CancelTicket_AgentServiceLimitExceededSingleAsAgent_CancellationFailure()
         {
-            var numberTickets = 11;
+            var validNumberTickets = 11;
             var validServiceNum = "11111";
             controller.ServicesList.AddService(validServiceNum);
             controller.ActiveLogin = LoginType.AGENT;
-            var request = new CancelTicketRequest(validServiceNum, numberTickets);
+            var request = new CancelTicketRequest(validServiceNum, validNumberTickets);
 
             var (success, _) = controller.ProcessCancelTicket(request);
 
@@ -84,13 +84,13 @@ namespace QIES.Frontend.Session.Tests
         [Fact]
         public void CancelTicket_AgentServiceLimitExceededMultipleAsAgent_CancellationFailure()
         {
-            var numberTickets1 = 8;
-            var numberTickets2 = 3;
+            var validNumberTickets1 = 8;
+            var validNumberTickets2 = 3;
             var validServiceNum = "11111";
             controller.ServicesList.AddService(validServiceNum);
             controller.ActiveLogin = LoginType.AGENT;
-            var request1 = new CancelTicketRequest(validServiceNum, numberTickets1);
-            var request2 = new CancelTicketRequest(validServiceNum, numberTickets2);
+            var request1 = new CancelTicketRequest(validServiceNum, validNumberTickets1);
+            var request2 = new CancelTicketRequest(validServiceNum, validNumberTickets2);
 
             _ = controller.ProcessCancelTicket(request1);
             var (success, _) = controller.ProcessCancelTicket(request2);
@@ -101,9 +101,9 @@ namespace QIES.Frontend.Session.Tests
         [Fact]
         public void CancelTicket_AgentSessionLimitExceededAsAgent_CancellationFailure()
         {
-            var numberTickets1 = 8;
-            var numberTickets2 = 8;
-            var numberTickets3 = 5;
+            var validNumberTickets1 = 8;
+            var validNumberTickets2 = 8;
+            var validNumberTickets3 = 5;
             var validServiceNum1 = "11111";
             var validServiceNum2 = "11112";
             var validServiceNum3 = "11113";
@@ -111,9 +111,9 @@ namespace QIES.Frontend.Session.Tests
             controller.ServicesList.AddService(validServiceNum2);
             controller.ServicesList.AddService(validServiceNum3);
             controller.ActiveLogin = LoginType.AGENT;
-            var request1 = new CancelTicketRequest(validServiceNum1, numberTickets1);
-            var request2 = new CancelTicketRequest(validServiceNum2, numberTickets2);
-            var request3 = new CancelTicketRequest(validServiceNum3, numberTickets3);
+            var request1 = new CancelTicketRequest(validServiceNum1, validNumberTickets1);
+            var request2 = new CancelTicketRequest(validServiceNum2, validNumberTickets2);
+            var request3 = new CancelTicketRequest(validServiceNum3, validNumberTickets3);
 
             _ = controller.ProcessCancelTicket(request1);
             _ = controller.ProcessCancelTicket(request2);
@@ -125,11 +125,11 @@ namespace QIES.Frontend.Session.Tests
         [Fact]
         public void CancelTicket_AgentServiceLimitExceededSingleAsPlanner_CancellationSuccess()
         {
-            var numberTickets = 11;
+            var validNumberTickets = 11;
             var validServiceNum = "11111";
             controller.ServicesList.AddService(validServiceNum);
             controller.ActiveLogin = LoginType.PLANNER;
-            var request = new CancelTicketRequest(validServiceNum, numberTickets);
+            var request = new CancelTicketRequest(validServiceNum, validNumberTickets);
 
             var (success, _) = controller.ProcessCancelTicket(request);
 
@@ -139,13 +139,13 @@ namespace QIES.Frontend.Session.Tests
         [Fact]
         public void CancelTicket_AgentServiceLimitExceededMultipleAsPlanner_CancellationSuccess()
         {
-            var numberTickets1 = 8;
-            var numberTickets2 = 3;
+            var validNumberTickets1 = 8;
+            var validNumberTickets2 = 3;
             var validServiceNum = "11111";
             controller.ServicesList.AddService(validServiceNum);
             controller.ActiveLogin = LoginType.PLANNER;
-            var request1 = new CancelTicketRequest(validServiceNum, numberTickets1);
-            var request2 = new CancelTicketRequest(validServiceNum, numberTickets2);
+            var request1 = new CancelTicketRequest(validServiceNum, validNumberTickets1);
+            var request2 = new CancelTicketRequest(validServiceNum, validNumberTickets2);
 
             _ = controller.ProcessCancelTicket(request1);
             var (success, _) = controller.ProcessCancelTicket(request2);
@@ -156,9 +156,9 @@ namespace QIES.Frontend.Session.Tests
         [Fact]
         public void CancelTicket_AgentSessionLimitExceededAsPlanner_CancellationSuccess()
         {
-            var numberTickets1 = 8;
-            var numberTickets2 = 8;
-            var numberTickets3 = 5;
+            var validNumberTickets1 = 8;
+            var validNumberTickets2 = 8;
+            var validNumberTickets3 = 5;
             var validServiceNum1 = "11111";
             var validServiceNum2 = "11112";
             var validServiceNum3 = "11113";
@@ -166,9 +166,9 @@ namespace QIES.Frontend.Session.Tests
             controller.ServicesList.AddService(validServiceNum2);
             controller.ServicesList.AddService(validServiceNum3);
             controller.ActiveLogin = LoginType.PLANNER;
-            var request1 = new CancelTicketRequest(validServiceNum1, numberTickets1);
-            var request2 = new CancelTicketRequest(validServiceNum2, numberTickets2);
-            var request3 = new CancelTicketRequest(validServiceNum3, numberTickets3);
+            var request1 = new CancelTicketRequest(validServiceNum1, validNumberTickets1);
+            var request2 = new CancelTicketRequest(validServiceNum2, validNumberTickets2);
+            var request3 = new CancelTicketRequest(validServiceNum3, validNumberTickets3);
 
             _ = controller.ProcessCancelTicket(request1);
             _ = controller.ProcessCancelTicket(request2);
@@ -180,11 +180,11 @@ namespace QIES.Frontend.Session.Tests
         [Fact]
         public void CancelTicket_BadRequest_CancellationFailure()
         {
-            var numberTickets = 0;
+            var validNumberTickets = 0;
             var validServiceNum = "11111";
             controller.ServicesList.AddService(validServiceNum);
             controller.ActiveLogin = LoginType.AGENT;
-            var request = new CancelTicketRequest(validServiceNum, numberTickets);
+            var request = new CancelTicketRequest(validServiceNum, validNumberTickets);
 
             var (success, _) = controller.ProcessCancelTicket(request);
 

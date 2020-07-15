@@ -78,8 +78,8 @@ namespace QIES.Frontend.Session.Tests
 
             var (deleteSuccess, _) = controller.ProcessDeleteService(deleteRequest);
 
-            var numberTickets = 1;
-            var sellRequest = new SellTicketRequest(validServiceNum, numberTickets);
+            var validNumberTickets = 1;
+            var sellRequest = new SellTicketRequest(validServiceNum, validNumberTickets);
 
             var (sellSuccess, _) = controller.ProcessSellTicket(sellRequest);
 

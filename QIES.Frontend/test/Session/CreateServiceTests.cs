@@ -80,8 +80,8 @@ namespace QIES.Frontend.Session.Tests
 
             var (createSuccess, _) = controller.ProcessCreateService(createRequest);
 
-            var numberTickets = 1;
-            var sellRequest = new SellTicketRequest(newServiceNum, numberTickets);
+            var validNumberTickets = 1;
+            var sellRequest = new SellTicketRequest(newServiceNum, validNumberTickets);
 
             var (sellSuccess, _) = controller.ProcessSellTicket(sellRequest);
 

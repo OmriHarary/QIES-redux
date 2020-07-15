@@ -1,4 +1,0 @@
-createservice
-login
-agent
-logout

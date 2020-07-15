@@ -1,0 +1,7 @@
+login
+planner
+deleteservice
+11111
+Testcreateservice
+logout
+exit

@@ -1,6 +1,4 @@
-using System;
 using QIES.Common.Record;
-using QIES.Frontend.Session;
 
 namespace QIES.Frontend.Transaction
 {
@@ -16,7 +14,7 @@ namespace QIES.Frontend.Transaction
     {
         private const TransactionCode Code = TransactionCode.DEL;
 
-        public static (TransactionRecord, string) MakeTransaction(DeleteServiceRequest request)
+        public static (TransactionRecord?, string) MakeTransaction(DeleteServiceRequest request)
         {
             ServiceNumber serviceNumber;
             try

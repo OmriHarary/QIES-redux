@@ -1,6 +1,4 @@
-using System;
 using QIES.Common.Record;
-using QIES.Frontend.Session;
 
 namespace QIES.Frontend.Transaction
 {
@@ -17,7 +15,7 @@ namespace QIES.Frontend.Transaction
     {
         private const TransactionCode Code = TransactionCode.CHG;
 
-        public static (TransactionRecord, string) MakeTransaction(ChangeTicketRequest request)
+        public static (TransactionRecord?, string) MakeTransaction(ChangeTicketRequest request)
         {
             ServiceNumber sourceNumber;
             try

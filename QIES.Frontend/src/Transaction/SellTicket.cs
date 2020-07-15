@@ -14,7 +14,7 @@ namespace QIES.Frontend.Transaction
     {
         private const TransactionCode Code = TransactionCode.SEL;
 
-        public static (TransactionRecord, string) MakeTransaction(SellTicketRequest request)
+        public static (TransactionRecord?, string) MakeTransaction(SellTicketRequest request)
         {
             ServiceNumber serviceNumber;
             try

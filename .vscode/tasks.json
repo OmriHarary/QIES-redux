@@ -2,37 +2,37 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "build frontend",
+            "label": "build CLI",
             "command": "dotnet",
             "type": "process",
             "args": [
                 "build",
-                "${workspaceFolder}/QIES.Frontend/src/QIES.Frontend.csproj",
+                "${workspaceFolder}/QIES.Cli/src/QIES.Cli.csproj",
                 "/property:GenerateFullPaths=true",
                 "/consoleloggerparameters:NoSummary"
             ],
             "problemMatcher": "$msCompile"
         },
         {
-            "label": "publish frontend",
+            "label": "publish CLI",
             "command": "dotnet",
             "type": "process",
             "args": [
                 "publish",
-                "${workspaceFolder}/QIES.Frontend/src/QIES.Frontend.csproj",
+                "${workspaceFolder}/QIES.Cli/src/QIES.Cli.csproj",
                 "/property:GenerateFullPaths=true",
                 "/consoleloggerparameters:NoSummary"
             ],
             "problemMatcher": "$msCompile"
         },
         {
-            "label": "watch frontend",
+            "label": "watch CLI",
             "command": "dotnet",
             "type": "process",
             "args": [
                 "watch",
                 "run",
-                "${workspaceFolder}/QIES.Frontend/src/QIES.Frontend.csproj",
+                "${workspaceFolder}/QIES.Cli/src/QIES.Cli.csproj",
                 "/property:GenerateFullPaths=true",
                 "/consoleloggerparameters:NoSummary"
             ],

@@ -1,0 +1,4 @@
+login
+planner
+logout
+exit

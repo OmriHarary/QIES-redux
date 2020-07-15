@@ -1,6 +1,4 @@
-using System;
 using QIES.Common.Record;
-using QIES.Frontend.Session;
 
 namespace QIES.Frontend.Transaction
 {
@@ -16,7 +14,7 @@ namespace QIES.Frontend.Transaction
     {
         private const TransactionCode Code = TransactionCode.CAN;
 
-        public static (TransactionRecord, string) MakeTransaction(CancelTicketRequest request)
+        public static (TransactionRecord?, string) MakeTransaction(CancelTicketRequest request)
         {
             ServiceNumber serviceNumber;
             try

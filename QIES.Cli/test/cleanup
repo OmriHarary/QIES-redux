@@ -1,0 +1,11 @@
+#!/bin/bash
+
+for i in $( ls ./QIES.Cli/test/cases )
+do
+    for j in $( ls "./QIES.Cli/test/cases/$i" )
+    do
+        rm -f "./QIES.Cli/test/cases/$i/$j/output.txt"
+        rm -f "./QIES.Cli/test/cases/$i/$j/log.log"
+        rm -f "./QIES.Cli/test/cases/$i/$j/err.log"
+    done
+done

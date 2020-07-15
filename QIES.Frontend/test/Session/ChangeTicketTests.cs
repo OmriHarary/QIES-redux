@@ -168,5 +168,21 @@ namespace QIES.Frontend.Session.Tests
 
             Assert.True(success);
         }
+
+        [Fact]
+        public void ChangeTicket_BadRequest_ChangeFailure()
+        {
+            var numberTickets = 0;
+            var validSourceNum = "11111";
+            var validDestNum = "11112";
+            controller.ServicesList.AddService(validSourceNum);
+            controller.ServicesList.AddService(validDestNum);
+            controller.ActiveLogin = LoginType.AGENT;
+            var request = new ChangeTicketRequest(validSourceNum, numberTickets, validDestNum);
+
+            var (success, _) = controller.ProcessChangeTicket(request);
+
+            Assert.False(success);
+        }
     }
 }

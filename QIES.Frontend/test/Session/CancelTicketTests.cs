@@ -177,5 +177,19 @@ namespace QIES.Frontend.Session.Tests
 
             Assert.True(success);
         }
+
+        [Fact]
+        public void CancelTicket_BadRequest_CancellationFailure()
+        {
+            var numberTickets = 0;
+            var validServiceNum = "11111";
+            controller.ServicesList.AddService(validServiceNum);
+            controller.ActiveLogin = LoginType.AGENT;
+            var request = new CancelTicketRequest(validServiceNum, numberTickets);
+
+            var (success, _) = controller.ProcessCancelTicket(request);
+
+            Assert.False(success);
+        }
     }
 }

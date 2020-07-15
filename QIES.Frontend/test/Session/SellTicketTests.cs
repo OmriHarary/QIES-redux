@@ -67,5 +67,19 @@ namespace QIES.Frontend.Session.Tests
 
             Assert.False(success);
         }
+
+        [Fact]
+        public void SellTicket_BadRequest_SaleFailure()
+        {
+            var numberTickets = 0;
+            var validServiceNum = "11111";
+            controller.ServicesList.AddService(validServiceNum);
+            controller.ActiveLogin = LoginType.AGENT;
+            var request = new SellTicketRequest(validServiceNum, numberTickets);
+
+            var (success, _) = controller.ProcessSellTicket(request);
+
+            Assert.False(success);
+        }
     }
 }

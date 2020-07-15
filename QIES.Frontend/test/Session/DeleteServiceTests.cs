@@ -87,5 +87,19 @@ namespace QIES.Frontend.Session.Tests
             Assert.True(deleteSuccess);
             Assert.False(sellSuccess);
         }
+
+        [Fact]
+        public void DeleteService_BadRequest_DeletionFailure()
+        {
+            var validServiceNum = "11111";
+            var validServiceName = "SN";
+            controller.ServicesList.AddService(validServiceNum);
+            controller.ActiveLogin = LoginType.AGENT;
+            var request = new DeleteServiceRequest(validServiceNum, validServiceName);
+
+            var (success, _) = controller.ProcessDeleteService(request);
+
+            Assert.False(success);
+        }
     }
 }

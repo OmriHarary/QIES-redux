@@ -89,5 +89,19 @@ namespace QIES.Frontend.Session.Tests
             Assert.True(createSuccess);
             Assert.False(sellSuccess);
         }
+
+        [Fact]
+        public void CreateService_BadRequest_CreationFailure()
+        {
+            var newServiceNum = "11111";
+            var newServiceName = "New Service";
+            var newServiceDate = "02201010";
+            controller.ActiveLogin = LoginType.AGENT;
+            var request = new CreateServiceRequest(newServiceNum, newServiceDate, newServiceName);
+
+            var (success, _) = controller.ProcessCreateService(request);
+
+            Assert.False(success);
+        }
     }
 }

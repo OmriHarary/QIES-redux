@@ -56,12 +56,12 @@ namespace QIES.Frontend.Session.Tests
         }
 
         [Fact]
-        public void SellTicket_InvalidService_SaleFailure()
+        public void SellTicket_ServiceDoesNotExist_SaleFailure()
         {
             var numberTickets = 1;
-            var inValidServiceNum = "11111";
+            var validMissingServiceNum = "11111";
             controller.ActiveLogin = LoginType.AGENT;
-            var request = new SellTicketRequest(inValidServiceNum, numberTickets);
+            var request = new SellTicketRequest(validMissingServiceNum, numberTickets);
 
             var (success, _) = controller.ProcessSellTicket(request);
 

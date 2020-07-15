@@ -56,12 +56,12 @@ namespace QIES.Frontend.Session.Tests
         }
 
         [Fact]
-        public void CancelTicket_InvalidService_CancellationFailure()
+        public void CancelTicket_ServiceDoesNotExist_CancellationFailure()
         {
             var numberTickets = 1;
-            var inValidServiceNum = "11111";
+            var validMissingServiceNum = "11111";
             controller.ActiveLogin = LoginType.AGENT;
-            var request = new CancelTicketRequest(inValidServiceNum, numberTickets);
+            var request = new CancelTicketRequest(validMissingServiceNum, numberTickets);
 
             var (success, _) = controller.ProcessCancelTicket(request);
 

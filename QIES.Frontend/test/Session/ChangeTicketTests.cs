@@ -62,14 +62,14 @@ namespace QIES.Frontend.Session.Tests
         }
 
         [Fact]
-        public void ChangeTicket_InvalidSourceService_ChangeFailure()
+        public void ChangeTicket_SourceServiceDoesNotExist_ChangeFailure()
         {
             var numberTickets = 1;
-            var invalidSourceNum = "11111";
+            var validMissingSourceNum = "11111";
             var validDestNum = "11112";
             controller.ServicesList.AddService(validDestNum);
             controller.ActiveLogin = LoginType.AGENT;
-            var request = new ChangeTicketRequest(invalidSourceNum, numberTickets, validDestNum);
+            var request = new ChangeTicketRequest(validMissingSourceNum, numberTickets, validDestNum);
 
             var (success, _) = controller.ProcessChangeTicket(request);
 
@@ -77,14 +77,14 @@ namespace QIES.Frontend.Session.Tests
         }
 
         [Fact]
-        public void ChangeTicket_InvalidDestinationService_ChangeFailure()
+        public void ChangeTicket_DestinationServiceDoesNotExist_ChangeFailure()
         {
             var numberTickets = 1;
             var validSourceNum = "11111";
-            var invalidDestNum = "11112";
+            var validMissingDestNum = "11112";
             controller.ServicesList.AddService(validSourceNum);
             controller.ActiveLogin = LoginType.AGENT;
-            var request = new ChangeTicketRequest(validSourceNum, numberTickets, invalidDestNum);
+            var request = new ChangeTicketRequest(validSourceNum, numberTickets, validMissingDestNum);
 
             var (success, _) = controller.ProcessChangeTicket(request);
 

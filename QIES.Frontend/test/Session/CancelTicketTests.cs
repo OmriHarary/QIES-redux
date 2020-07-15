@@ -2,7 +2,7 @@ using QIES.Frontend.Session;
 using QIES.Frontend.Transaction;
 using Xunit;
 
-namespace QIES.Frontend.Tests
+namespace QIES.Frontend.Session.Tests
 {
     public class CancelTicketTests
     {

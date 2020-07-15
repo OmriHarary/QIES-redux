@@ -1,7 +1,7 @@
 using QIES.Frontend.Session;
 using Xunit;
 
-namespace QIES.Frontend.Tests
+namespace QIES.Frontend.Session.Tests
 {
     public class LoginTests
     {

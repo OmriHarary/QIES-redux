@@ -2,7 +2,7 @@ using QIES.Frontend.Session;
 using QIES.Frontend.Transaction;
 using Xunit;
 
-namespace QIES.Frontend.Tests
+namespace QIES.Frontend.Session.Tests
 {
     public class CreateServiceTests
     {
@@ -22,7 +22,8 @@ namespace QIES.Frontend.Tests
             controller.ActiveLogin = LoginType.PLANNER;
             var request = new CreateServiceRequest(newServiceNum, newServiceDate, newServiceName);
 
-            var (success, msg) = controller.ProcessCreateService(request);
+            var (success, _) = controller.ProcessCreateService(request);
+
             Assert.True(success);
         }
 

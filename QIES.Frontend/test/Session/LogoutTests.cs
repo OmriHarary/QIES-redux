@@ -1,4 +1,3 @@
-using QIES.Frontend.Session;
 using QIES.Frontend.Transaction;
 using Xunit;
 

@@ -1,4 +1,3 @@
-using QIES.Frontend.Session;
 using Xunit;
 
 namespace QIES.Frontend.Session.Tests

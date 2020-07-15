@@ -12,7 +12,7 @@ Queen's University School of Computing Software Quality Assurance (CISC 327) Fal
 - [x] Reimplement original Java design in C#
   - [x] Reimplement "frontend"
   - [x] Reimplement "backoffice"
-- [x] Enhance original test suite with actual unit tests - More to come once code is refactored to be more testable
+- [ ] Enhance original test suite with actual unit tests
 - [ ] Refactoring original design
   - [x] Decoupling input and transaction logic
 - [ ] ...

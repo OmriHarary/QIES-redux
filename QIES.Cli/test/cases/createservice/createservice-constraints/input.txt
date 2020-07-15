@@ -29,3 +29,4 @@ createservice
 20181001
 incorrectcreateservice Name Is Way To Long To Work
 logout
+exit

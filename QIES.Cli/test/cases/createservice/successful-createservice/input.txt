@@ -5,3 +5,4 @@ createservice
 20181001
 ANewService
 logout
+exit

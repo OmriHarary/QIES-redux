@@ -7,3 +7,4 @@ cancelticket
 11111
 1
 logout
+exit

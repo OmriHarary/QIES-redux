@@ -2,3 +2,4 @@ createservice
 login
 agent
 logout
+exit

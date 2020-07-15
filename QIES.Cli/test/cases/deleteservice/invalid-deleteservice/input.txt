@@ -4,3 +4,4 @@ deleteservice
 11112
 Testcreateservice
 logout
+exit

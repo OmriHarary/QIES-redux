@@ -3,3 +3,4 @@ planner
 sellticket
 11112
 logout
+exit

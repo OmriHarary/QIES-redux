@@ -3,3 +3,4 @@ agent
 login
 planner
 logout
+exit

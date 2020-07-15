@@ -8,3 +8,4 @@ changeticket
 12345
 3
 logout
+exit

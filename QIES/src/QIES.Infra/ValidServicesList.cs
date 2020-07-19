@@ -1,10 +1,11 @@
 using System.Collections.Generic;
 using System.IO;
 using QIES.Common.Record;
+using QIES.Core;
 
-namespace QIES.Frontend.Session
+namespace QIES.Infra
 {
-    public class ValidServicesList
+    public class ValidServicesList : IServicesList
     {
         private HashSet<string> validServices;
 

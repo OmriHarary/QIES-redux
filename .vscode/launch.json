@@ -5,6 +5,26 @@
    "version": "0.2.0",
    "configurations": [
         {
+            "name": ".NET Core Launch (web)",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build Web",
+            "program": "${workspaceFolder}/QIES/src/QIES.Web/bin/Debug/net5.0/QIES.Web.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}",
+            "stopAtEntry": false,
+            "env": {
+                "ASPNETCORE_ENVIRONMENT": "Development",
+                "COMPlus_ZapDisable": "1",
+                "COMPlus_ReadyToRun": "0"
+            },
+            "justMyCode": false,
+            "symbolOptions": {
+                "searchMicrosoftSymbolServer": true
+            },
+            "suppressJITOptimizations": true
+        },
+        {
             "name": ".NET Core Launch Cli (console)",
             "type": "coreclr",
             "request": "launch",

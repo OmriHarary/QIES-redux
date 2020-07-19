@@ -7,8 +7,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
-  <ItemGroup>
+  <!-- <ItemGroup>
     <ProjectReference Include="..\..\QIES.Frontend\src\QIES.Frontend.csproj" />
-  </ItemGroup>
+  </ItemGroup> -->
 
 </Project>

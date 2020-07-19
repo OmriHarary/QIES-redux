@@ -1,6 +1,6 @@
 using QIES.Common.Record;
 
-namespace QIES.Backoffice.Parser
+namespace QIES.Common
 {
     public class Service
     {

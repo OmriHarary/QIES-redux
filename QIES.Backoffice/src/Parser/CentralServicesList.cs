@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using QIES.Backoffice.Parser;
+using QIES.Common;
 using QIES.Common.Record;
 
 namespace QIES.Backoffice

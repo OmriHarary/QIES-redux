@@ -4,6 +4,6 @@ namespace QIES.Core.Services
 {
     public interface ITransaction<TRequest, TResponse>
     {
-        public Task<TResponse> MakeTransaction(TRequest request);
+        public Task<TResponse> MakeTransaction(string serviceNumber, TRequest request);
     }
 }

@@ -3,8 +3,6 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using QIES.Api.Models;
-using QIES.Common;
 using QIES.Core;
 using QIES.Core.Services;
 using QIES.Infra;
@@ -25,7 +23,7 @@ namespace QIES.Web
         {
             services.AddSingleton<IServicesList>(sp => new ValidServicesList(new System.IO.FileInfo("QIES.Cli/test/resources/valid-services-list.txt")));
             services.AddSingleton<ITransactionQueue>(sp => new Infra.TransactionQueue());
-            services.AddTransient<ITransaction<CreateServiceRequest, Service>, CreateServiceTransaction>();
+            services.AddTransactions();
             services.AddControllers();
         }
 

@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+using System.Collections.Concurrent;
 using System.IO;
 using QIES.Common.Record;
 using QIES.Core;
@@ -7,17 +7,17 @@ namespace QIES.Infra
 {
     public class ValidServicesList : IServicesList
     {
-        private HashSet<string> validServices;
+        private ConcurrentDictionary<string, byte> validServices;
 
         public ValidServicesList(FileInfo validServicesFile)
         {
-            validServices = new HashSet<string>();
+            validServices = new ConcurrentDictionary<string, byte>();
             ReadServices(validServicesFile);
         }
 
         public ValidServicesList()
         {
-            validServices = new HashSet<string>();
+            validServices = new ConcurrentDictionary<string, byte>();
         }
 
         private void ReadServices(FileInfo validServicesFile)
@@ -30,7 +30,7 @@ namespace QIES.Infra
                 {
                     if (line != "00000")
                     {
-                        validServices.Add((new ServiceNumber(line)).Number);
+                        validServices.TryAdd((new ServiceNumber(line)).Number, 0);
                     }
                 }
             }
@@ -39,22 +39,21 @@ namespace QIES.Infra
                 // TODO: Actual error handling (the original didn't handle this either)
                 System.Console.Error.WriteLine(e.StackTrace);
             }
-
         }
 
         public bool IsInList(string service)
         {
-            return validServices.Contains(service);
+            return validServices.Keys.Contains(service);
         }
 
         public void DeleteService(string service)
         {
-            validServices.Remove(service);
+            validServices.TryRemove(service, out _);
         }
 
         public void AddService(string service)
         {
-            validServices.Add(service);
+            validServices.TryAdd(service, 0);
         }
     }
 }

@@ -5,9 +5,6 @@ namespace QIES.Api.Models.Validation
 {
     public class ServiceDateAttribute : ValidationAttribute
     {
-        public override bool IsValid(object value)
-        {
-            return ServiceDate.IsValid((string)value);
-        }
+        public override bool IsValid(object value) => ServiceDate.IsValid((string)value);
     }
 }

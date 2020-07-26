@@ -15,7 +15,7 @@ namespace QIES.Core.Services
             this.transactionQueue = transactionQueue;
         }
 
-        public Task<Service> MakeTransaction(CreateServiceRequest request)
+        public async Task<Service> MakeTransaction(string serviceNumber, CreateServiceRequest request)
         {
             var service = new Service();
             service.ServiceNumber = new ServiceNumber(request.ServiceNumber);
@@ -29,7 +29,7 @@ namespace QIES.Core.Services
 
             transactionQueue.Push(record);
 
-            return Task.FromResult<Service>(service);
+            return service;
         }
     }
 }

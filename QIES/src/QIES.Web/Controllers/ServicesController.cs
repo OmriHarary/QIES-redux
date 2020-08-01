@@ -14,7 +14,7 @@ namespace QIES.Web.Controllers
     [ApiController]
     [Consumes(Application.Json)]
     [Produces(Application.Json)]
-    [Route("api/[controller]")]
+    [Route("api/v1/[controller]")]
     public class ServicesController : ControllerBase
     {
         private IServicesList servicesList;
@@ -46,7 +46,9 @@ namespace QIES.Web.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Service>> GetService([ServiceNumber] string id)
         {
-            if (servicesList.IsInList(id))
+            var serviceNumber = new ServiceNumber(id);
+
+            if (servicesList.IsInList(serviceNumber))
             {
                 return Ok();
             }
@@ -57,7 +59,9 @@ namespace QIES.Web.Controllers
         [HttpPost]
         public async Task<ActionResult<Service>> CreateService(CreateServiceRequest createServiceRequest)
         {
-            if (servicesList.IsInList(createServiceRequest.ServiceNumber))
+            var serviceNumber = new ServiceNumber(createServiceRequest.ServiceNumber);
+
+            if (servicesList.IsInList(serviceNumber))
             {
                 return Conflict();
             }
@@ -69,28 +73,36 @@ namespace QIES.Web.Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult<TransactionRecord>> DeleteService([ServiceNumber] string id, DeleteServiceRequest request)
         {
-            if (!servicesList.IsInList(id))
+            var serviceNumber = new ServiceNumber(id);
+
+            if (!servicesList.IsInList(serviceNumber))
             {
                 return NotFound();
             }
 
             var record = await deleteServiceTransaction.MakeTransaction(id, request);
-            servicesList.DeleteService(id);
+            servicesList.DeleteService(serviceNumber);
 
             return Ok(record);
         }
 
         [HttpPost("{id}/tickets")]
-        public async Task<IActionResult> SellOrChangeTickets([ServiceNumber] string id, SellOrChangeTicketsRequest request)
+        public async Task<ActionResult<TransactionRecord>> SellOrChangeTickets([ServiceNumber] string id, SellOrChangeTicketsRequest request)
         {
-            if (!servicesList.IsInList(id))
+            var serviceNumber = new ServiceNumber(id);
+
+            if (!servicesList.IsInList(serviceNumber))
             {
                 return NotFound();
             }
 
-            if (request.SourceServiceNumber is not null && !servicesList.IsInList(request.SourceServiceNumber))
+            if (request.SourceServiceNumber is not null)
             {
-                return NotFound();
+                var sourceServiceNumber = new ServiceNumber(request.SourceServiceNumber);
+                if (!servicesList.IsInList(sourceServiceNumber))
+                {
+                    return NotFound();
+                }
             }
 
             var record = await sellOrChangeTicketsTransaction.MakeTransaction(id, request);
@@ -99,9 +111,11 @@ namespace QIES.Web.Controllers
         }
 
         [HttpDelete("{id}/tickets")]
-        public async Task<IActionResult> CancelTickets([ServiceNumber] string id, CancelTicketsRequest request)
+        public async Task<ActionResult<TransactionRecord>> CancelTickets([ServiceNumber] string id, CancelTicketsRequest request)
         {
-            if (!servicesList.IsInList(id))
+            var serviceNumber = new ServiceNumber(id);
+
+            if (!servicesList.IsInList(serviceNumber))
             {
                 return NotFound();
             }

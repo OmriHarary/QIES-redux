@@ -7,17 +7,17 @@ namespace QIES.Infra
 {
     public class ValidServicesList : IServicesList
     {
-        private ConcurrentDictionary<string, byte> validServices;
+        private readonly ConcurrentDictionary<ServiceNumber, byte> validServices;
 
         public ValidServicesList(FileInfo validServicesFile)
         {
-            validServices = new ConcurrentDictionary<string, byte>();
+            validServices = new ConcurrentDictionary<ServiceNumber, byte>();
             ReadServices(validServicesFile);
         }
 
         public ValidServicesList()
         {
-            validServices = new ConcurrentDictionary<string, byte>();
+            validServices = new ConcurrentDictionary<ServiceNumber, byte>();
         }
 
         private void ReadServices(FileInfo validServicesFile)
@@ -30,7 +30,7 @@ namespace QIES.Infra
                 {
                     if (line != "00000")
                     {
-                        validServices.TryAdd((new ServiceNumber(line)).Number, 0);
+                        validServices.TryAdd(new ServiceNumber(line), 0);
                     }
                 }
             }
@@ -41,17 +41,17 @@ namespace QIES.Infra
             }
         }
 
-        public bool IsInList(string service)
+        public bool IsInList(ServiceNumber service)
         {
             return validServices.Keys.Contains(service);
         }
 
-        public void DeleteService(string service)
+        public void DeleteService(ServiceNumber service)
         {
             validServices.TryRemove(service, out _);
         }
 
-        public void AddService(string service)
+        public void AddService(ServiceNumber service)
         {
             validServices.TryAdd(service, 0);
         }

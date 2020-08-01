@@ -1,11 +1,13 @@
+using QIES.Common.Record;
+
 namespace QIES.Core
 {
     public interface IServicesList
     {
-        public void AddService(string service);
+        public void AddService(ServiceNumber service);
 
-        public void DeleteService(string service);
+        public void DeleteService(ServiceNumber service);
 
-        public bool IsInList(string service);
+        public bool IsInList(ServiceNumber service);
     }
 }

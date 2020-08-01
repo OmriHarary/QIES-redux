@@ -1,8 +1,9 @@
+using System;
 using QIES.Common.Record;
 
 namespace QIES.Common
 {
-    public class Service
+    public class Service : IEquatable<Service>
     {
         public ServiceNumber ServiceNumber { get; set; }
         public ServiceName ServiceName { get; set; }
@@ -35,6 +36,17 @@ namespace QIES.Common
             TicketsSold = new NumberTickets(TicketsSold.Number - toRemove);
         }
 
+        public bool Equals(Service? other) =>
+            other is not null &&
+            ServiceNumber.Equals(other.ServiceNumber) &&
+            ServiceName.Equals(other.ServiceName) &&
+            TicketsSold.Equals(other.TicketsSold) &&
+            ServiceCapacity.Equals(other.ServiceCapacity);
+        public override bool Equals(object? obj) => obj is Service otherService && Equals(otherService);
         public override string ToString() => $"{ServiceNumber} {ServiceCapacity} {TicketsSold} {ServiceName}";
+        public override int GetHashCode() => HashCode.Combine(ServiceNumber, ServiceName, TicketsSold, ServiceCapacity);
+
+        public static bool operator ==(Service lhs, Service rhs) => lhs?.Equals(rhs) ?? rhs is null;
+        public static bool operator !=(Service lhs, Service rhs) => !(lhs == rhs);
     }
 }

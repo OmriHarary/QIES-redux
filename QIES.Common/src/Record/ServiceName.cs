@@ -1,6 +1,8 @@
+using System;
+
 namespace QIES.Common.Record
 {
-    public class ServiceName
+    public class ServiceName : IEquatable<ServiceName>
     {
         private const string Default = "****";
         public string Name { get; private set; }
@@ -19,8 +21,9 @@ namespace QIES.Common.Record
             this.Name = Default;
         }
 
+        public bool Equals(ServiceName? other) => Name == other?.Name;
+        public override bool Equals(object? obj) => obj is ServiceName otherName && Equals(otherName);
         public override string ToString() => Name;
-        public override bool Equals(object? obj) => obj is ServiceName otherName && this.Name == otherName.Name;
         public override int GetHashCode() => System.HashCode.Combine(Name);
 
         public static bool operator ==(ServiceName lhs, ServiceName rhs) => lhs?.Equals(rhs) ?? rhs is null;

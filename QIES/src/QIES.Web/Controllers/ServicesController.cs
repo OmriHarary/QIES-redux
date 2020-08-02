@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -66,98 +67,96 @@ namespace QIES.Web.Controllers
         [HttpPost]
         public async Task<ActionResult<Service>> CreateService(CreateServiceRequest request)
         {
-            if (!userManager.IsLoggedIn(request.UserId))
+            if (request.UserId is Guid userId && userManager.IsLoggedIn(userId))
             {
-                return Unauthorized();
-            }
-            if (userManager.UserType(request.UserId) != LoginType.Planner)
-            {
-                return Forbid();
-            }
+                if (userManager.UserType(userId) != LoginType.Planner)
+                {
+                    return Forbid();
+                }
 
-            var serviceNumber = new ServiceNumber(request.ServiceNumber);
+                var serviceNumber = new ServiceNumber(request.ServiceNumber);
 
-            if (servicesList.IsInList(serviceNumber))
-            {
-                return Conflict();
+                if (servicesList.IsInList(serviceNumber))
+                {
+                    return Conflict();
+                }
+
+                var service = await createServiceTransaction.MakeTransaction(request.ServiceNumber, request);
+                return CreatedAtAction(nameof(GetService), new { id = service.ServiceNumber }, service);
             }
-
-            var service = await createServiceTransaction.MakeTransaction(request.ServiceNumber, request);
-            return CreatedAtAction(nameof(GetService), new { id = service.ServiceNumber }, service);
+            return Unauthorized();
         }
 
         [HttpDelete("{id}")]
         public async Task<ActionResult<TransactionRecord>> DeleteService([ServiceNumber] string id, DeleteServiceRequest request)
         {
-            if (!userManager.IsLoggedIn(request.UserId))
+            if (request.UserId is Guid userId && userManager.IsLoggedIn(userId))
             {
-                return Unauthorized();
+                if (userManager.UserType(userId) != LoginType.Planner)
+                {
+                    return Forbid();
+                }
+
+                var serviceNumber = new ServiceNumber(id);
+
+                if (!servicesList.IsInList(serviceNumber))
+                {
+                    return NotFound();
+                }
+
+                var record = await deleteServiceTransaction.MakeTransaction(id, request);
+                servicesList.DeleteService(serviceNumber);
+
+                return Ok(record);
             }
-            if (userManager.UserType(request.UserId) != LoginType.Planner)
-            {
-                return Forbid();
-            }
-
-            var serviceNumber = new ServiceNumber(id);
-
-            if (!servicesList.IsInList(serviceNumber))
-            {
-                return NotFound();
-            }
-
-            var record = await deleteServiceTransaction.MakeTransaction(id, request);
-            servicesList.DeleteService(serviceNumber);
-
-            return Ok(record);
+            return Unauthorized();
         }
 
         [HttpPost("{id}/tickets")]
         public async Task<ActionResult<TransactionRecord>> SellOrChangeTickets([ServiceNumber] string id, SellOrChangeTicketsRequest request)
         {
-            if (!userManager.IsLoggedIn(request.UserId))
+            if (request.UserId is Guid userId && userManager.IsLoggedIn(userId))
             {
-                return Unauthorized();
-            }
+                var serviceNumber = new ServiceNumber(id);
 
-            var serviceNumber = new ServiceNumber(id);
-
-            if (!servicesList.IsInList(serviceNumber))
-            {
-                return NotFound();
-            }
-
-            if (request.SourceServiceNumber is not null)
-            {
-                var sourceServiceNumber = new ServiceNumber(request.SourceServiceNumber);
-                if (!servicesList.IsInList(sourceServiceNumber))
+                if (!servicesList.IsInList(serviceNumber))
                 {
                     return NotFound();
                 }
+
+                if (request.SourceServiceNumber is not null)
+                {
+                    var sourceServiceNumber = new ServiceNumber(request.SourceServiceNumber);
+                    if (!servicesList.IsInList(sourceServiceNumber))
+                    {
+                        return NotFound();
+                    }
+                }
+
+                var record = await sellOrChangeTicketsTransaction.MakeTransaction(id, request);
+
+                return Ok(record);
             }
-
-            var record = await sellOrChangeTicketsTransaction.MakeTransaction(id, request);
-
-            return Ok(record);
+            return Unauthorized();
         }
 
         [HttpDelete("{id}/tickets")]
         public async Task<ActionResult<TransactionRecord>> CancelTickets([ServiceNumber] string id, CancelTicketsRequest request)
         {
-            if (!userManager.IsLoggedIn(request.UserId))
+            if (request.UserId is Guid userId && userManager.IsLoggedIn(userId))
             {
-                return Unauthorized();
+                var serviceNumber = new ServiceNumber(id);
+
+                if (!servicesList.IsInList(serviceNumber))
+                {
+                    return NotFound();
+                }
+
+                var record = await cancelTicketsTransaction.MakeTransaction(id, request);
+
+                return Ok(record);
             }
-
-            var serviceNumber = new ServiceNumber(id);
-
-            if (!servicesList.IsInList(serviceNumber))
-            {
-                return NotFound();
-            }
-
-            var record = await cancelTicketsTransaction.MakeTransaction(id, request);
-
-            return Ok(record);
+            return Unauthorized();
         }
     }
 }

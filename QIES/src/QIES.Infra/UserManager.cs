@@ -14,7 +14,7 @@ namespace QIES.Infra
             this.users = new ConcurrentDictionary<Guid, (User, TransactionQueue)>();
         }
 
-        public bool IsLoggedIn(Guid? userId) => userId is Guid id ? users.ContainsKey(id) : false;
+        public bool IsLoggedIn(Guid userId) => users.ContainsKey(userId);
 
         public User UserLogin(LoginType login)
         {
@@ -37,14 +37,10 @@ namespace QIES.Infra
             return (success, userTuple.tq);
         }
 
-        public LoginType UserType(Guid? userId)
+        public LoginType UserType(Guid userId)
         {
-            if (userId is Guid id)
-            {
-                (User user, TransactionQueue tq) userTuple;
-                return users.TryGetValue(id, out userTuple) ? userTuple.user.Type : LoginType.None;
-            }
-            return LoginType.None;
+            (User user, TransactionQueue tq) userTuple;
+            return users.TryGetValue(userId, out userTuple) ? userTuple.user.Type : LoginType.None;
         }
     }
 }

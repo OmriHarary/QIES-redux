@@ -15,7 +15,7 @@ Queen's University School of Computing Software Quality Assurance (CISC 327) Fal
 - [x] Enhance original test suite with actual unit tests
 - [ ] Refactoring original design
   - [x] Decoupling input and transaction logic
-- [ ] Reimplement original specification as Web API
+- [x] Reimplement original specification as Web API
 - [ ] ...
 
 ## Special Thanks

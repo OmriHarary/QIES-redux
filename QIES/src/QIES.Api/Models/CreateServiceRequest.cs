@@ -2,7 +2,7 @@ using QIES.Api.Models.Validation;
 
 namespace QIES.Api.Models
 {
-    public class CreateServiceRequest
+    public class CreateServiceRequest : AuthenticatedRequest
     {
         [ServiceNumber]
         public string ServiceNumber { get; set; }

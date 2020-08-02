@@ -4,9 +4,9 @@ namespace QIES.Core.Users
 {
     public interface IUserManager
     {
-        public bool IsLoggedIn(Guid id);
+        public bool IsLoggedIn(Guid? userId);
         public User UserLogin(LoginType login);
-        public (bool, ITransactionQueue) UserLogout(Guid id);
-        public LoginType UserType(Guid id);
+        public (bool, ITransactionQueue) UserLogout(Guid userId);
+        public LoginType UserType(Guid? userId);
     }
 }

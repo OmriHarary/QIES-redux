@@ -7,7 +7,7 @@ using QIES.Common;
 using QIES.Common.Record;
 using QIES.Core;
 using QIES.Core.Services;
-
+using QIES.Core.Users;
 using static System.Net.Mime.MediaTypeNames;
 
 namespace QIES.Web.Controllers
@@ -20,6 +20,7 @@ namespace QIES.Web.Controllers
     {
         private readonly ILogger<ServicesController> logger;
         private readonly IServicesList servicesList;
+        private readonly IUserManager userManager;
         private ITransaction<CreateServiceRequest, Service> createServiceTransaction;
         private ITransaction<DeleteServiceRequest, TransactionRecord> deleteServiceTransaction;
         private ITransaction<SellOrChangeTicketsRequest, TransactionRecord> sellOrChangeTicketsTransaction;
@@ -28,6 +29,7 @@ namespace QIES.Web.Controllers
         public ServicesController(
                 ILogger<ServicesController> logger,
                 IServicesList servicesList,
+                IUserManager userManager,
                 ITransaction<CreateServiceRequest, Service> createServiceTransaction,
                 ITransaction<DeleteServiceRequest, TransactionRecord> deleteServiceTransaction,
                 ITransaction<SellOrChangeTicketsRequest, TransactionRecord> sellOrChangeTicketsTransaction,
@@ -35,6 +37,7 @@ namespace QIES.Web.Controllers
         {
             this.logger = logger;
             this.servicesList = servicesList;
+            this.userManager = userManager;
             this.createServiceTransaction = createServiceTransaction;
             this.deleteServiceTransaction = deleteServiceTransaction;
             this.sellOrChangeTicketsTransaction = sellOrChangeTicketsTransaction;
@@ -61,22 +64,32 @@ namespace QIES.Web.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<Service>> CreateService(CreateServiceRequest createServiceRequest)
+        public async Task<ActionResult<Service>> CreateService(CreateServiceRequest request)
         {
-            var serviceNumber = new ServiceNumber(createServiceRequest.ServiceNumber);
+            if (!userManager.IsLoggedIn(request.UserId))
+            {
+                return Unauthorized();
+            }
+
+            var serviceNumber = new ServiceNumber(request.ServiceNumber);
 
             if (servicesList.IsInList(serviceNumber))
             {
                 return Conflict();
             }
 
-            var service = await createServiceTransaction.MakeTransaction(createServiceRequest.ServiceNumber, createServiceRequest);
+            var service = await createServiceTransaction.MakeTransaction(request.ServiceNumber, request);
             return CreatedAtAction(nameof(GetService), new { id = service.ServiceNumber }, service);
         }
 
         [HttpDelete("{id}")]
         public async Task<ActionResult<TransactionRecord>> DeleteService([ServiceNumber] string id, DeleteServiceRequest request)
         {
+            if (!userManager.IsLoggedIn(request.UserId))
+            {
+                return Unauthorized();
+            }
+
             var serviceNumber = new ServiceNumber(id);
 
             if (!servicesList.IsInList(serviceNumber))
@@ -93,6 +106,11 @@ namespace QIES.Web.Controllers
         [HttpPost("{id}/tickets")]
         public async Task<ActionResult<TransactionRecord>> SellOrChangeTickets([ServiceNumber] string id, SellOrChangeTicketsRequest request)
         {
+            if (!userManager.IsLoggedIn(request.UserId))
+            {
+                return Unauthorized();
+            }
+
             var serviceNumber = new ServiceNumber(id);
 
             if (!servicesList.IsInList(serviceNumber))
@@ -117,6 +135,11 @@ namespace QIES.Web.Controllers
         [HttpDelete("{id}/tickets")]
         public async Task<ActionResult<TransactionRecord>> CancelTickets([ServiceNumber] string id, CancelTicketsRequest request)
         {
+            if (!userManager.IsLoggedIn(request.UserId))
+            {
+                return Unauthorized();
+            }
+
             var serviceNumber = new ServiceNumber(id);
 
             if (!servicesList.IsInList(serviceNumber))

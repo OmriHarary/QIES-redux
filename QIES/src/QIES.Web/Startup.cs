@@ -24,7 +24,6 @@ namespace QIES.Web
         {
             services.AddSingleton<IServicesList>(sp => new ValidServicesList(new System.IO.FileInfo("QIES.Cli/test/resources/valid-services-list.txt")));
             services.AddSingleton<IUserManager>(sp => new UserManager());
-            services.AddSingleton<ITransactionQueue>(sp => new TransactionQueue());
             services.AddTransactions();
             services.AddControllers();
         }

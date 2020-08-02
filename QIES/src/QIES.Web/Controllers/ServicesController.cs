@@ -70,6 +70,10 @@ namespace QIES.Web.Controllers
             {
                 return Unauthorized();
             }
+            if (userManager.UserType(request.UserId) != LoginType.Planner)
+            {
+                return Forbid();
+            }
 
             var serviceNumber = new ServiceNumber(request.ServiceNumber);
 
@@ -88,6 +92,10 @@ namespace QIES.Web.Controllers
             if (!userManager.IsLoggedIn(request.UserId))
             {
                 return Unauthorized();
+            }
+            if (userManager.UserType(request.UserId) != LoginType.Planner)
+            {
+                return Forbid();
             }
 
             var serviceNumber = new ServiceNumber(id);

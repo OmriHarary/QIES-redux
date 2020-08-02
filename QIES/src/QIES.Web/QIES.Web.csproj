@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+    <Version>1.0.0</Version>
+    <Nullable>enable</Nullable>
+    <LangVersion>preview</LangVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\QIES.Common\src\QIES.Common.csproj" />
+    <ProjectReference Include="..\QIES.Core\QIES.Core.csproj" />
+    <ProjectReference Include="..\QIES.Infra\QIES.Infra.csproj" />
+    <ProjectReference Include="..\QIES.Api\QIES.Api.csproj" />
+  </ItemGroup>
+
+</Project>

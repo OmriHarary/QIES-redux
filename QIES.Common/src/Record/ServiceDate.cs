@@ -1,6 +1,8 @@
+using System;
+
 namespace QIES.Common.Record
 {
-    public class ServiceDate
+    public class ServiceDate : IEquatable<ServiceDate>
     {
         private const string Default = "0";
         public string Date { get; private set; }
@@ -19,8 +21,9 @@ namespace QIES.Common.Record
             this.Date = Default;
         }
 
+        public bool Equals(ServiceDate? other) => Date == other?.Date;
+        public override bool Equals(object? obj) => obj is ServiceDate otherDate && Equals(otherDate);
         public override string ToString() => Date;
-        public override bool Equals(object? obj) => obj is ServiceDate otherDate && this.Date == otherDate.Date;
         public override int GetHashCode() => System.HashCode.Combine(Date);
 
         public static bool operator ==(ServiceDate lhs, ServiceDate rhs) => lhs?.Equals(rhs) ?? rhs is null;
@@ -41,5 +44,6 @@ namespace QIES.Common.Record
                     && (m >= 1 && m <= 12)
                     && (d >= 1 && d <= 31);
         }
+
     }
 }

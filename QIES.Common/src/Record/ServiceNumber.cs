@@ -1,6 +1,8 @@
+using System;
+
 namespace QIES.Common.Record
 {
-    public class ServiceNumber
+    public class ServiceNumber : IEquatable<ServiceNumber>
     {
         private const string Default = "00000";
         public string Number { get; private set; }
@@ -19,9 +21,10 @@ namespace QIES.Common.Record
             this.Number = Default;
         }
 
+        public bool Equals(ServiceNumber? other) => Number == other?.Number;
+        public override bool Equals(object? obj) => obj is ServiceNumber otherNumber && Equals(otherNumber);
         public override string ToString() => Number;
-        public override bool Equals(object? obj) => obj is ServiceNumber otherNumber && this.Number == otherNumber.Number;
-        public override int GetHashCode() => System.HashCode.Combine(Number);
+        public override int GetHashCode() => HashCode.Combine(Number);
 
         public static bool operator ==(ServiceNumber lhs, ServiceNumber rhs) => lhs?.Equals(rhs) ?? rhs is null;
         public static bool operator !=(ServiceNumber lhs, ServiceNumber rhs) => !(lhs == rhs);
@@ -41,5 +44,6 @@ namespace QIES.Common.Record
             }
             return false;
         }
+
     }
 }

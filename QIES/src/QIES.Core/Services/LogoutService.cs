@@ -12,18 +12,16 @@ namespace QIES.Core.Services
 
         private readonly ILogger<LogoutService> logger;
         private readonly IUserManager userManager;
-        private readonly ITransactionQueue transactionQueue;
 
-        public LogoutService(ILogger<LogoutService> logger, IUserManager userManager, ITransactionQueue transactionQueue)
+        public LogoutService(ILogger<LogoutService> logger, IUserManager userManager)
         {
             this.logger = logger;
             this.userManager = userManager;
-            this.transactionQueue = transactionQueue;
         }
 
         public async Task<bool> DoLogout(Guid id)
         {
-            var success = userManager.UserLogout(id);
+            var (success, transactionQueue) = userManager.UserLogout(id);
             if (success)
             {
                 transactionQueue.Push(new TransactionRecord(Code));

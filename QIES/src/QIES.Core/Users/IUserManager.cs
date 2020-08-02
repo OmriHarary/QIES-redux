@@ -6,7 +6,7 @@ namespace QIES.Core.Users
     {
         public bool IsLoggedIn(Guid id);
         public User UserLogin(LoginType login);
-        public bool UserLogout(Guid id);
+        public (bool, ITransactionQueue) UserLogout(Guid id);
         public LoginType UserType(Guid id);
     }
 }

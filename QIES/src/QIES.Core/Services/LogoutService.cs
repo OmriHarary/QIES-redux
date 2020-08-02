@@ -12,11 +12,13 @@ namespace QIES.Core.Services
 
         private readonly ILogger<LogoutService> logger;
         private readonly IUserManager userManager;
+        private readonly ISummaryWriter summaryWriter;
 
-        public LogoutService(ILogger<LogoutService> logger, IUserManager userManager)
+        public LogoutService(ILogger<LogoutService> logger, IUserManager userManager, ISummaryWriter summaryWriter)
         {
             this.logger = logger;
             this.userManager = userManager;
+            this.summaryWriter = summaryWriter;
         }
 
         public async Task<bool> DoLogout(Guid id)
@@ -26,7 +28,7 @@ namespace QIES.Core.Services
             {
                 transactionQueue.Push(new TransactionRecord(Code));
             }
-            // TODO: Print transaction summary here
+            await summaryWriter.WriteTransactionSummaryFile(transactionQueue, $"{id}.txt");
             return success;
         }
     }

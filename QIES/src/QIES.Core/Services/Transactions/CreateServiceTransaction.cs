@@ -1,21 +1,26 @@
+using System;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
 using QIES.Api.Models;
 using QIES.Common;
 using QIES.Common.Record;
+using QIES.Core.Users;
 
 namespace QIES.Core.Services
 {
     public class CreateServiceTransaction : ITransaction<CreateServiceRequest, Service>
     {
         private const TransactionCode Code = TransactionCode.CRE;
-        private ITransactionQueue transactionQueue;
+        private readonly ILogger<CreateServiceRequest> logger;
+        private readonly IUserManager userManager;
 
-        public CreateServiceTransaction(ITransactionQueue transactionQueue)
+        public CreateServiceTransaction(ILogger<CreateServiceRequest> logger, IUserManager userManager)
         {
-            this.transactionQueue = transactionQueue;
+            this.logger = logger;
+            this.userManager = userManager;
         }
 
-        public async Task<Service> MakeTransaction(string serviceNumber, CreateServiceRequest request)
+        public async Task<Service> MakeTransaction(string serviceNumber, CreateServiceRequest request, Guid userId)
         {
             var service = new Service();
             service.ServiceNumber = new ServiceNumber(request.ServiceNumber);
@@ -27,7 +32,7 @@ namespace QIES.Core.Services
             record.ServiceDate = new ServiceDate(request.ServiceDate);
             record.ServiceName = new ServiceName(request.ServiceName);
 
-            transactionQueue.Push(record);
+            userManager.UserTransactionQueue(userId).Push(record);
 
             return service;
         }

@@ -81,7 +81,7 @@ namespace QIES.Web.Controllers
                     return Conflict();
                 }
 
-                var service = await createServiceTransaction.MakeTransaction(request.ServiceNumber, request);
+                var service = await createServiceTransaction.MakeTransaction(request.ServiceNumber, request, userId);
                 return CreatedAtAction(nameof(GetService), new { id = service.ServiceNumber }, service);
             }
             return Unauthorized();
@@ -104,7 +104,7 @@ namespace QIES.Web.Controllers
                     return NotFound();
                 }
 
-                var record = await deleteServiceTransaction.MakeTransaction(id, request);
+                var record = await deleteServiceTransaction.MakeTransaction(id, request, userId);
                 servicesList.DeleteService(serviceNumber);
 
                 return Ok(record);
@@ -133,7 +133,7 @@ namespace QIES.Web.Controllers
                     }
                 }
 
-                var record = await sellOrChangeTicketsTransaction.MakeTransaction(id, request);
+                var record = await sellOrChangeTicketsTransaction.MakeTransaction(id, request, userId);
 
                 return Ok(record);
             }
@@ -152,7 +152,7 @@ namespace QIES.Web.Controllers
                     return NotFound();
                 }
 
-                var record = await cancelTicketsTransaction.MakeTransaction(id, request);
+                var record = await cancelTicketsTransaction.MakeTransaction(id, request, userId);
 
                 return Ok(record);
             }

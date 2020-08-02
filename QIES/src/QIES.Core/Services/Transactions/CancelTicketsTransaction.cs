@@ -1,26 +1,31 @@
+using System;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
 using QIES.Api.Models;
 using QIES.Common.Record;
+using QIES.Core.Users;
 
 namespace QIES.Core.Services
 {
     public class CancelTicketsTransaction : ITransaction<CancelTicketsRequest, TransactionRecord>
     {
         private const TransactionCode Code = TransactionCode.CAN;
-        private ITransactionQueue transactionQueue;
+        private readonly ILogger<CancelTicketsRequest> logger;
+        private readonly IUserManager userManager;
 
-        public CancelTicketsTransaction(ITransactionQueue transactionQueue)
+        public CancelTicketsTransaction(ILogger<CancelTicketsRequest> logger, IUserManager userManager)
         {
-            this.transactionQueue = transactionQueue;
+            this.logger = logger;
+            this.userManager = userManager;
         }
 
-        public async Task<TransactionRecord> MakeTransaction(string serviceNumber, CancelTicketsRequest request)
+        public async Task<TransactionRecord> MakeTransaction(string serviceNumber, CancelTicketsRequest request, Guid userId)
         {
             var record = new TransactionRecord(Code);
             record.SourceNumber = new ServiceNumber(serviceNumber);
             record.NumberTickets = new NumberTickets(int.Parse(request.NumberTickets));
 
-            transactionQueue.Push(record);
+            userManager.UserTransactionQueue(userId).Push(record);
 
             return record;
         }

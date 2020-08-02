@@ -1,6 +1,9 @@
+using System;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
 using QIES.Api.Models;
 using QIES.Common.Record;
+using QIES.Core.Users;
 
 namespace QIES.Core.Services
 {
@@ -8,14 +11,16 @@ namespace QIES.Core.Services
     {
         private const TransactionCode CodeSell = TransactionCode.SEL;
         private const TransactionCode CodeChange = TransactionCode.CHG;
-        private ITransactionQueue transactionQueue;
+        private readonly ILogger<SellOrChangeTicketsRequest> logger;
+        private readonly IUserManager userManager;
 
-        public SellOrChangeTicketsTransaction(ITransactionQueue transactionQueue)
+        public SellOrChangeTicketsTransaction(ILogger<SellOrChangeTicketsRequest> logger, IUserManager userManager)
         {
-            this.transactionQueue = transactionQueue;
+            this.logger = logger;
+            this.userManager = userManager;
         }
 
-        public async Task<TransactionRecord> MakeTransaction(string serviceNumber, SellOrChangeTicketsRequest request)
+        public async Task<TransactionRecord> MakeTransaction(string serviceNumber, SellOrChangeTicketsRequest request, Guid userId)
         {
             TransactionRecord record;
 
@@ -33,7 +38,7 @@ namespace QIES.Core.Services
 
             record.NumberTickets = new NumberTickets(int.Parse(request.NumberTickets));
 
-            transactionQueue.Push(record);
+            userManager.UserTransactionQueue(userId).Push(record);
 
             return record;
         }

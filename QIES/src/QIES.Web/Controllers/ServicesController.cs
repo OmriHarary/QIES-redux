@@ -1,5 +1,6 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using QIES.Api.Models;
 using QIES.Api.Models.Validation;
 using QIES.Common;
@@ -17,19 +18,22 @@ namespace QIES.Web.Controllers
     [Route("api/v1/[controller]")]
     public class ServicesController : ControllerBase
     {
-        private IServicesList servicesList;
+        private readonly ILogger<ServicesController> logger;
+        private readonly IServicesList servicesList;
         private ITransaction<CreateServiceRequest, Service> createServiceTransaction;
         private ITransaction<DeleteServiceRequest, TransactionRecord> deleteServiceTransaction;
         private ITransaction<SellOrChangeTicketsRequest, TransactionRecord> sellOrChangeTicketsTransaction;
         private ITransaction<CancelTicketsRequest, TransactionRecord> cancelTicketsTransaction;
 
         public ServicesController(
+                ILogger<ServicesController> logger,
                 IServicesList servicesList,
                 ITransaction<CreateServiceRequest, Service> createServiceTransaction,
                 ITransaction<DeleteServiceRequest, TransactionRecord> deleteServiceTransaction,
                 ITransaction<SellOrChangeTicketsRequest, TransactionRecord> sellOrChangeTicketsTransaction,
                 ITransaction<CancelTicketsRequest, TransactionRecord> cancelTicketsTransaction)
         {
+            this.logger = logger;
             this.servicesList = servicesList;
             this.createServiceTransaction = createServiceTransaction;
             this.deleteServiceTransaction = deleteServiceTransaction;

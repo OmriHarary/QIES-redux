@@ -5,6 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using QIES.Core;
 using QIES.Core.Services;
+using QIES.Core.Users;
 using QIES.Infra;
 
 namespace QIES.Web
@@ -22,7 +23,8 @@ namespace QIES.Web
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddSingleton<IServicesList>(sp => new ValidServicesList(new System.IO.FileInfo("QIES.Cli/test/resources/valid-services-list.txt")));
-            services.AddSingleton<ITransactionQueue>(sp => new Infra.TransactionQueue());
+            services.AddSingleton<IUserManager>(sp => new UserManager());
+            services.AddSingleton<ITransactionQueue>(sp => new TransactionQueue());
             services.AddTransactions();
             services.AddControllers();
         }

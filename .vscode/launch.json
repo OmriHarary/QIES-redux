@@ -11,7 +11,7 @@
             "preLaunchTask": "build Web",
             "program": "${workspaceFolder}/QIES/src/QIES.Web/bin/Debug/net5.0/QIES.Web.dll",
             "args": [],
-            "cwd": "${workspaceFolder}",
+            "cwd": "${workspaceFolder}/QIES/src/QIES.Web",
             "stopAtEntry": false,
             "env": {
                 "ASPNETCORE_ENVIRONMENT": "Development",
@@ -47,18 +47,13 @@
             }
         },
         {
-            "name": ".NET Core Launch Backoffice (console)",
+            "name": "Backoffice",
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "build backoffice",
             // If you have changed target frameworks, make sure to update the program path.
             "program": "${workspaceFolder}/QIES.Backoffice/src/bin/Debug/net5.0/QIES.Backoffice.dll",
-            "args": [
-                "../test/resources/merged_transaction_summery_file.txt",
-                "../test/resources/old_central_services_file.txt",
-                "../new-central-services",
-                "../new-valid-services"
-            ],
+            "args": [],
             "cwd": "${workspaceFolder}/QIES.Backoffice/src",
             // For more information about the 'console' field, see https://aka.ms/VSCode-CS-LaunchJson-Console
             "console": "integratedTerminal",
@@ -69,15 +64,10 @@
             },
             "suppressJITOptimizations": true,
             "env": {
+                "DOTNET_ENVIRONMENT": "Development",
                 "COMPlus_ZapDisable": "1",
                 "COMPlus_ReadyToRun": "0"
             }
-        },
-        {
-            "name": ".NET Core Attach",
-            "type": "coreclr",
-            "request": "attach",
-            "processId": "${command:pickProcess}"
         }
     ]
 }

@@ -1,38 +1,61 @@
 using System;
 using System.IO;
+using Microsoft.Extensions.Logging;
 using QIES.Common;
 using QIES.Common.Record;
 
 namespace QIES.Backoffice.Parser
 {
-    public static class TransactionSummaryParser
+    public class TransactionSummaryParser : IParser<TransactionQueue>
     {
-        public static TransactionQueue ParseFile(string transactionSummaryFilePath)
+        private readonly ILogger<TransactionSummaryParser> logger;
+
+        public TransactionSummaryParser(ILogger<TransactionSummaryParser> logger)
         {
-            var transactionQueue = new TransactionQueue();
+            this.logger = logger;
+        }
+
+        public bool TryParseFile(string filePath, TransactionQueue output)
+        {
             var lines = new string[0];
             try
             {
-                lines = File.ReadAllLines(transactionSummaryFilePath);
+                lines = File.ReadAllLines(filePath);
             }
             catch (IOException e)
             {
-                Console.Error.WriteLine("Unable to read merged transaction summary file");
-                Console.Error.WriteLine(e.StackTrace);
+                logger.LogError(e, $"Unable to read transaction summary file at {filePath}");
+                return false;
             }
 
+            var count = 0;
+            var successful = 0;
             foreach (var line in lines)
             {
-                transactionQueue.Push(ParseLine(line));
+                count++;
+                using (logger.BeginScope(line))
+                {
+                    try
+                    {
+                        var transaction = ParseLine(line);
+                        output.Push(transaction);
+                        successful++;
+                    }
+                    catch (Exception e)
+                    {
+                        logger.LogWarning(e, $"Failed to parse transaction: [{line}] It will be skipped.");
+                    }
+                }
             }
 
-            return transactionQueue;
+            logger.LogInformation($"Succesfully parsed {successful}/{count} records from file.");
+            return true;
         }
 
-        private static TransactionRecord ParseLine(string transactionLine)
+        private TransactionRecord ParseLine(string transactionLine)
         {
             var tokens = transactionLine.Split(' ');
-            var code = (TransactionCode) Enum.Parse(typeof(TransactionCode), tokens[0]);
+            var code = (TransactionCode)Enum.Parse(typeof(TransactionCode), tokens[0]);
             var record = new TransactionRecord(code);
             // TODO: Make RecordElement Defaults public and use them here for comparisons
             if (tokens[1] != "00000")
@@ -57,6 +80,7 @@ namespace QIES.Backoffice.Parser
                 record.ServiceName = new ServiceName(serviceNameStr);
             }
 
+            logger.LogDebug("Parsed");
             return record;
         }
     }

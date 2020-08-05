@@ -1,4 +1,10 @@
-﻿using System;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
+using QIES.Backoffice.Config;
+using QIES.Backoffice.Parser;
+using QIES.Backoffice.Processor;
+using QIES.Common;
 
 namespace QIES.Backoffice
 {
@@ -6,20 +12,36 @@ namespace QIES.Backoffice
     {
         public static int Main(string[] args)
         {
-            if (args.Length != 4)
+            var exit = 0;
+
+            try
             {
-                Console.Error.WriteLine($"Incorrect number of arguments: {args.Length}");
-                return 1;
+                CreateHostBuilder(args).Build().Run();
+            }
+            catch
+            {
+                exit = 1;
             }
 
-            var mergedTransactionFile = args[0];
-            var oldCentralFile = args[1];
-            var newCentralFile = args[2];
-            var newValidFile = args[3];
-            var backendManager = new BackendManager(mergedTransactionFile, oldCentralFile, newCentralFile, newValidFile);
-            backendManager.Operate();
-
-            return 0;
+            return exit;
         }
+
+        public static IHostBuilder CreateHostBuilder(string[] args) =>
+            Host.CreateDefaultBuilder(args)
+                .ConfigureLogging(logging =>
+                {
+                    logging.ClearProviders();
+                    logging.AddConsole();
+                })
+                .ConfigureServices((hostContext, services) =>
+                {
+                    services.Configure<TransactionSummaryOptions>(hostContext.Configuration.GetSection(TransactionSummaryOptions.Section));
+                    services.Configure<ServicesFilesOptions>(hostContext.Configuration.GetSection(ServicesFilesOptions.Section));
+                    services.AddScoped<IParser<TransactionQueue>, TransactionSummaryParser>();
+                    services.AddScoped<IParser<CentralServicesList>, CentralServicesParser>();
+                    services.AddScoped<IProcessor, BackofficeProcessor>();
+                    services.AddSingleton<ICentralServicesList, CentralServicesList>();
+                    services.AddHostedService<Worker>();
+                });
     }
 }

@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+/* using System.Collections.Generic;
 using QIES.Frontend.Session;
 using QIES.Frontend.Transaction;
 
@@ -161,3 +161,4 @@ namespace QIES.Cli.Session
         }
     }
 }
+ */

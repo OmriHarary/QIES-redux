@@ -1,6 +1,6 @@
 using System;
 
-namespace QIES.Cli.Session
+namespace QIES.Cli.Shell
 {
     public class Input
     {
@@ -11,7 +11,7 @@ namespace QIES.Cli.Session
         public string TakeInput(string message)
         {
             Console.WriteLine(message);
-            Console.Write("[{Prompt}]  ");
+            Console.Write($"[{Prompt}]  ");
             return Console.ReadLine() ?? string.Empty;
         }
 

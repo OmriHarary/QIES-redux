@@ -22,7 +22,7 @@ namespace QIES.Web
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddSingleton<IServicesList>(sp => new ValidServicesList(new System.IO.FileInfo("QIES/src/QIES.Web/Resources/valid-services-list.txt"))); // TODO: This needs to be configurable
+            services.AddSingleton<IServicesList>(sp => new ValidServicesList(new System.IO.FileInfo("Resources/valid-services-list.txt"))); // TODO: This needs to be configurable
             services.AddSingleton<IUserManager>(sp => new UserManager());
             services.AddTransient<ISummaryWriter, SummaryWriter>();
             services.AddTransactions();

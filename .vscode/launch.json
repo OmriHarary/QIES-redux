@@ -5,7 +5,7 @@
    "version": "0.2.0",
    "configurations": [
         {
-            "name": ".NET Core Launch (web)",
+            "name": "Web",
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "build Web",
@@ -25,13 +25,13 @@
             "suppressJITOptimizations": true
         },
         {
-            "name": ".NET Core Launch Cli (console)",
+            "name": "Shell",
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "build CLI",
             // If you have changed target frameworks, make sure to update the program path.
             "program": "${workspaceFolder}/QIES.Cli/src/bin/Debug/net5.0/QIES.Cli.dll",
-            "args": ["../test/resources/valid-services-list.txt", "../trans-summary"],
+            "args": [ "https://localhost:5001" ],
             "cwd": "${workspaceFolder}/QIES.Cli/src",
             // For more information about the 'console' field, see https://aka.ms/VSCode-CS-LaunchJson-Console
             "console": "integratedTerminal",

@@ -2,6 +2,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using QIES.Api.Models;
+using QIES.Api.Responses;
 using QIES.Core.Services;
 using QIES.Core.Users;
 
@@ -30,7 +31,7 @@ namespace QIES.Web.Controllers
         }
 
         [HttpPost("login")]
-        public async Task<ActionResult<User>> Login(LoginRequest request)
+        public async Task<ActionResult<LoginResponse>> Login(LoginRequest request)
         {
             var login = request.Login switch
             {
@@ -45,8 +46,11 @@ namespace QIES.Web.Controllers
             }
 
             var user = await loginService.DoLogin(login);
+            var response = new LoginResponse();
+            response.Id = user.Id;
+            response.Type = (int)user.Type;
 
-            return Ok(user);
+            return Ok(response);
         }
 
         [HttpPost("logout")]

@@ -5,6 +5,7 @@
     <Version>1.3.0</Version>
     <Nullable>enable</Nullable>
     <LangVersion>preview</LangVersion>
+    <RepositoryUrl>https://github.com/OmriHarary/QIES-redux</RepositoryUrl>
   </PropertyGroup>
 
 </Project>

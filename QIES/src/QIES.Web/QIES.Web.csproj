@@ -8,7 +8,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\QIES.Common\src\QIES.Common.csproj" />
+    <PackageReference Include="QIES.Common" Version="1.3.0" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\QIES.Core\QIES.Core.csproj" />
     <ProjectReference Include="..\QIES.Infra\QIES.Infra.csproj" />
     <ProjectReference Include="..\QIES.Api\QIES.Api.csproj" />

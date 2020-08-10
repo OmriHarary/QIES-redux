@@ -9,10 +9,7 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="5.0.0-preview.7.20364.11" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\..\QIES.Common\src\QIES.Common.csproj" />
+    <PackageReference Include="QIES.Common" Version="1.3.0" />
   </ItemGroup>
 
 </Project>

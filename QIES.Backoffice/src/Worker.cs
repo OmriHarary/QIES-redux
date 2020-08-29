@@ -47,7 +47,7 @@ namespace QIES.Backoffice
             if (!Directory.Exists(transactionSummaryOptions.Directory))
             {
                 var ex = new DirectoryNotFoundException();
-                logger.LogCritical(ex, $"Specified input directory {transactionSummaryOptions.Directory} does not exist.");
+                logger.LogCritical(ex, "Specified input directory {directory} does not exist.", transactionSummaryOptions.Directory);
                 return Task.FromException(ex);
             }
 
@@ -77,7 +77,7 @@ namespace QIES.Backoffice
         {
             if (args.ChangeType == WatcherChangeTypes.Created)
             {
-                logger.LogDebug($"File watcher event triggered on {args.Name}");
+                logger.LogDebug("File watcher event triggered on {triggeringFile}", args.Name);
                 var file = new FileInfo(args.FullPath);
 
                 using (var scope = Services.CreateScope())

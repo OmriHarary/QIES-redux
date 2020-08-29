@@ -17,7 +17,7 @@ namespace QIES.Backoffice.Parser
 
         public bool TryParseFile(string filePath, CentralServicesList output)
         {
-            logger.LogInformation($"Attempting to parse central services file at {filePath}");
+            logger.LogInformation("Attempting to parse central services file at {filePath}", filePath);
 
             var success = true;
             var lines = new string[0];
@@ -27,7 +27,7 @@ namespace QIES.Backoffice.Parser
             }
             catch (IOException e)
             {
-                logger.LogError(e, $"Unable to read central services file at {filePath}");
+                logger.LogError(e, "Unable to read central services file at {filePath}", filePath);
                 success = false;
             }
 
@@ -39,7 +39,7 @@ namespace QIES.Backoffice.Parser
                 }
                 catch (ArgumentException e)
                 {
-                    logger.LogError(e, $"Unparsable line in central services file: [{line}]");
+                    logger.LogError(e, "Unparsable line in central services file: [{line}]", line);
                     success = false;
                     break;
                 }
@@ -50,7 +50,7 @@ namespace QIES.Backoffice.Parser
 
         private Service ParseLine(string serviceLine)
         {
-            logger.LogDebug($"Parsing: [{serviceLine}]");
+            logger.LogDebug("Parsing: [{serviceLine}]", serviceLine);
 
             var fields = serviceLine.Split(' ', 4);
             var service = new Service();

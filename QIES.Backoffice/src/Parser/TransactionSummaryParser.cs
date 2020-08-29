@@ -17,14 +17,14 @@ namespace QIES.Backoffice.Parser
 
         public bool TryParseFile(string filePath, TransactionQueue output)
         {
-            var lines = new string[0];
+            string[] lines;
             try
             {
                 lines = File.ReadAllLines(filePath);
             }
             catch (IOException e)
             {
-                logger.LogError(e, $"Unable to read transaction summary file at {filePath}");
+                logger.LogError(e, "Unable to read transaction summary file at {filePath}", filePath);
                 return false;
             }
 
@@ -43,12 +43,12 @@ namespace QIES.Backoffice.Parser
                     }
                     catch (Exception e)
                     {
-                        logger.LogWarning(e, $"Failed to parse transaction: [{line}] It will be skipped.");
+                        logger.LogWarning(e, "Failed to parse transaction: [{line}] It will be skipped.", line);
                     }
                 }
             }
 
-            logger.LogInformation($"Succesfully parsed {successful}/{count} records from file.");
+            logger.LogInformation("Succesfully parsed {successful}/{total} records from file.", successful, count);
             return true;
         }
 

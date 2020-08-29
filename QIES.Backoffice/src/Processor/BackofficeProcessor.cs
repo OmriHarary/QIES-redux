@@ -31,7 +31,7 @@ namespace QIES.Backoffice.Processor
         {
             using (logger.BeginScope(transactionFile.Name))
             {
-                logger.LogInformation($"Processing {transactionFile.FullName}");
+                logger.LogInformation("Processing {transactionFile}", transactionFile.FullName);
 
                 var transactionQueue = new TransactionQueue();
                 using (logger.BeginScope("Parse"))
@@ -72,7 +72,7 @@ namespace QIES.Backoffice.Processor
                     }
                 }
 
-                logger.LogInformation($"Successfully processed {successful}/{count} parsed records.");
+                logger.LogInformation("Successfully processed {successful}/{total} parsed records.", successful, count);
                 var csf = WriteCentralServicesFile();
                 var vsl = WriteValidServicesFile();
 

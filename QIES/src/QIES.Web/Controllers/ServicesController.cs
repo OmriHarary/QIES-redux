@@ -67,10 +67,13 @@ namespace QIES.Web.Controllers
         [HttpPost]
         public async Task<ActionResult<Service>> CreateService(CreateServiceRequest request)
         {
+            logger.LogInformation("CreateService requested for {serviceNumber}", request.ServiceNumber);
+
             if (request.UserId is Guid userId && userManager.IsLoggedIn(userId))
             {
                 if (userManager.UserType(userId) != LoginType.Planner)
                 {
+                    logger.LogWarning("CreateService requested by non-planner user {userId}", userId);
                     return Forbid();
                 }
 
@@ -78,22 +81,27 @@ namespace QIES.Web.Controllers
 
                 if (servicesList.IsInList(serviceNumber))
                 {
+                    logger.LogWarning("Could not create service. Requested service number, {serviceNumber}, already allocated", serviceNumber);
                     return Conflict();
                 }
 
                 var service = await createServiceTransaction.MakeTransaction(request.ServiceNumber, request, userId);
                 return CreatedAtAction(nameof(GetService), new { id = service.ServiceNumber }, service);
             }
+            logger.LogWarning("Could not create service. User unauthenticated");
             return Unauthorized();
         }
 
         [HttpDelete("{id}")]
         public async Task<ActionResult<TransactionRecord>> DeleteService([ServiceNumber] string id, DeleteServiceRequest request)
         {
+            logger.LogInformation("DeleteService requested for {serviceNumber}", id);
+
             if (request.UserId is Guid userId && userManager.IsLoggedIn(userId))
             {
                 if (userManager.UserType(userId) != LoginType.Planner)
                 {
+                    logger.LogWarning("DeleteService requested by non-planner user {userId}", userId);
                     return Forbid();
                 }
 
@@ -101,6 +109,7 @@ namespace QIES.Web.Controllers
 
                 if (!servicesList.IsInList(serviceNumber))
                 {
+                    logger.LogWarning("Could not delete service. No service found with number {serviceNumber}", serviceNumber);
                     return NotFound();
                 }
 
@@ -109,18 +118,22 @@ namespace QIES.Web.Controllers
 
                 return Ok(record);
             }
+            logger.LogWarning("Could not delete service. User unauthenticated");
             return Unauthorized();
         }
 
         [HttpPost("{id}/tickets")]
         public async Task<ActionResult<TransactionRecord>> SellOrChangeTickets([ServiceNumber] string id, SellOrChangeTicketsRequest request)
         {
+            logger.LogInformation("SellOrChangeTickets requested for {serviceNumber}", id);
+
             if (request.UserId is Guid userId && userManager.IsLoggedIn(userId))
             {
                 var serviceNumber = new ServiceNumber(id);
 
                 if (!servicesList.IsInList(serviceNumber))
                 {
+                    logger.LogWarning("Could not sell or change tickets. No service found with number {serviceNumber}", serviceNumber);
                     return NotFound();
                 }
 
@@ -129,6 +142,7 @@ namespace QIES.Web.Controllers
                     var sourceServiceNumber = new ServiceNumber(request.SourceServiceNumber);
                     if (!servicesList.IsInList(sourceServiceNumber))
                     {
+                        logger.LogWarning("Could not change tickets. No service found with number {sourceServiceNumber}", sourceServiceNumber);
                         return NotFound();
                     }
                 }
@@ -137,12 +151,15 @@ namespace QIES.Web.Controllers
 
                 return Ok(record);
             }
+            logger.LogWarning("Could not sell or change tickets. User unauthenticated");
             return Unauthorized();
         }
 
         [HttpDelete("{id}/tickets")]
         public async Task<ActionResult<TransactionRecord>> CancelTickets([ServiceNumber] string id, CancelTicketsRequest request)
         {
+            logger.LogInformation("CancelTickets requested for {serviceNumber}", id);
+
             if (request.UserId is Guid userId && userManager.IsLoggedIn(userId))
             {
                 var serviceNumber = new ServiceNumber(id);
@@ -156,6 +173,7 @@ namespace QIES.Web.Controllers
 
                 return Ok(record);
             }
+            logger.LogWarning("Could not cancel tickets. User unauthenticated");
             return Unauthorized();
         }
     }

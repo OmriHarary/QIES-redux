@@ -16,7 +16,7 @@ namespace QIES.Web.Controllers
     [Route("api/[controller]")]
     public class UsersController : ControllerBase
     {
-        private readonly ILogger logger;
+        private readonly ILogger<UsersController> logger;
         private ILoginService loginService;
         private ILogoutService logoutService;
 
@@ -39,7 +39,7 @@ namespace QIES.Web.Controllers
                 "agent"     => LoginType.Agent,
                 _           => LoginType.None
             };
-
+            logger.LogInformation("Requested login {loginRequested} resolved as type {loginResolved}", request.Login, login);
             if (login == LoginType.None)
             {
                 return BadRequest();

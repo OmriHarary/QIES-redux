@@ -22,7 +22,7 @@ namespace QIES.Web.Controllers
         private readonly ILogger<ServicesController> logger;
         private readonly IServicesList servicesList;
         private readonly IUserManager userManager;
-        private ITransaction<CreateServiceRequest, Service> createServiceTransaction;
+        private ITransaction<CreateServiceRequest, TransactionRecord> createServiceTransaction;
         private ITransaction<DeleteServiceRequest, TransactionRecord> deleteServiceTransaction;
         private ITransaction<SellOrChangeTicketsRequest, TransactionRecord> sellOrChangeTicketsTransaction;
         private ITransaction<CancelTicketsRequest, TransactionRecord> cancelTicketsTransaction;
@@ -31,7 +31,7 @@ namespace QIES.Web.Controllers
                 ILogger<ServicesController> logger,
                 IServicesList servicesList,
                 IUserManager userManager,
-                ITransaction<CreateServiceRequest, Service> createServiceTransaction,
+                ITransaction<CreateServiceRequest, TransactionRecord> createServiceTransaction,
                 ITransaction<DeleteServiceRequest, TransactionRecord> deleteServiceTransaction,
                 ITransaction<SellOrChangeTicketsRequest, TransactionRecord> sellOrChangeTicketsTransaction,
                 ITransaction<CancelTicketsRequest, TransactionRecord> cancelTicketsTransaction)
@@ -65,7 +65,7 @@ namespace QIES.Web.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<Service>> CreateService(CreateServiceRequest request)
+        public async Task<ActionResult<TransactionRecord>> CreateService(CreateServiceRequest request)
         {
             logger.LogInformation("CreateService requested for {serviceNumber}", request.ServiceNumber);
 
@@ -85,8 +85,8 @@ namespace QIES.Web.Controllers
                     return Conflict();
                 }
 
-                var service = await createServiceTransaction.MakeTransaction(request.ServiceNumber, request, userId);
-                return CreatedAtAction(nameof(GetService), new { id = service.ServiceNumber }, service);
+                var record = await createServiceTransaction.MakeTransaction(request.ServiceNumber, request, userId);
+                return CreatedAtAction(nameof(GetService), new { id = serviceNumber }, record);
             }
             logger.LogWarning("Could not create service. User unauthenticated");
             return Unauthorized();

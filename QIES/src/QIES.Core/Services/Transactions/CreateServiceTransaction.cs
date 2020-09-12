@@ -8,7 +8,7 @@ using QIES.Core.Users;
 
 namespace QIES.Core.Services
 {
-    public class CreateServiceTransaction : ITransaction<CreateServiceRequest, Service>
+    public class CreateServiceTransaction : ITransaction<CreateServiceRequest, TransactionRecord>
     {
         private const TransactionCode Code = TransactionCode.CRE;
         private readonly ILogger<CreateServiceTransaction> logger;
@@ -20,7 +20,7 @@ namespace QIES.Core.Services
             this.userManager = userManager;
         }
 
-        public async Task<Service> MakeTransaction(string serviceNumber, CreateServiceRequest request, Guid userId)
+        public async Task<TransactionRecord> MakeTransaction(string serviceNumber, CreateServiceRequest request, Guid userId)
         {
             var service = new Service();
             service.ServiceNumber = new ServiceNumber(request.ServiceNumber);
@@ -34,7 +34,7 @@ namespace QIES.Core.Services
 
             userManager.UserTransactionQueue(userId).Push(record);
 
-            return service;
+            return record;
         }
     }
 }

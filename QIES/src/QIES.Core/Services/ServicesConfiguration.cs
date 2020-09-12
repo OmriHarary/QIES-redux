@@ -11,7 +11,7 @@ namespace QIES.Core.Services
         {
             services.AddTransient<ILoginService, LoginService>();
             services.AddTransient<ILogoutService, LogoutService>();
-            services.AddTransient<ITransaction<CreateServiceRequest, Service>, CreateServiceTransaction>();
+            services.AddTransient<ITransaction<CreateServiceRequest, TransactionRecord>, CreateServiceTransaction>();
             services.AddTransient<ITransaction<DeleteServiceRequest, TransactionRecord>, DeleteServiceTransaction>();
             services.AddTransient<ITransaction<SellOrChangeTicketsRequest, TransactionRecord>, SellOrChangeTicketsTransaction>();
             services.AddTransient<ITransaction<CancelTicketsRequest, TransactionRecord>, CancelTicketsTransaction>();

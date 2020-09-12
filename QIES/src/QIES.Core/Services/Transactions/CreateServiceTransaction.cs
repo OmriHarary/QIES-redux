@@ -11,10 +11,10 @@ namespace QIES.Core.Services
     public class CreateServiceTransaction : ITransaction<CreateServiceRequest, Service>
     {
         private const TransactionCode Code = TransactionCode.CRE;
-        private readonly ILogger<CreateServiceRequest> logger;
+        private readonly ILogger<CreateServiceTransaction> logger;
         private readonly IUserManager userManager;
 
-        public CreateServiceTransaction(ILogger<CreateServiceRequest> logger, IUserManager userManager)
+        public CreateServiceTransaction(ILogger<CreateServiceTransaction> logger, IUserManager userManager)
         {
             this.logger = logger;
             this.userManager = userManager;

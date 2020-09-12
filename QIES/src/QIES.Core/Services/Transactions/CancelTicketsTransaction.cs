@@ -10,10 +10,10 @@ namespace QIES.Core.Services
     public class CancelTicketsTransaction : ITransaction<CancelTicketsRequest, TransactionRecord>
     {
         private const TransactionCode Code = TransactionCode.CAN;
-        private readonly ILogger<CancelTicketsRequest> logger;
+        private readonly ILogger<CancelTicketsTransaction> logger;
         private readonly IUserManager userManager;
 
-        public CancelTicketsTransaction(ILogger<CancelTicketsRequest> logger, IUserManager userManager)
+        public CancelTicketsTransaction(ILogger<CancelTicketsTransaction> logger, IUserManager userManager)
         {
             this.logger = logger;
             this.userManager = userManager;

@@ -11,10 +11,10 @@ namespace QIES.Core.Services
     {
         private const TransactionCode CodeSell = TransactionCode.SEL;
         private const TransactionCode CodeChange = TransactionCode.CHG;
-        private readonly ILogger<SellOrChangeTicketsRequest> logger;
+        private readonly ILogger<SellOrChangeTicketsTransaction> logger;
         private readonly IUserManager userManager;
 
-        public SellOrChangeTicketsTransaction(ILogger<SellOrChangeTicketsRequest> logger, IUserManager userManager)
+        public SellOrChangeTicketsTransaction(ILogger<SellOrChangeTicketsTransaction> logger, IUserManager userManager)
         {
             this.logger = logger;
             this.userManager = userManager;

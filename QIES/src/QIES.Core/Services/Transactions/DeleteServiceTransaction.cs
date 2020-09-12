@@ -10,10 +10,10 @@ namespace QIES.Core.Services
     public class DeleteServiceTransaction : ITransaction<DeleteServiceRequest, TransactionRecord>
     {
         private const TransactionCode Code = TransactionCode.DEL;
-        private readonly ILogger<DeleteServiceRequest> logger;
+        private readonly ILogger<DeleteServiceTransaction> logger;
         private readonly IUserManager userManager;
 
-        public DeleteServiceTransaction(ILogger<DeleteServiceRequest> logger, IUserManager userManager)
+        public DeleteServiceTransaction(ILogger<DeleteServiceTransaction> logger, IUserManager userManager)
         {
             this.logger = logger;
             this.userManager = userManager;

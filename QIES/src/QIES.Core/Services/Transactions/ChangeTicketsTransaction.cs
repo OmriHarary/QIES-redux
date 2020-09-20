@@ -31,7 +31,7 @@ namespace QIES.Core.Services
                 if (agent.ChangedTickets + command.NumberTickets > 20)
                 {
                     throw new AgentLimitExceededException("Cannot change as total session changed tickets would be over 20." +
-                        $" User has {20 - agent.ChangedTickets} tickets left to cancel this session.");
+                        $" User has {20 - agent.ChangedTickets} tickets left to change this session.");
                 }
                 agent.ChangedTickets += command.NumberTickets;
             }

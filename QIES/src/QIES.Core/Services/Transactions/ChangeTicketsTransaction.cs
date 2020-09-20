@@ -7,7 +7,7 @@ using QIES.Core.Users;
 
 namespace QIES.Core.Services
 {
-    public class ChangeTicketsTransaction : ITransaction<ChangeTicketsCommand, TransactionRecord>
+    public class ChangeTicketsTransaction : ITransaction<ChangeTicketsCommand>
     {
         private const TransactionCode Code = TransactionCode.CHG;
         private readonly ILogger<ChangeTicketsTransaction> logger;

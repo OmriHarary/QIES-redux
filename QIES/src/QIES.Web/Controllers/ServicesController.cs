@@ -25,21 +25,21 @@ namespace QIES.Web.Controllers
         private readonly ILogger<ServicesController> logger;
         private readonly IServicesList servicesList;
         private readonly IUserManager userManager;
-        private ITransaction<CreateServiceRequest, TransactionRecord> createServiceTransaction;
-        private ITransaction<DeleteServiceRequest, TransactionRecord> deleteServiceTransaction;
-        private ITransaction<SellTicketsCommand, TransactionRecord> sellTicketsTransaction;
-        private ITransaction<ChangeTicketsCommand, TransactionRecord> changeTicketsTransaction;
-        private ITransaction<CancelTicketsRequest, TransactionRecord> cancelTicketsTransaction;
+        private ITransaction<CreateServiceRequest> createServiceTransaction;
+        private ITransaction<DeleteServiceRequest> deleteServiceTransaction;
+        private ITransaction<SellTicketsCommand> sellTicketsTransaction;
+        private ITransaction<ChangeTicketsCommand> changeTicketsTransaction;
+        private ITransaction<CancelTicketsRequest> cancelTicketsTransaction;
 
         public ServicesController(
                 ILogger<ServicesController> logger,
                 IServicesList servicesList,
                 IUserManager userManager,
-                ITransaction<CreateServiceRequest, TransactionRecord> createServiceTransaction,
-                ITransaction<DeleteServiceRequest, TransactionRecord> deleteServiceTransaction,
-                ITransaction<SellTicketsCommand, TransactionRecord> sellTicketsTransaction,
-                ITransaction<ChangeTicketsCommand, TransactionRecord> changeTicketsTransaction,
-                ITransaction<CancelTicketsRequest, TransactionRecord> cancelTicketsTransaction)
+                ITransaction<CreateServiceRequest> createServiceTransaction,
+                ITransaction<DeleteServiceRequest> deleteServiceTransaction,
+                ITransaction<SellTicketsCommand> sellTicketsTransaction,
+                ITransaction<ChangeTicketsCommand> changeTicketsTransaction,
+                ITransaction<CancelTicketsRequest> cancelTicketsTransaction)
         {
             this.logger = logger;
             this.servicesList = servicesList;

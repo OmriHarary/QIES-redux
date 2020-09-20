@@ -7,7 +7,7 @@ using QIES.Core.Users;
 
 namespace QIES.Core.Services
 {
-    public class DeleteServiceTransaction : ITransaction<DeleteServiceRequest, TransactionRecord>
+    public class DeleteServiceTransaction : ITransaction<DeleteServiceRequest>
     {
         private const TransactionCode Code = TransactionCode.DEL;
         private readonly ILogger<DeleteServiceTransaction> logger;

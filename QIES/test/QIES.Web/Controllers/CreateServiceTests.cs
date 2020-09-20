@@ -27,11 +27,11 @@ namespace QIES.Web.Controllers.Tests
             var logger = new Mock<ILogger<ServicesController>>();
             var servicesList = new Mock<IServicesList>();
             var userManager = new Mock<IUserManager>();
-            var createServiceTransaction = new Mock<ITransaction<CreateServiceRequest, TransactionRecord>>();
-            var deleteServiceTransaction = new Mock<ITransaction<DeleteServiceRequest, TransactionRecord>>();
-            var sellTicketsTransaction = new Mock<ITransaction<SellTicketsCommand, TransactionRecord>>();
-            var changeTicketsTransaction = new Mock<ITransaction<ChangeTicketsCommand, TransactionRecord>>();
-            var cancelTicketsTransaction = new Mock<ITransaction<CancelTicketsRequest, TransactionRecord>>();
+            var createServiceTransaction = new Mock<ITransaction<CreateServiceRequest>>();
+            var deleteServiceTransaction = new Mock<ITransaction<DeleteServiceRequest>>();
+            var sellTicketsTransaction = new Mock<ITransaction<SellTicketsCommand>>();
+            var changeTicketsTransaction = new Mock<ITransaction<ChangeTicketsCommand>>();
+            var cancelTicketsTransaction = new Mock<ITransaction<CancelTicketsRequest>>();
 
             var request = new CreateServiceRequest();
             request.UserId = Guid.NewGuid();
@@ -78,11 +78,11 @@ namespace QIES.Web.Controllers.Tests
             var logger = new Mock<ILogger<ServicesController>>();
             var servicesList = new Mock<IServicesList>();
             var userManager = new Mock<IUserManager>();
-            var createServiceTransaction = new Mock<ITransaction<CreateServiceRequest, TransactionRecord>>();
-            var deleteServiceTransaction = new Mock<ITransaction<DeleteServiceRequest, TransactionRecord>>();
-            var sellTicketsTransaction = new Mock<ITransaction<SellTicketsCommand, TransactionRecord>>();
-            var changeTicketsTransaction = new Mock<ITransaction<ChangeTicketsCommand, TransactionRecord>>();
-            var cancelTicketsTransaction = new Mock<ITransaction<CancelTicketsRequest, TransactionRecord>>();
+            var createServiceTransaction = new Mock<ITransaction<CreateServiceRequest>>();
+            var deleteServiceTransaction = new Mock<ITransaction<DeleteServiceRequest>>();
+            var sellTicketsTransaction = new Mock<ITransaction<SellTicketsCommand>>();
+            var changeTicketsTransaction = new Mock<ITransaction<ChangeTicketsCommand>>();
+            var cancelTicketsTransaction = new Mock<ITransaction<CancelTicketsRequest>>();
 
             var request = new CreateServiceRequest();
             request.UserId = Guid.NewGuid();
@@ -117,11 +117,11 @@ namespace QIES.Web.Controllers.Tests
             var logger = new Mock<ILogger<ServicesController>>();
             var servicesList = new Mock<IServicesList>();
             var userManager = new Mock<IUserManager>();
-            var createServiceTransaction = new Mock<ITransaction<CreateServiceRequest, TransactionRecord>>();
-            var deleteServiceTransaction = new Mock<ITransaction<DeleteServiceRequest, TransactionRecord>>();
-            var sellTicketsTransaction = new Mock<ITransaction<SellTicketsCommand, TransactionRecord>>();
-            var changeTicketsTransaction = new Mock<ITransaction<ChangeTicketsCommand, TransactionRecord>>();
-            var cancelTicketsTransaction = new Mock<ITransaction<CancelTicketsRequest, TransactionRecord>>();
+            var createServiceTransaction = new Mock<ITransaction<CreateServiceRequest>>();
+            var deleteServiceTransaction = new Mock<ITransaction<DeleteServiceRequest>>();
+            var sellTicketsTransaction = new Mock<ITransaction<SellTicketsCommand>>();
+            var changeTicketsTransaction = new Mock<ITransaction<ChangeTicketsCommand>>();
+            var cancelTicketsTransaction = new Mock<ITransaction<CancelTicketsRequest>>();
 
             var request = new CreateServiceRequest();
             request.UserId = Guid.NewGuid();
@@ -159,11 +159,11 @@ namespace QIES.Web.Controllers.Tests
             var logger = new Mock<ILogger<ServicesController>>();
             var servicesList = new Mock<IServicesList>();
             var userManager = new Mock<IUserManager>();
-            var createServiceTransaction = new Mock<ITransaction<CreateServiceRequest, TransactionRecord>>();
-            var deleteServiceTransaction = new Mock<ITransaction<DeleteServiceRequest, TransactionRecord>>();
-            var sellTicketsTransaction = new Mock<ITransaction<SellTicketsCommand, TransactionRecord>>();
-            var changeTicketsTransaction = new Mock<ITransaction<ChangeTicketsCommand, TransactionRecord>>();
-            var cancelTicketsTransaction = new Mock<ITransaction<CancelTicketsRequest, TransactionRecord>>();
+            var createServiceTransaction = new Mock<ITransaction<CreateServiceRequest>>();
+            var deleteServiceTransaction = new Mock<ITransaction<DeleteServiceRequest>>();
+            var sellTicketsTransaction = new Mock<ITransaction<SellTicketsCommand>>();
+            var changeTicketsTransaction = new Mock<ITransaction<ChangeTicketsCommand>>();
+            var cancelTicketsTransaction = new Mock<ITransaction<CancelTicketsRequest>>();
 
             var request = new CreateServiceRequest();
             request.UserId = Guid.NewGuid();

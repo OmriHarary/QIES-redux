@@ -7,7 +7,7 @@ using QIES.Core.Users;
 
 namespace QIES.Core.Services
 {
-    public class CancelTicketsTransaction : ITransaction<CancelTicketsRequest, TransactionRecord>
+    public class CancelTicketsTransaction : ITransaction<CancelTicketsRequest>
     {
         private const TransactionCode Code = TransactionCode.CAN;
         private readonly ILogger<CancelTicketsTransaction> logger;

@@ -8,7 +8,7 @@ using QIES.Core.Users;
 
 namespace QIES.Core.Services
 {
-    public class CreateServiceTransaction : ITransaction<CreateServiceRequest, TransactionRecord>
+    public class CreateServiceTransaction : ITransaction<CreateServiceRequest>
     {
         private const TransactionCode Code = TransactionCode.CRE;
         private readonly ILogger<CreateServiceTransaction> logger;

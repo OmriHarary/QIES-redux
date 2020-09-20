@@ -7,7 +7,7 @@ using QIES.Core.Users;
 
 namespace QIES.Core.Services
 {
-    public class SellTicketsTransaction : ITransaction<SellTicketsCommand, TransactionRecord>
+    public class SellTicketsTransaction : ITransaction<SellTicketsCommand>
     {
         private const TransactionCode Code = TransactionCode.SEL;
         private readonly ILogger<SellTicketsTransaction> logger;

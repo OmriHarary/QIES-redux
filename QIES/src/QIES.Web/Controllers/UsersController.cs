@@ -56,7 +56,7 @@ namespace QIES.Web.Controllers
         [HttpPost("logout")]
         public async Task<IActionResult> Logout(LogoutRequest request)
         {
-            var success = await logoutService.DoLogout(request.Id);
+            var success = await logoutService.DoLogout(request.UserId);
             if (success)
             {
                 return Ok();

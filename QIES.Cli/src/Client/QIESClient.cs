@@ -43,7 +43,7 @@ namespace QIES.Cli.Client
         public async Task LogoutAsync()
         {
             var request = new LogoutRequest();
-            request.Id = userId;
+            request.UserId = userId;
 
             using var response = await client.PostAsJsonAsync("/api/users/logout", request);
             response.EnsureSuccessStatusCode();

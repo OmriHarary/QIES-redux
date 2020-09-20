@@ -1,0 +1,263 @@
+using System;
+using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
+using Moq;
+using QIES.Api.Models;
+using QIES.Common.Record;
+using QIES.Core.Users;
+using Xunit;
+
+namespace QIES.Core.Services.Tests
+{
+    public class CancelTicketsTransactionTests
+    {
+        [Fact]
+        public async Task MakeTransaction_AsAgent_CorrectTransactionRecordCreated()
+        {
+            // Arrange
+            var serviceNum = "11111";
+            var serviceNumber = new ServiceNumber(serviceNum);
+            var numberTickets = "1";
+            var numTickets = 1;
+
+            var logger = new Mock<ILogger<CancelTicketsTransaction>>();
+            var userManager = new Mock<IUserManager>();
+            var transactionQueue = new Mock<ITransactionQueue>();
+            var agent = new Agent();
+
+            userManager.Setup(userManager => userManager.UserTransactionQueue(It.IsAny<Guid>()))
+                .Returns(transactionQueue.Object);
+            userManager.Setup(userManager => userManager.UserType(It.IsAny<Guid>()))
+                .Returns(LoginType.Agent);
+            userManager.Setup(userManager => userManager.User(It.IsAny<Guid>()))
+                .Returns(agent);
+
+            var request = new CancelTicketsRequest()
+            {
+                NumberTickets = numberTickets
+            };
+
+            var transaction = new CancelTicketsTransaction(logger.Object, userManager.Object);
+
+            // Act
+            var record = await transaction.MakeTransaction(serviceNum, request, Guid.NewGuid());
+
+            // Assert
+            var expectedRecord = new TransactionRecord(TransactionCode.CAN)
+            {
+                SourceNumber = serviceNumber,
+                NumberTickets = new NumberTickets(numTickets)
+            };
+
+            Assert.Equal(expectedRecord, record);
+            Assert.Equal(numTickets, agent.CancelledTickets[serviceNumber]);
+            Assert.Equal(numTickets, agent.TotalCancelledTickets);
+        }
+
+        [Fact]
+        public async Task MakeTransaction_AgentServiceLimitExceededSingleAsAgent_AgentLimitExceededExceptionThrown()
+        {
+            // Arrange
+            var serviceNum = "11111";
+            var serviceNumber = new ServiceNumber(serviceNum);
+            var numberTickets = "11";
+
+            var logger = new Mock<ILogger<CancelTicketsTransaction>>();
+            var userManager = new Mock<IUserManager>();
+            var transactionQueue = new Mock<ITransactionQueue>();
+            var agent = new Agent();
+
+            userManager.Setup(userManager => userManager.UserTransactionQueue(It.IsAny<Guid>()))
+                .Returns(transactionQueue.Object);
+            userManager.Setup(userManager => userManager.UserType(It.IsAny<Guid>()))
+                .Returns(LoginType.Agent);
+            userManager.Setup(userManager => userManager.User(It.IsAny<Guid>()))
+                .Returns(agent);
+
+            var request = new CancelTicketsRequest()
+            {
+                NumberTickets = numberTickets
+            };
+
+            var transaction = new CancelTicketsTransaction(logger.Object, userManager.Object);
+
+            // Act & Assert
+            await Assert.ThrowsAsync<AgentLimitExceededException>(() => transaction.MakeTransaction(serviceNum, request, Guid.NewGuid()));
+        }
+
+        [Fact]
+        public async Task MakeTransaction_AgentServiceLimitExceededMultipleAsAgent_AgentLimitExceededExceptionThrown()
+        {
+            // Arrange
+            var serviceNum = "11111";
+            var serviceNumber = new ServiceNumber(serviceNum);
+            var numberTickets = "3";
+
+            var logger = new Mock<ILogger<CancelTicketsTransaction>>();
+            var userManager = new Mock<IUserManager>();
+            var transactionQueue = new Mock<ITransactionQueue>();
+            var agent = new Agent();
+
+            userManager.Setup(userManager => userManager.UserTransactionQueue(It.IsAny<Guid>()))
+                .Returns(transactionQueue.Object);
+            userManager.Setup(userManager => userManager.UserType(It.IsAny<Guid>()))
+                .Returns(LoginType.Agent);
+            userManager.Setup(userManager => userManager.User(It.IsAny<Guid>()))
+                .Returns(agent);
+
+            var request = new CancelTicketsRequest()
+            {
+                NumberTickets = numberTickets
+            };
+
+            agent.CancelledTickets.Add(serviceNumber, 8);
+            var transaction = new CancelTicketsTransaction(logger.Object, userManager.Object);
+
+            // Act & Assert
+            await Assert.ThrowsAsync<AgentLimitExceededException>(() => transaction.MakeTransaction(serviceNum, request, Guid.NewGuid()));
+        }
+
+        [Fact]
+        public async Task MakeTransaction_AgentSessionLimitExceededAsAgent_AgentLimitExceededExceptionThrown()
+        {
+            // Arrange
+            var serviceNum = "11111";
+            var serviceNumber = new ServiceNumber(serviceNum);
+            var numberTickets = "5";
+
+            var logger = new Mock<ILogger<CancelTicketsTransaction>>();
+            var userManager = new Mock<IUserManager>();
+            var transactionQueue = new Mock<ITransactionQueue>();
+            var agent = new Agent();
+
+            userManager.Setup(userManager => userManager.UserTransactionQueue(It.IsAny<Guid>()))
+                .Returns(transactionQueue.Object);
+            userManager.Setup(userManager => userManager.UserType(It.IsAny<Guid>()))
+                .Returns(LoginType.Agent);
+            userManager.Setup(userManager => userManager.User(It.IsAny<Guid>()))
+                .Returns(agent);
+
+            var request = new CancelTicketsRequest()
+            {
+                NumberTickets = numberTickets
+            };
+
+            agent.TotalCancelledTickets = 16;
+            var transaction = new CancelTicketsTransaction(logger.Object, userManager.Object);
+
+            // Act & Assert
+            await Assert.ThrowsAsync<AgentLimitExceededException>(() => transaction.MakeTransaction(serviceNum, request, Guid.NewGuid()));
+        }
+
+        [Fact]
+        public async Task MakeTransaction_AgentServiceLimitExceededAsPlanner_NoExceptionThrown()
+        {
+            // Arrange
+            var serviceNum = "11111";
+            var serviceNumber = new ServiceNumber(serviceNum);
+            var numberTickets = "11";
+            var numTickets = 11;
+
+            var logger = new Mock<ILogger<CancelTicketsTransaction>>();
+            var userManager = new Mock<IUserManager>();
+            var transactionQueue = new Mock<ITransactionQueue>();
+            var planner = new Planner();
+
+            userManager.Setup(userManager => userManager.UserTransactionQueue(It.IsAny<Guid>()))
+                .Returns(transactionQueue.Object);
+            userManager.Setup(userManager => userManager.UserType(It.IsAny<Guid>()))
+                .Returns(LoginType.Planner);
+            userManager.Setup(userManager => userManager.User(It.IsAny<Guid>()))
+                .Returns(planner);
+
+            var request = new CancelTicketsRequest()
+            {
+                NumberTickets = numberTickets
+            };
+
+            var transaction = new CancelTicketsTransaction(logger.Object, userManager.Object);
+
+            // Act
+            var record = await transaction.MakeTransaction(serviceNum, request, Guid.NewGuid());
+
+            // Assert
+            var expectedRecord = new TransactionRecord(TransactionCode.CAN)
+            {
+                SourceNumber = serviceNumber,
+                NumberTickets = new NumberTickets(numTickets)
+            };
+
+            Assert.Equal(expectedRecord, record);
+        }
+
+        [Fact]
+        public async Task MakeTransaction_AgentSessionLimitExceededAsPlanner_NoExceptionThrown()
+        {
+            // Arrange
+            var serviceNum = "11111";
+            var serviceNumber = new ServiceNumber(serviceNum);
+            var numberTickets = "21";
+            int numTickets = 21;
+
+            var logger = new Mock<ILogger<CancelTicketsTransaction>>();
+            var userManager = new Mock<IUserManager>();
+            var transactionQueue = new Mock<ITransactionQueue>();
+            var planner = new Planner();
+
+            userManager.Setup(userManager => userManager.UserTransactionQueue(It.IsAny<Guid>()))
+                .Returns(transactionQueue.Object);
+            userManager.Setup(userManager => userManager.UserType(It.IsAny<Guid>()))
+                .Returns(LoginType.Planner);
+            userManager.Setup(userManager => userManager.User(It.IsAny<Guid>()))
+                .Returns(planner);
+
+            var request = new CancelTicketsRequest()
+            {
+                NumberTickets = numberTickets
+            };
+
+            var transaction = new CancelTicketsTransaction(logger.Object, userManager.Object);
+
+            // Act
+            var record = await transaction.MakeTransaction(serviceNum, request, Guid.NewGuid());
+
+            // Assert
+            var expectedRecord = new TransactionRecord(TransactionCode.CAN)
+            {
+                SourceNumber = serviceNumber,
+                NumberTickets = new NumberTickets(numTickets)
+            };
+
+            Assert.Equal(expectedRecord, record);
+        }
+
+        [Fact]
+        public async Task MakeTransaction_SameTransactionRecordPushedAsReturned()
+        {
+            // Arrange
+            var serviceNum = "11111";
+            var serviceNumber = new ServiceNumber(serviceNum);
+            var numberTickets = "1";
+
+            var logger = new Mock<ILogger<CancelTicketsTransaction>>();
+            var userManager = new Mock<IUserManager>();
+            var transactionQueue = new Mock<ITransactionQueue>();
+
+            userManager.Setup(userManager => userManager.UserTransactionQueue(It.IsAny<Guid>()))
+                .Returns(transactionQueue.Object);
+
+            var request = new CancelTicketsRequest()
+            {
+                NumberTickets = numberTickets
+            };
+
+            var transaction = new CancelTicketsTransaction(logger.Object, userManager.Object);
+
+            // Act
+            var record = await transaction.MakeTransaction(serviceNum, request, Guid.NewGuid());
+
+            // Assert
+            transactionQueue.Verify(transactionQueue => transactionQueue.Push(record));
+        }
+    }
+}

@@ -6,12 +6,12 @@ namespace QIES.Core.Users
     public class Agent : User
     {
         public int ChangedTickets { get; set; }
-        private int totalCancelledTickets;
-        private readonly Dictionary<ServiceNumber, int> cancelledTickets;
+        public int TotalCancelledTickets { get; set; }
+        public Dictionary<ServiceNumber, int> CancelledTickets { get; private set; }
 
         public Agent() : base(LoginType.Agent)
         {
-            this.cancelledTickets = new Dictionary<ServiceNumber, int>();
+            this.CancelledTickets = new Dictionary<ServiceNumber, int>();
         }
     }
 }

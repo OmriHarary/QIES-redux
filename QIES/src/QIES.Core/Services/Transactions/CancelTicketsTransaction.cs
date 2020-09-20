@@ -25,6 +25,27 @@ namespace QIES.Core.Services
             record.SourceNumber = new ServiceNumber(serviceNumber);
             record.NumberTickets = new NumberTickets(int.Parse(request.NumberTickets));
 
+            if (userManager.UserType(userId) == LoginType.Agent && userManager.User(userId) is Agent agent)
+            {
+                if (!agent.CancelledTickets.ContainsKey(record.SourceNumber))
+                {
+                    agent.CancelledTickets.Add(record.SourceNumber, 0);
+                }
+                if (agent.CancelledTickets[record.SourceNumber] + record.NumberTickets.Number > 10)
+                {
+                    throw new AgentLimitExceededException("Cannot cancel more then 10 tickets for a single service." +
+                        $" User has {10 - agent.CancelledTickets[record.SourceNumber]} tickets left to cancel for this service.");
+                }
+                if (agent.TotalCancelledTickets + record.NumberTickets.Number > 20)
+                {
+                    throw new AgentLimitExceededException("Cannot cancel as total session canceled tickets would be over 20." +
+                        $" User has {20 - agent.TotalCancelledTickets} tickets left to cancel this session.");
+                }
+
+                agent.CancelledTickets[record.SourceNumber] += record.NumberTickets.Number;
+                agent.TotalCancelledTickets += record.NumberTickets.Number;
+            }
+
             userManager.UserTransactionQueue(userId).Push(record);
 
             return record;

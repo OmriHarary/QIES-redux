@@ -200,9 +200,15 @@ namespace QIES.Web.Controllers
                     return NotFound();
                 }
 
-                var record = await cancelTicketsTransaction.MakeTransaction(id, request, userId);
-
-                return Ok(record);
+                try
+                {
+                    var record = await cancelTicketsTransaction.MakeTransaction(id, request, userId);
+                    return Ok(record);
+                }
+                catch (AgentLimitExceededException e)
+                {
+                    return Problem(detail: e.Message, statusCode: Status429TooManyRequests, title: "Limit Exceeded");
+                }
             }
             logger.LogWarning("Could not cancel tickets. User unauthenticated");
             return Unauthorized();

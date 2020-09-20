@@ -24,11 +24,11 @@ namespace QIES.Core.Services
         public async Task<bool> DoLogout(Guid id)
         {
             var (success, transactionQueue) = userManager.UserLogout(id);
-            if (success)
+            if (success && transactionQueue is not null)
             {
                 transactionQueue.Push(new TransactionRecord(Code));
+                await summaryWriter.WriteTransactionSummaryFile(transactionQueue, $"{id}.txt");
             }
-            await summaryWriter.WriteTransactionSummaryFile(transactionQueue, $"{id}.txt");
             return success;
         }
     }

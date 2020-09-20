@@ -30,11 +30,11 @@ namespace QIES.Infra
             return agent;
         }
 
-        public (bool, ITransactionQueue) UserLogout(Guid userId)
+        public (bool, ITransactionQueue?) UserLogout(Guid userId)
         {
             (User user, TransactionQueue tq) userTuple;
             var success = users.TryRemove(userId, out userTuple);
-            return (success, userTuple.tq);
+            return (success, (success ? userTuple.tq : null));
         }
 
         public LoginType UserType(Guid userId)

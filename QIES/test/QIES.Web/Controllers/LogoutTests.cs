@@ -54,7 +54,7 @@ namespace QIES.Web.Controllers.Tests
             var result = await controller.Logout(logoutRequest);
 
             // Assert
-            Assert.IsType<OkResult>(result);
+            Assert.IsType<BadRequestResult>(result);
         }
     }
 }

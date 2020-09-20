@@ -43,6 +43,12 @@ namespace QIES.Infra
             return users.TryGetValue(userId, out userTuple) ? userTuple.user.Type : LoginType.None;
         }
 
+        public User User(Guid userId)
+        {
+            var (user, _) = users[userId];
+            return user;
+        }
+
         public ITransactionQueue UserTransactionQueue(Guid userId)
         {
             var (_, transactionQueue) = users[userId];

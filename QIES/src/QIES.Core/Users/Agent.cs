@@ -5,7 +5,7 @@ namespace QIES.Core.Users
 {
     public class Agent : User
     {
-        private int changedTickets;
+        public int ChangedTickets { get; set; }
         private int totalCancelledTickets;
         private readonly Dictionary<ServiceNumber, int> cancelledTickets;
 

@@ -4,9 +4,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Moq;
 using QIES.Api.Models;
-using QIES.Common;
 using QIES.Common.Record;
 using QIES.Core;
+using QIES.Core.Commands;
 using QIES.Core.Services;
 using QIES.Core.Users;
 using Xunit;
@@ -29,7 +29,8 @@ namespace QIES.Web.Controllers.Tests
             var userManager = new Mock<IUserManager>();
             var createServiceTransaction = new Mock<ITransaction<CreateServiceRequest, TransactionRecord>>();
             var deleteServiceTransaction = new Mock<ITransaction<DeleteServiceRequest, TransactionRecord>>();
-            var sellOrChangeTicketsTransaction = new Mock<ITransaction<SellOrChangeTicketsRequest, TransactionRecord>>();
+            var sellTicketsTransaction = new Mock<ITransaction<SellTicketsCommand, TransactionRecord>>();
+            var changeTicketsTransaction = new Mock<ITransaction<ChangeTicketsCommand, TransactionRecord>>();
             var cancelTicketsTransaction = new Mock<ITransaction<CancelTicketsRequest, TransactionRecord>>();
 
             var request = new CreateServiceRequest();
@@ -58,7 +59,8 @@ namespace QIES.Web.Controllers.Tests
                 userManager.Object,
                 createServiceTransaction.Object,
                 deleteServiceTransaction.Object,
-                sellOrChangeTicketsTransaction.Object,
+                sellTicketsTransaction.Object,
+                changeTicketsTransaction.Object,
                 cancelTicketsTransaction.Object);
 
             // Act
@@ -78,7 +80,8 @@ namespace QIES.Web.Controllers.Tests
             var userManager = new Mock<IUserManager>();
             var createServiceTransaction = new Mock<ITransaction<CreateServiceRequest, TransactionRecord>>();
             var deleteServiceTransaction = new Mock<ITransaction<DeleteServiceRequest, TransactionRecord>>();
-            var sellOrChangeTicketsTransaction = new Mock<ITransaction<SellOrChangeTicketsRequest, TransactionRecord>>();
+            var sellTicketsTransaction = new Mock<ITransaction<SellTicketsCommand, TransactionRecord>>();
+            var changeTicketsTransaction = new Mock<ITransaction<ChangeTicketsCommand, TransactionRecord>>();
             var cancelTicketsTransaction = new Mock<ITransaction<CancelTicketsRequest, TransactionRecord>>();
 
             var request = new CreateServiceRequest();
@@ -95,7 +98,8 @@ namespace QIES.Web.Controllers.Tests
                 userManager.Object,
                 createServiceTransaction.Object,
                 deleteServiceTransaction.Object,
-                sellOrChangeTicketsTransaction.Object,
+                sellTicketsTransaction.Object,
+                changeTicketsTransaction.Object,
                 cancelTicketsTransaction.Object);
 
             // Act
@@ -115,7 +119,8 @@ namespace QIES.Web.Controllers.Tests
             var userManager = new Mock<IUserManager>();
             var createServiceTransaction = new Mock<ITransaction<CreateServiceRequest, TransactionRecord>>();
             var deleteServiceTransaction = new Mock<ITransaction<DeleteServiceRequest, TransactionRecord>>();
-            var sellOrChangeTicketsTransaction = new Mock<ITransaction<SellOrChangeTicketsRequest, TransactionRecord>>();
+            var sellTicketsTransaction = new Mock<ITransaction<SellTicketsCommand, TransactionRecord>>();
+            var changeTicketsTransaction = new Mock<ITransaction<ChangeTicketsCommand, TransactionRecord>>();
             var cancelTicketsTransaction = new Mock<ITransaction<CancelTicketsRequest, TransactionRecord>>();
 
             var request = new CreateServiceRequest();
@@ -130,7 +135,8 @@ namespace QIES.Web.Controllers.Tests
                 userManager.Object,
                 createServiceTransaction.Object,
                 deleteServiceTransaction.Object,
-                sellOrChangeTicketsTransaction.Object,
+                sellTicketsTransaction.Object,
+                changeTicketsTransaction.Object,
                 cancelTicketsTransaction.Object);
 
             // Act
@@ -155,7 +161,8 @@ namespace QIES.Web.Controllers.Tests
             var userManager = new Mock<IUserManager>();
             var createServiceTransaction = new Mock<ITransaction<CreateServiceRequest, TransactionRecord>>();
             var deleteServiceTransaction = new Mock<ITransaction<DeleteServiceRequest, TransactionRecord>>();
-            var sellOrChangeTicketsTransaction = new Mock<ITransaction<SellOrChangeTicketsRequest, TransactionRecord>>();
+            var sellTicketsTransaction = new Mock<ITransaction<SellTicketsCommand, TransactionRecord>>();
+            var changeTicketsTransaction = new Mock<ITransaction<ChangeTicketsCommand, TransactionRecord>>();
             var cancelTicketsTransaction = new Mock<ITransaction<CancelTicketsRequest, TransactionRecord>>();
 
             var request = new CreateServiceRequest();
@@ -177,7 +184,8 @@ namespace QIES.Web.Controllers.Tests
                 userManager.Object,
                 createServiceTransaction.Object,
                 deleteServiceTransaction.Object,
-                sellOrChangeTicketsTransaction.Object,
+                sellTicketsTransaction.Object,
+                changeTicketsTransaction.Object,
                 cancelTicketsTransaction.Object);
 
             // Act

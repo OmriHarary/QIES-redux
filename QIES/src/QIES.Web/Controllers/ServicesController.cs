@@ -7,9 +7,12 @@ using QIES.Api.Models.Validation;
 using QIES.Common;
 using QIES.Common.Record;
 using QIES.Core;
+using QIES.Core.Commands;
 using QIES.Core.Services;
 using QIES.Core.Users;
+
 using static System.Net.Mime.MediaTypeNames;
+using static Microsoft.AspNetCore.Http.StatusCodes;
 
 namespace QIES.Web.Controllers
 {
@@ -24,7 +27,8 @@ namespace QIES.Web.Controllers
         private readonly IUserManager userManager;
         private ITransaction<CreateServiceRequest, TransactionRecord> createServiceTransaction;
         private ITransaction<DeleteServiceRequest, TransactionRecord> deleteServiceTransaction;
-        private ITransaction<SellOrChangeTicketsRequest, TransactionRecord> sellOrChangeTicketsTransaction;
+        private ITransaction<SellTicketsCommand, TransactionRecord> sellTicketsTransaction;
+        private ITransaction<ChangeTicketsCommand, TransactionRecord> changeTicketsTransaction;
         private ITransaction<CancelTicketsRequest, TransactionRecord> cancelTicketsTransaction;
 
         public ServicesController(
@@ -33,7 +37,8 @@ namespace QIES.Web.Controllers
                 IUserManager userManager,
                 ITransaction<CreateServiceRequest, TransactionRecord> createServiceTransaction,
                 ITransaction<DeleteServiceRequest, TransactionRecord> deleteServiceTransaction,
-                ITransaction<SellOrChangeTicketsRequest, TransactionRecord> sellOrChangeTicketsTransaction,
+                ITransaction<SellTicketsCommand, TransactionRecord> sellTicketsTransaction,
+                ITransaction<ChangeTicketsCommand, TransactionRecord> changeTicketsTransaction,
                 ITransaction<CancelTicketsRequest, TransactionRecord> cancelTicketsTransaction)
         {
             this.logger = logger;
@@ -41,7 +46,8 @@ namespace QIES.Web.Controllers
             this.userManager = userManager;
             this.createServiceTransaction = createServiceTransaction;
             this.deleteServiceTransaction = deleteServiceTransaction;
-            this.sellOrChangeTicketsTransaction = sellOrChangeTicketsTransaction;
+            this.sellTicketsTransaction = sellTicketsTransaction;
+            this.changeTicketsTransaction = changeTicketsTransaction;
             this.cancelTicketsTransaction = cancelTicketsTransaction;
         }
 
@@ -130,24 +136,49 @@ namespace QIES.Web.Controllers
             if (request.UserId is Guid userId && userManager.IsLoggedIn(userId))
             {
                 var serviceNumber = new ServiceNumber(id);
+                TransactionRecord record;
 
-                if (!servicesList.IsInList(serviceNumber))
+                if (request.SourceServiceNumber is null) // Sell
                 {
-                    logger.LogWarning("Could not sell or change tickets. No service found with number {serviceNumber}", serviceNumber);
-                    return NotFound();
+                    if (!servicesList.IsInList(serviceNumber))
+                    {
+                        logger.LogWarning("Could not sell or change tickets. No service found with number {serviceNumber}", serviceNumber);
+                        return NotFound();
+                    }
+
+                    var command = new SellTicketsCommand();
+                    command.NumberTickets = int.Parse(request.NumberTickets);
+
+                    record = await sellTicketsTransaction.MakeTransaction(id, command, userId);
                 }
-
-                if (request.SourceServiceNumber is not null)
+                else // Change. id is dest number
                 {
+                    if (!servicesList.IsInList(serviceNumber))
+                    {
+                        logger.LogWarning("Could not change tickets. No service found with number {destinationServiceNumber}", serviceNumber);
+                        return NotFound();
+                    }
+
                     var sourceServiceNumber = new ServiceNumber(request.SourceServiceNumber);
                     if (!servicesList.IsInList(sourceServiceNumber))
                     {
                         logger.LogWarning("Could not change tickets. No service found with number {sourceServiceNumber}", sourceServiceNumber);
                         return NotFound();
                     }
-                }
 
-                var record = await sellOrChangeTicketsTransaction.MakeTransaction(id, request, userId);
+                    var command = new ChangeTicketsCommand();
+                    command.SourceServiceNumber = request.SourceServiceNumber;
+                    command.NumberTickets = int.Parse(request.NumberTickets);
+
+                    try
+                    {
+                        record = await changeTicketsTransaction.MakeTransaction(id, command, userId);
+                    }
+                    catch (AgentLimitExceededException e)
+                    {
+                        return Problem(detail: e.Message, statusCode: Status429TooManyRequests, title: "Limit Exceeded");
+                    }
+                }
 
                 return Ok(record);
             }

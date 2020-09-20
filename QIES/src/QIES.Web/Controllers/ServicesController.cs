@@ -184,7 +184,7 @@ namespace QIES.Web.Controllers
         public async Task<ActionResult<TransactionRecord>> CancelTickets(
             [ServiceNumber] string id,
             CancelTicketsRequest request,
-            ITransaction<CancelTicketsRequest> transaction)
+            [FromServices] ITransaction<CancelTicketsRequest> transaction)
         {
             logger.LogInformation("CancelTickets requested for {serviceNumber}", id);
 

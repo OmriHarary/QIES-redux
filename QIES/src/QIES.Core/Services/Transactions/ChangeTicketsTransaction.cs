@@ -21,10 +21,12 @@ namespace QIES.Core.Services
 
         public async Task<TransactionRecord> MakeTransaction(string serviceNumber, ChangeTicketsCommand command, Guid userId)
         {
-            var record = new TransactionRecord(Code);
-            record.SourceNumber = new ServiceNumber(command.SourceServiceNumber);
-            record.DestinationNumber = new ServiceNumber(serviceNumber);
-            record.NumberTickets = new NumberTickets(command.NumberTickets);
+            var record = new TransactionRecord(Code)
+            {
+                SourceNumber = new ServiceNumber(command.SourceServiceNumber),
+                DestinationNumber = new ServiceNumber(serviceNumber),
+                NumberTickets = new NumberTickets(command.NumberTickets)
+            };
 
             if (userManager.UserType(userId) == LoginType.Agent && userManager.User(userId) is Agent agent)
             {

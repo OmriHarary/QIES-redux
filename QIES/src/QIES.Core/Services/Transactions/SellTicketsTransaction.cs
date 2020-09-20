@@ -21,9 +21,11 @@ namespace QIES.Core.Services
 
         public async Task<TransactionRecord> MakeTransaction(string serviceNumber, SellTicketsCommand command, Guid userId)
         {
-            var record = new TransactionRecord(Code);
-            record.SourceNumber = new ServiceNumber(serviceNumber);
-            record.NumberTickets = new NumberTickets(command.NumberTickets);
+            var record = new TransactionRecord(Code)
+            {
+                SourceNumber = new ServiceNumber(serviceNumber),
+                NumberTickets = new NumberTickets(command.NumberTickets)
+            };
 
             userManager.UserTransactionQueue(userId).Push(record);
 

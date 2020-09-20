@@ -6,7 +6,7 @@ namespace QIES.Infra
 {
     public class TransactionQueue : ITransactionQueue
     {
-        private ConcurrentQueue<TransactionRecord> records;
+        private readonly ConcurrentQueue<TransactionRecord> records;
 
         public TransactionQueue() => records = new ConcurrentQueue<TransactionRecord>();
 
@@ -14,11 +14,10 @@ namespace QIES.Infra
 
         public TransactionRecord Pop()
         {
-            TransactionRecord record;
-            records.TryDequeue(out record);
+            records.TryDequeue(out TransactionRecord record);
             return record;
         }
 
-        public bool IsEmpty() => records.Count == 0;
+        public bool IsEmpty() => records.IsEmpty;
     }
 }

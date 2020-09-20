@@ -32,9 +32,11 @@ namespace QIES.Web.Controllers.Tests
             var changeTicketsTransaction = new Mock<ITransaction<ChangeTicketsCommand>>();
             var cancelTicketsTransaction = new Mock<ITransaction<CancelTicketsRequest>>();
 
-            var request = new DeleteServiceRequest();
-            request.UserId = Guid.NewGuid();
-            request.ServiceName = serviceName;
+            var request = new DeleteServiceRequest
+            {
+                UserId = Guid.NewGuid(),
+                ServiceName = serviceName
+            };
 
             userManager.Setup(userManager => userManager.IsLoggedIn(It.IsAny<Guid>()))
                 .Returns(true);
@@ -80,9 +82,11 @@ namespace QIES.Web.Controllers.Tests
             var changeTicketsTransaction = new Mock<ITransaction<ChangeTicketsCommand>>();
             var cancelTicketsTransaction = new Mock<ITransaction<CancelTicketsRequest>>();
 
-            var request = new DeleteServiceRequest();
-            request.UserId = Guid.NewGuid();
-            request.ServiceName = serviceName;
+            var request = new DeleteServiceRequest
+            {
+                UserId = Guid.NewGuid(),
+                ServiceName = serviceName
+            };
 
             userManager.Setup(userManager => userManager.IsLoggedIn(It.IsAny<Guid>()))
                 .Returns(true);
@@ -120,9 +124,11 @@ namespace QIES.Web.Controllers.Tests
             var changeTicketsTransaction = new Mock<ITransaction<ChangeTicketsCommand>>();
             var cancelTicketsTransaction = new Mock<ITransaction<CancelTicketsRequest>>();
 
-            var request = new DeleteServiceRequest();
-            request.UserId = Guid.NewGuid();
-            request.ServiceName = serviceName;
+            var request = new DeleteServiceRequest
+            {
+                UserId = Guid.NewGuid(),
+                ServiceName = serviceName
+            };
 
             userManager.Setup(userManager => userManager.IsLoggedIn(It.IsAny<Guid>()))
                 .Returns(false);
@@ -157,9 +163,11 @@ namespace QIES.Web.Controllers.Tests
             var changeTicketsTransaction = new Mock<ITransaction<ChangeTicketsCommand>>();
             var cancelTicketsTransaction = new Mock<ITransaction<CancelTicketsRequest>>();
 
-            var request = new DeleteServiceRequest();
-            request.UserId = Guid.NewGuid();
-            request.ServiceName = newServiceName;
+            var request = new DeleteServiceRequest
+            {
+                UserId = Guid.NewGuid(),
+                ServiceName = newServiceName
+            };
 
             userManager.Setup(userManager => userManager.IsLoggedIn(It.IsAny<Guid>()))
                 .Returns(true);

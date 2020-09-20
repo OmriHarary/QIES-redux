@@ -29,9 +29,11 @@ namespace QIES.Web.Controllers.Tests
             var sellTicketsTransaction = new Mock<ITransaction<SellTicketsCommand>>();
             var changeTicketsTransaction = new Mock<ITransaction<ChangeTicketsCommand>>();
 
-            var request = new SellOrChangeTicketsRequest();
-            request.NumberTickets = numberTickets;
-            request.UserId = Guid.NewGuid();
+            var request = new SellOrChangeTicketsRequest
+            {
+                NumberTickets = numberTickets,
+                UserId = Guid.NewGuid()
+            };
 
             userManager.Setup(userManager => userManager.IsLoggedIn(It.IsAny<Guid>()))
                 .Returns(false);
@@ -63,9 +65,11 @@ namespace QIES.Web.Controllers.Tests
             var sellTicketsTransaction = new Mock<ITransaction<SellTicketsCommand>>();
             var changeTicketsTransaction = new Mock<ITransaction<ChangeTicketsCommand>>();
 
-            var request = new SellOrChangeTicketsRequest();
-            request.NumberTickets = numberTickets;
-            request.UserId = Guid.NewGuid();
+            var request = new SellOrChangeTicketsRequest
+            {
+                NumberTickets = numberTickets,
+                UserId = Guid.NewGuid()
+            };
 
             userManager.Setup(userManager => userManager.IsLoggedIn(It.IsAny<Guid>()))
                 .Returns(true);
@@ -115,10 +119,12 @@ namespace QIES.Web.Controllers.Tests
             var sellTicketsTransaction = new Mock<ITransaction<SellTicketsCommand>>();
             var changeTicketsTransaction = new Mock<ITransaction<ChangeTicketsCommand>>();
 
-            var request = new SellOrChangeTicketsRequest();
-            request.SourceServiceNumber = sourceNum;
-            request.NumberTickets = numberTickets;
-            request.UserId = Guid.NewGuid();
+            var request = new SellOrChangeTicketsRequest
+            {
+                SourceServiceNumber = sourceNum,
+                NumberTickets = numberTickets,
+                UserId = Guid.NewGuid()
+            };
 
             userManager.Setup(userManager => userManager.IsLoggedIn(It.IsAny<Guid>()))
                 .Returns(true);
@@ -169,9 +175,11 @@ namespace QIES.Web.Controllers.Tests
             var sellTicketsTransaction = new Mock<ITransaction<SellTicketsCommand>>();
             var changeTicketsTransaction = new Mock<ITransaction<ChangeTicketsCommand>>();
 
-            var request = new SellOrChangeTicketsRequest();
-            request.NumberTickets = numberTickets;
-            request.UserId = Guid.NewGuid();
+            var request = new SellOrChangeTicketsRequest
+            {
+                NumberTickets = numberTickets,
+                UserId = Guid.NewGuid()
+            };
 
             userManager.Setup(userManager => userManager.IsLoggedIn(It.IsAny<Guid>()))
                 .Returns(true);
@@ -207,10 +215,12 @@ namespace QIES.Web.Controllers.Tests
             var sellTicketsTransaction = new Mock<ITransaction<SellTicketsCommand>>();
             var changeTicketsTransaction = new Mock<ITransaction<ChangeTicketsCommand>>();
 
-            var request = new SellOrChangeTicketsRequest();
-            request.SourceServiceNumber = sourceNum;
-            request.NumberTickets = numberTickets;
-            request.UserId = Guid.NewGuid();
+            var request = new SellOrChangeTicketsRequest
+            {
+                SourceServiceNumber = sourceNum,
+                NumberTickets = numberTickets,
+                UserId = Guid.NewGuid()
+            };
 
             userManager.Setup(userManager => userManager.IsLoggedIn(It.IsAny<Guid>()))
                 .Returns(true);
@@ -248,10 +258,12 @@ namespace QIES.Web.Controllers.Tests
             var sellTicketsTransaction = new Mock<ITransaction<SellTicketsCommand>>();
             var changeTicketsTransaction = new Mock<ITransaction<ChangeTicketsCommand>>();
 
-            var request = new SellOrChangeTicketsRequest();
-            request.SourceServiceNumber = sourceNum;
-            request.NumberTickets = numberTickets;
-            request.UserId = Guid.NewGuid();
+            var request = new SellOrChangeTicketsRequest
+            {
+                SourceServiceNumber = sourceNum,
+                NumberTickets = numberTickets,
+                UserId = Guid.NewGuid()
+            };
 
             userManager.Setup(userManager => userManager.IsLoggedIn(It.IsAny<Guid>()))
                 .Returns(true);
@@ -289,10 +301,12 @@ namespace QIES.Web.Controllers.Tests
             var sellTicketsTransaction = new Mock<ITransaction<SellTicketsCommand>>();
             var changeTicketsTransaction = new Mock<ITransaction<ChangeTicketsCommand>>();
 
-            var request = new SellOrChangeTicketsRequest();
-            request.SourceServiceNumber = sourceNum;
-            request.NumberTickets = numberTickets;
-            request.UserId = Guid.NewGuid();
+            var request = new SellOrChangeTicketsRequest
+            {
+                SourceServiceNumber = sourceNum,
+                NumberTickets = numberTickets,
+                UserId = Guid.NewGuid()
+            };
 
             userManager.Setup(userManager => userManager.IsLoggedIn(It.IsAny<Guid>()))
                 .Returns(true);

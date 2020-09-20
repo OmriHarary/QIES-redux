@@ -22,15 +22,12 @@ namespace QIES.Core.Services
 
         public async Task<TransactionRecord> MakeTransaction(string serviceNumber, CreateServiceRequest request, Guid userId)
         {
-            var service = new Service();
-            service.ServiceNumber = new ServiceNumber(request.ServiceNumber);
-            service.ServiceName = new ServiceName(request.ServiceName);
-            // service.ServiceDate = new ServiceDate(request.ServiceDate);
-
-            var record = new TransactionRecord(Code);
-            record.SourceNumber = new ServiceNumber(request.ServiceNumber);
-            record.ServiceDate = new ServiceDate(request.ServiceDate);
-            record.ServiceName = new ServiceName(request.ServiceName);
+            var record = new TransactionRecord(Code)
+            {
+                SourceNumber = new ServiceNumber(request.ServiceNumber),
+                ServiceDate = new ServiceDate(request.ServiceDate),
+                ServiceName = new ServiceName(request.ServiceName)
+            };
 
             userManager.UserTransactionQueue(userId).Push(record);
 

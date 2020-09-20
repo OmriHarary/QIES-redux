@@ -24,8 +24,10 @@ namespace QIES.Web.Controllers.Tests
 
             var controller = new UsersController(logger.Object, loginService.Object, logoutService.Object);
 
-            var logoutRequest = new LogoutRequest();
-            logoutRequest.UserId = Guid.NewGuid();
+            var logoutRequest = new LogoutRequest
+            {
+                UserId = Guid.NewGuid()
+            };
 
             // Act
             var result = await controller.Logout(logoutRequest);
@@ -47,8 +49,10 @@ namespace QIES.Web.Controllers.Tests
 
             var controller = new UsersController(logger.Object, loginService.Object, logoutService.Object);
 
-            var logoutRequest = new LogoutRequest();
-            logoutRequest.UserId = Guid.NewGuid();
+            var logoutRequest = new LogoutRequest
+            {
+                UserId = Guid.NewGuid()
+            };
 
             // Act
             var result = await controller.Logout(logoutRequest);

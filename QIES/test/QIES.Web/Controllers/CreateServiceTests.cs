@@ -29,11 +29,13 @@ namespace QIES.Web.Controllers.Tests
             var userManager = new Mock<IUserManager>();
             var createServiceTransaction = new Mock<ITransaction<CreateServiceRequest>>();
 
-            var request = new CreateServiceRequest();
-            request.UserId = Guid.NewGuid();
-            request.ServiceNumber = newServiceNum;
-            request.ServiceName = newServiceName;
-            request.ServiceDate = newServiceDate;
+            var request = new CreateServiceRequest
+            {
+                UserId = Guid.NewGuid(),
+                ServiceNumber = newServiceNum,
+                ServiceName = newServiceName,
+                ServiceDate = newServiceDate
+            };
 
             userManager.Setup(userManager => userManager.IsLoggedIn(It.IsAny<Guid>()))
                 .Returns(true);
@@ -71,8 +73,10 @@ namespace QIES.Web.Controllers.Tests
             var userManager = new Mock<IUserManager>();
             var createServiceTransaction = new Mock<ITransaction<CreateServiceRequest>>();
 
-            var request = new CreateServiceRequest();
-            request.UserId = Guid.NewGuid();
+            var request = new CreateServiceRequest
+            {
+                UserId = Guid.NewGuid()
+            };
 
             userManager.Setup(userManager => userManager.IsLoggedIn(It.IsAny<Guid>()))
                 .Returns(true);
@@ -101,8 +105,10 @@ namespace QIES.Web.Controllers.Tests
             var userManager = new Mock<IUserManager>();
             var createServiceTransaction = new Mock<ITransaction<CreateServiceRequest>>();
 
-            var request = new CreateServiceRequest();
-            request.UserId = Guid.NewGuid();
+            var request = new CreateServiceRequest
+            {
+                UserId = Guid.NewGuid()
+            };
 
             userManager.Setup(userManager => userManager.IsLoggedIn(It.IsAny<Guid>()))
                 .Returns(false);
@@ -134,11 +140,13 @@ namespace QIES.Web.Controllers.Tests
             var userManager = new Mock<IUserManager>();
             var createServiceTransaction = new Mock<ITransaction<CreateServiceRequest>>();
 
-            var request = new CreateServiceRequest();
-            request.UserId = Guid.NewGuid();
-            request.ServiceNumber = newServiceNum;
-            request.ServiceName = newServiceName;
-            request.ServiceDate = newServiceDate;
+            var request = new CreateServiceRequest
+            {
+                UserId = Guid.NewGuid(),
+                ServiceNumber = newServiceNum,
+                ServiceName = newServiceName,
+                ServiceDate = newServiceDate
+            };
 
             userManager.Setup(userManager => userManager.IsLoggedIn(It.IsAny<Guid>()))
                 .Returns(true);

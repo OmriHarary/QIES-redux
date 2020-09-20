@@ -7,7 +7,6 @@ using Moq;
 using QIES.Api.Models;
 using QIES.Common.Record;
 using QIES.Core;
-using QIES.Core.Commands;
 using QIES.Core.Services;
 using QIES.Core.Users;
 using Xunit;
@@ -29,9 +28,11 @@ namespace QIES.Web.Controllers.Tests
             var userManager = new Mock<IUserManager>();
             var cancelTicketsTransaction = new Mock<ITransaction<CancelTicketsRequest>>();
 
-            var request = new CancelTicketsRequest();
-            request.NumberTickets = numberTickets;
-            request.UserId = Guid.NewGuid();
+            var request = new CancelTicketsRequest
+            {
+                NumberTickets = numberTickets,
+                UserId = Guid.NewGuid()
+            };
 
             userManager.Setup(userManager => userManager.IsLoggedIn(It.IsAny<Guid>()))
                 .Returns(true);
@@ -70,9 +71,11 @@ namespace QIES.Web.Controllers.Tests
             var userManager = new Mock<IUserManager>();
             var cancelTicketsTransaction = new Mock<ITransaction<CancelTicketsRequest>>();
 
-            var request = new CancelTicketsRequest();
-            request.NumberTickets = numberTickets;
-            request.UserId = Guid.NewGuid();
+            var request = new CancelTicketsRequest
+            {
+                NumberTickets = numberTickets,
+                UserId = Guid.NewGuid()
+            };
 
             userManager.Setup(userManager => userManager.IsLoggedIn(It.IsAny<Guid>()))
                 .Returns(false);
@@ -103,9 +106,11 @@ namespace QIES.Web.Controllers.Tests
             var userManager = new Mock<IUserManager>();
             var cancelTicketsTransaction = new Mock<ITransaction<CancelTicketsRequest>>();
 
-            var request = new CancelTicketsRequest();
-            request.NumberTickets = numberTickets;
-            request.UserId = Guid.NewGuid();
+            var request = new CancelTicketsRequest
+            {
+                NumberTickets = numberTickets,
+                UserId = Guid.NewGuid()
+            };
 
             userManager.Setup(userManager => userManager.IsLoggedIn(It.IsAny<Guid>()))
                 .Returns(true);
@@ -138,9 +143,11 @@ namespace QIES.Web.Controllers.Tests
             var userManager = new Mock<IUserManager>();
             var cancelTicketsTransaction = new Mock<ITransaction<CancelTicketsRequest>>();
 
-            var request = new CancelTicketsRequest();
-            request.NumberTickets = numberTickets;
-            request.UserId = Guid.NewGuid();
+            var request = new CancelTicketsRequest
+            {
+                NumberTickets = numberTickets,
+                UserId = Guid.NewGuid()
+            };
 
             userManager.Setup(userManager => userManager.IsLoggedIn(It.IsAny<Guid>()))
                 .Returns(true);
@@ -176,9 +183,11 @@ namespace QIES.Web.Controllers.Tests
             var userManager = new Mock<IUserManager>();
             var cancelTicketsTransaction = new Mock<ITransaction<CancelTicketsRequest>>();
 
-            var request = new CancelTicketsRequest();
-            request.NumberTickets = numberTickets;
-            request.UserId = Guid.NewGuid();
+            var request = new CancelTicketsRequest
+            {
+                NumberTickets = numberTickets,
+                UserId = Guid.NewGuid()
+            };
 
             userManager.Setup(userManager => userManager.IsLoggedIn(It.IsAny<Guid>()))
                 .Returns(true);

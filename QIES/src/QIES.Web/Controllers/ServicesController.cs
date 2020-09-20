@@ -140,8 +140,10 @@ namespace QIES.Web.Controllers
                         return NotFound();
                     }
 
-                    var command = new SellTicketsCommand();
-                    command.NumberTickets = int.Parse(request.NumberTickets);
+                    var command = new SellTicketsCommand
+                    {
+                        NumberTickets = int.Parse(request.NumberTickets)
+                    };
 
                     record = await sellTransaction.MakeTransaction(id, command, userId);
                 }
@@ -160,9 +162,11 @@ namespace QIES.Web.Controllers
                         return NotFound();
                     }
 
-                    var command = new ChangeTicketsCommand();
-                    command.SourceServiceNumber = request.SourceServiceNumber;
-                    command.NumberTickets = int.Parse(request.NumberTickets);
+                    var command = new ChangeTicketsCommand
+                    {
+                        SourceServiceNumber = request.SourceServiceNumber,
+                        NumberTickets = int.Parse(request.NumberTickets)
+                    };
 
                     try
                     {

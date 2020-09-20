@@ -17,8 +17,8 @@ namespace QIES.Web.Controllers
     public class UsersController : ControllerBase
     {
         private readonly ILogger<UsersController> logger;
-        private ILoginService loginService;
-        private ILogoutService logoutService;
+        private readonly ILoginService loginService;
+        private readonly ILogoutService logoutService;
 
         public UsersController(
                 ILogger<UsersController> logger,
@@ -46,9 +46,11 @@ namespace QIES.Web.Controllers
             }
 
             var user = await loginService.DoLogin(login);
-            var response = new LoginResponse();
-            response.Id = user.Id;
-            response.Type = (int)user.Type;
+            var response = new LoginResponse
+            {
+                Id = user.Id,
+                Type = (int)user.Type
+            };
 
             return Ok(response);
         }

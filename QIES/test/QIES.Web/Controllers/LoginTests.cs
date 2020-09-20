@@ -24,8 +24,10 @@ namespace QIES.Web.Controllers.Tests
 
             var controller = new UsersController(logger.Object, loginService.Object, logoutService.Object);
 
-            var loginRequest = new LoginRequest();
-            loginRequest.Login = "agent";
+            var loginRequest = new LoginRequest
+            {
+                Login = "agent"
+            };
 
             // Act
             var result = await controller.Login(loginRequest);
@@ -49,8 +51,10 @@ namespace QIES.Web.Controllers.Tests
 
             var controller = new UsersController(logger.Object, loginService.Object, logoutService.Object);
 
-            var loginRequest = new LoginRequest();
-            loginRequest.Login = "planner";
+            var loginRequest = new LoginRequest
+            {
+                Login = "planner"
+            };
 
             // Act
             var result = await controller.Login(loginRequest);
@@ -72,8 +76,10 @@ namespace QIES.Web.Controllers.Tests
 
             var controller = new UsersController(logger.Object, loginService.Object, logoutService.Object);
 
-            var loginRequest = new LoginRequest();
-            loginRequest.Login = "other";
+            var loginRequest = new LoginRequest
+            {
+                Login = "other"
+            };
 
             // Act
             var result = await controller.Login(loginRequest);

@@ -16,13 +16,13 @@ namespace QIES.Web.Controllers.Tests
         public async Task Login_AsAgent_Successful()
         {
             // Arrange
-            var stubLogger = new Mock<ILogger<UsersController>>();
-            var stubLogoutService = new Mock<ILogoutService>();
-            var mockLoginService = new Mock<ILoginService>();
-            mockLoginService.Setup(loginService => loginService.DoLogin(LoginType.Agent))
+            var logger = new Mock<ILogger<UsersController>>();
+            var logoutService = new Mock<ILogoutService>();
+            var loginService = new Mock<ILoginService>();
+            loginService.Setup(loginService => loginService.DoLogin(LoginType.Agent))
                 .ReturnsAsync(new Agent());
 
-            var controller = new UsersController(stubLogger.Object, mockLoginService.Object, stubLogoutService.Object);
+            var controller = new UsersController(logger.Object, loginService.Object, logoutService.Object);
 
             var loginRequest = new LoginRequest();
             loginRequest.Login = "agent";
@@ -41,13 +41,13 @@ namespace QIES.Web.Controllers.Tests
         public async Task Login_AsPlanner_Successful()
         {
             // Arrange
-            var stubLogger = new Mock<ILogger<UsersController>>();
-            var stubLogoutService = new Mock<ILogoutService>();
-            var mockLoginService = new Mock<ILoginService>();
-            mockLoginService.Setup(loginService => loginService.DoLogin(LoginType.Planner))
+            var logger = new Mock<ILogger<UsersController>>();
+            var logoutService = new Mock<ILogoutService>();
+            var loginService = new Mock<ILoginService>();
+            loginService.Setup(loginService => loginService.DoLogin(LoginType.Planner))
                 .ReturnsAsync(new Planner());
 
-            var controller = new UsersController(stubLogger.Object, mockLoginService.Object, stubLogoutService.Object);
+            var controller = new UsersController(logger.Object, loginService.Object, logoutService.Object);
 
             var loginRequest = new LoginRequest();
             loginRequest.Login = "planner";
@@ -66,11 +66,11 @@ namespace QIES.Web.Controllers.Tests
         public async Task Login_AsAnythingElse_BadRequest()
         {
             // Arrange
-            var stubLogger = new Mock<ILogger<UsersController>>();
-            var stubLogoutService = new Mock<ILogoutService>();
-            var stubLoginService = new Mock<ILoginService>();
+            var logger = new Mock<ILogger<UsersController>>();
+            var logoutService = new Mock<ILogoutService>();
+            var loginService = new Mock<ILoginService>();
 
-            var controller = new UsersController(stubLogger.Object, stubLoginService.Object, stubLogoutService.Object);
+            var controller = new UsersController(logger.Object, loginService.Object, logoutService.Object);
 
             var loginRequest = new LoginRequest();
             loginRequest.Login = "other";

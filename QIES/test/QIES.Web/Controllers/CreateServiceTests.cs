@@ -28,10 +28,6 @@ namespace QIES.Web.Controllers.Tests
             var servicesList = new Mock<IServicesList>();
             var userManager = new Mock<IUserManager>();
             var createServiceTransaction = new Mock<ITransaction<CreateServiceRequest>>();
-            var deleteServiceTransaction = new Mock<ITransaction<DeleteServiceRequest>>();
-            var sellTicketsTransaction = new Mock<ITransaction<SellTicketsCommand>>();
-            var changeTicketsTransaction = new Mock<ITransaction<ChangeTicketsCommand>>();
-            var cancelTicketsTransaction = new Mock<ITransaction<CancelTicketsRequest>>();
 
             var request = new CreateServiceRequest();
             request.UserId = Guid.NewGuid();
@@ -56,15 +52,10 @@ namespace QIES.Web.Controllers.Tests
             var controller = new ServicesController(
                 logger.Object,
                 servicesList.Object,
-                userManager.Object,
-                createServiceTransaction.Object,
-                deleteServiceTransaction.Object,
-                sellTicketsTransaction.Object,
-                changeTicketsTransaction.Object,
-                cancelTicketsTransaction.Object);
+                userManager.Object);
 
             // Act
-            var result = await controller.CreateService(request);
+            var result = await controller.CreateService(request, createServiceTransaction.Object);
 
             // Assert
             var actionResult = Assert.IsType<ActionResult<TransactionRecord>>(result);
@@ -79,10 +70,6 @@ namespace QIES.Web.Controllers.Tests
             var servicesList = new Mock<IServicesList>();
             var userManager = new Mock<IUserManager>();
             var createServiceTransaction = new Mock<ITransaction<CreateServiceRequest>>();
-            var deleteServiceTransaction = new Mock<ITransaction<DeleteServiceRequest>>();
-            var sellTicketsTransaction = new Mock<ITransaction<SellTicketsCommand>>();
-            var changeTicketsTransaction = new Mock<ITransaction<ChangeTicketsCommand>>();
-            var cancelTicketsTransaction = new Mock<ITransaction<CancelTicketsRequest>>();
 
             var request = new CreateServiceRequest();
             request.UserId = Guid.NewGuid();
@@ -95,15 +82,10 @@ namespace QIES.Web.Controllers.Tests
             var controller = new ServicesController(
                 logger.Object,
                 servicesList.Object,
-                userManager.Object,
-                createServiceTransaction.Object,
-                deleteServiceTransaction.Object,
-                sellTicketsTransaction.Object,
-                changeTicketsTransaction.Object,
-                cancelTicketsTransaction.Object);
+                userManager.Object);
 
             // Act
-            var result = await controller.CreateService(request);
+            var result = await controller.CreateService(request, createServiceTransaction.Object);
 
             // Assert
             var actionResult = Assert.IsType<ActionResult<TransactionRecord>>(result);
@@ -118,10 +100,6 @@ namespace QIES.Web.Controllers.Tests
             var servicesList = new Mock<IServicesList>();
             var userManager = new Mock<IUserManager>();
             var createServiceTransaction = new Mock<ITransaction<CreateServiceRequest>>();
-            var deleteServiceTransaction = new Mock<ITransaction<DeleteServiceRequest>>();
-            var sellTicketsTransaction = new Mock<ITransaction<SellTicketsCommand>>();
-            var changeTicketsTransaction = new Mock<ITransaction<ChangeTicketsCommand>>();
-            var cancelTicketsTransaction = new Mock<ITransaction<CancelTicketsRequest>>();
 
             var request = new CreateServiceRequest();
             request.UserId = Guid.NewGuid();
@@ -132,15 +110,10 @@ namespace QIES.Web.Controllers.Tests
             var controller = new ServicesController(
                 logger.Object,
                 servicesList.Object,
-                userManager.Object,
-                createServiceTransaction.Object,
-                deleteServiceTransaction.Object,
-                sellTicketsTransaction.Object,
-                changeTicketsTransaction.Object,
-                cancelTicketsTransaction.Object);
+                userManager.Object);
 
             // Act
-            var result = await controller.CreateService(request);
+            var result = await controller.CreateService(request, createServiceTransaction.Object);
 
             // Assert
             var actionResult = Assert.IsType<ActionResult<TransactionRecord>>(result);
@@ -160,10 +133,6 @@ namespace QIES.Web.Controllers.Tests
             var servicesList = new Mock<IServicesList>();
             var userManager = new Mock<IUserManager>();
             var createServiceTransaction = new Mock<ITransaction<CreateServiceRequest>>();
-            var deleteServiceTransaction = new Mock<ITransaction<DeleteServiceRequest>>();
-            var sellTicketsTransaction = new Mock<ITransaction<SellTicketsCommand>>();
-            var changeTicketsTransaction = new Mock<ITransaction<ChangeTicketsCommand>>();
-            var cancelTicketsTransaction = new Mock<ITransaction<CancelTicketsRequest>>();
 
             var request = new CreateServiceRequest();
             request.UserId = Guid.NewGuid();
@@ -181,15 +150,10 @@ namespace QIES.Web.Controllers.Tests
             var controller = new ServicesController(
                 logger.Object,
                 servicesList.Object,
-                userManager.Object,
-                createServiceTransaction.Object,
-                deleteServiceTransaction.Object,
-                sellTicketsTransaction.Object,
-                changeTicketsTransaction.Object,
-                cancelTicketsTransaction.Object);
+                userManager.Object);
 
             // Act
-            var result = await controller.CreateService(request);
+            var result = await controller.CreateService(request, createServiceTransaction.Object);
 
             // Assert
             var actionResult = Assert.IsType<ActionResult<TransactionRecord>>(result);

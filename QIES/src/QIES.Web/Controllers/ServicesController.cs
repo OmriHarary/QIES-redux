@@ -25,30 +25,15 @@ namespace QIES.Web.Controllers
         private readonly ILogger<ServicesController> logger;
         private readonly IServicesList servicesList;
         private readonly IUserManager userManager;
-        private ITransaction<CreateServiceRequest> createServiceTransaction;
-        private ITransaction<DeleteServiceRequest> deleteServiceTransaction;
-        private ITransaction<SellTicketsCommand> sellTicketsTransaction;
-        private ITransaction<ChangeTicketsCommand> changeTicketsTransaction;
-        private ITransaction<CancelTicketsRequest> cancelTicketsTransaction;
 
         public ServicesController(
-                ILogger<ServicesController> logger,
-                IServicesList servicesList,
-                IUserManager userManager,
-                ITransaction<CreateServiceRequest> createServiceTransaction,
-                ITransaction<DeleteServiceRequest> deleteServiceTransaction,
-                ITransaction<SellTicketsCommand> sellTicketsTransaction,
-                ITransaction<ChangeTicketsCommand> changeTicketsTransaction,
-                ITransaction<CancelTicketsRequest> cancelTicketsTransaction)
+            ILogger<ServicesController> logger,
+            IServicesList servicesList,
+            IUserManager userManager)
         {
             this.logger = logger;
             this.servicesList = servicesList;
             this.userManager = userManager;
-            this.createServiceTransaction = createServiceTransaction;
-            this.deleteServiceTransaction = deleteServiceTransaction;
-            this.sellTicketsTransaction = sellTicketsTransaction;
-            this.changeTicketsTransaction = changeTicketsTransaction;
-            this.cancelTicketsTransaction = cancelTicketsTransaction;
         }
 
         // [HttpGet]
@@ -71,7 +56,9 @@ namespace QIES.Web.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<TransactionRecord>> CreateService(CreateServiceRequest request)
+        public async Task<ActionResult<TransactionRecord>> CreateService(
+            CreateServiceRequest request,
+            [FromServices] ITransaction<CreateServiceRequest> transaction)
         {
             logger.LogInformation("CreateService requested for {serviceNumber}", request.ServiceNumber);
 
@@ -91,7 +78,7 @@ namespace QIES.Web.Controllers
                     return Conflict();
                 }
 
-                var record = await createServiceTransaction.MakeTransaction(request.ServiceNumber, request, userId);
+                var record = await transaction.MakeTransaction(request.ServiceNumber, request, userId);
                 return CreatedAtAction(nameof(GetService), new { id = serviceNumber }, record);
             }
             logger.LogWarning("Could not create service. User unauthenticated");
@@ -99,7 +86,10 @@ namespace QIES.Web.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<ActionResult<TransactionRecord>> DeleteService([ServiceNumber] string id, DeleteServiceRequest request)
+        public async Task<ActionResult<TransactionRecord>> DeleteService(
+            [ServiceNumber] string id,
+            DeleteServiceRequest request,
+            [FromServices] ITransaction<DeleteServiceRequest> transaction)
         {
             logger.LogInformation("DeleteService requested for {serviceNumber}", id);
 
@@ -119,7 +109,7 @@ namespace QIES.Web.Controllers
                     return NotFound();
                 }
 
-                var record = await deleteServiceTransaction.MakeTransaction(id, request, userId);
+                var record = await transaction.MakeTransaction(id, request, userId);
                 servicesList.DeleteService(serviceNumber);
 
                 return Ok(record);
@@ -129,7 +119,11 @@ namespace QIES.Web.Controllers
         }
 
         [HttpPost("{id}/tickets")]
-        public async Task<ActionResult<TransactionRecord>> SellOrChangeTickets([ServiceNumber] string id, SellOrChangeTicketsRequest request)
+        public async Task<ActionResult<TransactionRecord>> SellOrChangeTickets(
+            [ServiceNumber] string id,
+            SellOrChangeTicketsRequest request,
+            [FromServices] ITransaction<SellTicketsCommand> sellTransaction,
+            [FromServices] ITransaction<ChangeTicketsCommand> changeTransaction)
         {
             logger.LogInformation("SellOrChangeTickets requested for {serviceNumber}", id);
 
@@ -149,7 +143,7 @@ namespace QIES.Web.Controllers
                     var command = new SellTicketsCommand();
                     command.NumberTickets = int.Parse(request.NumberTickets);
 
-                    record = await sellTicketsTransaction.MakeTransaction(id, command, userId);
+                    record = await sellTransaction.MakeTransaction(id, command, userId);
                 }
                 else // Change. id is dest number
                 {
@@ -172,7 +166,7 @@ namespace QIES.Web.Controllers
 
                     try
                     {
-                        record = await changeTicketsTransaction.MakeTransaction(id, command, userId);
+                        record = await changeTransaction.MakeTransaction(id, command, userId);
                     }
                     catch (AgentLimitExceededException e)
                     {
@@ -187,7 +181,10 @@ namespace QIES.Web.Controllers
         }
 
         [HttpDelete("{id}/tickets")]
-        public async Task<ActionResult<TransactionRecord>> CancelTickets([ServiceNumber] string id, CancelTicketsRequest request)
+        public async Task<ActionResult<TransactionRecord>> CancelTickets(
+            [ServiceNumber] string id,
+            CancelTicketsRequest request,
+            ITransaction<CancelTicketsRequest> transaction)
         {
             logger.LogInformation("CancelTickets requested for {serviceNumber}", id);
 
@@ -202,7 +199,7 @@ namespace QIES.Web.Controllers
 
                 try
                 {
-                    var record = await cancelTicketsTransaction.MakeTransaction(id, request, userId);
+                    var record = await transaction.MakeTransaction(id, request, userId);
                     return Ok(record);
                 }
                 catch (AgentLimitExceededException e)

@@ -52,15 +52,10 @@ namespace QIES.Web.Controllers.Tests
             var controller = new ServicesController(
                 logger.Object,
                 servicesList.Object,
-                userManager.Object,
-                createServiceTransaction.Object,
-                deleteServiceTransaction.Object,
-                sellTicketsTransaction.Object,
-                changeTicketsTransaction.Object,
-                cancelTicketsTransaction.Object);
+                userManager.Object);
 
             // Act
-            var result = await controller.DeleteService(serviceNum, request);
+            var result = await controller.DeleteService(serviceNum, request, deleteServiceTransaction.Object);
 
             // Assert
             var actionResult = Assert.IsType<ActionResult<TransactionRecord>>(result);
@@ -74,6 +69,7 @@ namespace QIES.Web.Controllers.Tests
             // Arrange
             var serviceNum = "11111";
             var serviceNumber = new ServiceNumber(serviceNum);
+            var serviceName = "A Service";
 
             var logger = new Mock<ILogger<ServicesController>>();
             var servicesList = new Mock<IServicesList>();
@@ -86,6 +82,7 @@ namespace QIES.Web.Controllers.Tests
 
             var request = new DeleteServiceRequest();
             request.UserId = Guid.NewGuid();
+            request.ServiceName = serviceName;
 
             userManager.Setup(userManager => userManager.IsLoggedIn(It.IsAny<Guid>()))
                 .Returns(true);
@@ -97,15 +94,10 @@ namespace QIES.Web.Controllers.Tests
             var controller = new ServicesController(
                 logger.Object,
                 servicesList.Object,
-                userManager.Object,
-                createServiceTransaction.Object,
-                deleteServiceTransaction.Object,
-                sellTicketsTransaction.Object,
-                changeTicketsTransaction.Object,
-                cancelTicketsTransaction.Object);
+                userManager.Object);
 
             // Act
-            var result = await controller.DeleteService(serviceNum, request);
+            var result = await controller.DeleteService(serviceNum, request, deleteServiceTransaction.Object);
 
             // Assert
             var actionResult = Assert.IsType<ActionResult<TransactionRecord>>(result);
@@ -116,6 +108,9 @@ namespace QIES.Web.Controllers.Tests
         public async Task DeleteService_NotLoggedIn_Unauthorized()
         {
             // Arrange
+            var serviceNum = "11111";
+            var serviceName = "A Service";
+
             var logger = new Mock<ILogger<ServicesController>>();
             var servicesList = new Mock<IServicesList>();
             var userManager = new Mock<IUserManager>();
@@ -125,8 +120,9 @@ namespace QIES.Web.Controllers.Tests
             var changeTicketsTransaction = new Mock<ITransaction<ChangeTicketsCommand>>();
             var cancelTicketsTransaction = new Mock<ITransaction<CancelTicketsRequest>>();
 
-            var request = new CreateServiceRequest();
+            var request = new DeleteServiceRequest();
             request.UserId = Guid.NewGuid();
+            request.ServiceName = serviceName;
 
             userManager.Setup(userManager => userManager.IsLoggedIn(It.IsAny<Guid>()))
                 .Returns(false);
@@ -134,15 +130,10 @@ namespace QIES.Web.Controllers.Tests
             var controller = new ServicesController(
                 logger.Object,
                 servicesList.Object,
-                userManager.Object,
-                createServiceTransaction.Object,
-                deleteServiceTransaction.Object,
-                sellTicketsTransaction.Object,
-                changeTicketsTransaction.Object,
-                cancelTicketsTransaction.Object);
+                userManager.Object);
 
             // Act
-            var result = await controller.CreateService(request);
+            var result = await controller.DeleteService(serviceNum, request, deleteServiceTransaction.Object);
 
             // Assert
             var actionResult = Assert.IsType<ActionResult<TransactionRecord>>(result);
@@ -180,15 +171,10 @@ namespace QIES.Web.Controllers.Tests
             var controller = new ServicesController(
                 logger.Object,
                 servicesList.Object,
-                userManager.Object,
-                createServiceTransaction.Object,
-                deleteServiceTransaction.Object,
-                sellTicketsTransaction.Object,
-                changeTicketsTransaction.Object,
-                cancelTicketsTransaction.Object);
+                userManager.Object);
 
             // Act
-            var result = await controller.DeleteService(serviceNum, request);
+            var result = await controller.DeleteService(serviceNum, request, deleteServiceTransaction.Object);
 
             // Assert
             var actionResult = Assert.IsType<ActionResult<TransactionRecord>>(result);

@@ -26,11 +26,8 @@ namespace QIES.Web.Controllers.Tests
             var logger = new Mock<ILogger<ServicesController>>();
             var servicesList = new Mock<IServicesList>();
             var userManager = new Mock<IUserManager>();
-            var createServiceTransaction = new Mock<ITransaction<CreateServiceRequest>>();
-            var deleteServiceTransaction = new Mock<ITransaction<DeleteServiceRequest>>();
             var sellTicketsTransaction = new Mock<ITransaction<SellTicketsCommand>>();
             var changeTicketsTransaction = new Mock<ITransaction<ChangeTicketsCommand>>();
-            var cancelTicketsTransaction = new Mock<ITransaction<CancelTicketsRequest>>();
 
             var request = new SellOrChangeTicketsRequest();
             request.NumberTickets = numberTickets;
@@ -42,15 +39,10 @@ namespace QIES.Web.Controllers.Tests
             var controller = new ServicesController(
                 logger.Object,
                 servicesList.Object,
-                userManager.Object,
-                createServiceTransaction.Object,
-                deleteServiceTransaction.Object,
-                sellTicketsTransaction.Object,
-                changeTicketsTransaction.Object,
-                cancelTicketsTransaction.Object);
+                userManager.Object);
 
             // Act
-            var result = await controller.SellOrChangeTickets(serviceNumber, request);
+            var result = await controller.SellOrChangeTickets(serviceNumber, request, sellTicketsTransaction.Object, changeTicketsTransaction.Object);
 
             // Assert
             var actionResult = Assert.IsType<ActionResult<TransactionRecord>>(result);
@@ -68,11 +60,8 @@ namespace QIES.Web.Controllers.Tests
             var logger = new Mock<ILogger<ServicesController>>();
             var servicesList = new Mock<IServicesList>();
             var userManager = new Mock<IUserManager>();
-            var createServiceTransaction = new Mock<ITransaction<CreateServiceRequest>>();
-            var deleteServiceTransaction = new Mock<ITransaction<DeleteServiceRequest>>();
             var sellTicketsTransaction = new Mock<ITransaction<SellTicketsCommand>>();
             var changeTicketsTransaction = new Mock<ITransaction<ChangeTicketsCommand>>();
-            var cancelTicketsTransaction = new Mock<ITransaction<CancelTicketsRequest>>();
 
             var request = new SellOrChangeTicketsRequest();
             request.NumberTickets = numberTickets;
@@ -93,15 +82,10 @@ namespace QIES.Web.Controllers.Tests
             var controller = new ServicesController(
                 logger.Object,
                 servicesList.Object,
-                userManager.Object,
-                createServiceTransaction.Object,
-                deleteServiceTransaction.Object,
-                sellTicketsTransaction.Object,
-                changeTicketsTransaction.Object,
-                cancelTicketsTransaction.Object);
+                userManager.Object);
 
             // Act
-            var result = await controller.SellOrChangeTickets(serviceNum, request);
+            var result = await controller.SellOrChangeTickets(serviceNum, request, sellTicketsTransaction.Object, changeTicketsTransaction.Object);
 
             // Assert
             sellTicketsTransaction.Verify();
@@ -128,11 +112,8 @@ namespace QIES.Web.Controllers.Tests
             var logger = new Mock<ILogger<ServicesController>>();
             var servicesList = new Mock<IServicesList>();
             var userManager = new Mock<IUserManager>();
-            var createServiceTransaction = new Mock<ITransaction<CreateServiceRequest>>();
-            var deleteServiceTransaction = new Mock<ITransaction<DeleteServiceRequest>>();
             var sellTicketsTransaction = new Mock<ITransaction<SellTicketsCommand>>();
             var changeTicketsTransaction = new Mock<ITransaction<ChangeTicketsCommand>>();
-            var cancelTicketsTransaction = new Mock<ITransaction<CancelTicketsRequest>>();
 
             var request = new SellOrChangeTicketsRequest();
             request.SourceServiceNumber = sourceNum;
@@ -157,15 +138,10 @@ namespace QIES.Web.Controllers.Tests
             var controller = new ServicesController(
                 logger.Object,
                 servicesList.Object,
-                userManager.Object,
-                createServiceTransaction.Object,
-                deleteServiceTransaction.Object,
-                sellTicketsTransaction.Object,
-                changeTicketsTransaction.Object,
-                cancelTicketsTransaction.Object);
+                userManager.Object);
 
             // Act
-            var result = await controller.SellOrChangeTickets(destinationNum, request);
+            var result = await controller.SellOrChangeTickets(destinationNum, request, sellTicketsTransaction.Object, changeTicketsTransaction.Object);
 
             // Assert
             changeTicketsTransaction.Verify();
@@ -190,11 +166,8 @@ namespace QIES.Web.Controllers.Tests
             var logger = new Mock<ILogger<ServicesController>>();
             var servicesList = new Mock<IServicesList>();
             var userManager = new Mock<IUserManager>();
-            var createServiceTransaction = new Mock<ITransaction<CreateServiceRequest>>();
-            var deleteServiceTransaction = new Mock<ITransaction<DeleteServiceRequest>>();
             var sellTicketsTransaction = new Mock<ITransaction<SellTicketsCommand>>();
             var changeTicketsTransaction = new Mock<ITransaction<ChangeTicketsCommand>>();
-            var cancelTicketsTransaction = new Mock<ITransaction<CancelTicketsRequest>>();
 
             var request = new SellOrChangeTicketsRequest();
             request.NumberTickets = numberTickets;
@@ -208,15 +181,10 @@ namespace QIES.Web.Controllers.Tests
             var controller = new ServicesController(
                 logger.Object,
                 servicesList.Object,
-                userManager.Object,
-                createServiceTransaction.Object,
-                deleteServiceTransaction.Object,
-                sellTicketsTransaction.Object,
-                changeTicketsTransaction.Object,
-                cancelTicketsTransaction.Object);
+                userManager.Object);
 
             // Act
-            var result = await controller.SellOrChangeTickets(serviceNum, request);
+            var result = await controller.SellOrChangeTickets(serviceNum, request, sellTicketsTransaction.Object, changeTicketsTransaction.Object);
 
             // Assert
             var actionResult = Assert.IsType<ActionResult<TransactionRecord>>(result);
@@ -236,11 +204,8 @@ namespace QIES.Web.Controllers.Tests
             var logger = new Mock<ILogger<ServicesController>>();
             var servicesList = new Mock<IServicesList>();
             var userManager = new Mock<IUserManager>();
-            var createServiceTransaction = new Mock<ITransaction<CreateServiceRequest>>();
-            var deleteServiceTransaction = new Mock<ITransaction<DeleteServiceRequest>>();
             var sellTicketsTransaction = new Mock<ITransaction<SellTicketsCommand>>();
             var changeTicketsTransaction = new Mock<ITransaction<ChangeTicketsCommand>>();
-            var cancelTicketsTransaction = new Mock<ITransaction<CancelTicketsRequest>>();
 
             var request = new SellOrChangeTicketsRequest();
             request.SourceServiceNumber = sourceNum;
@@ -257,15 +222,10 @@ namespace QIES.Web.Controllers.Tests
             var controller = new ServicesController(
                 logger.Object,
                 servicesList.Object,
-                userManager.Object,
-                createServiceTransaction.Object,
-                deleteServiceTransaction.Object,
-                sellTicketsTransaction.Object,
-                changeTicketsTransaction.Object,
-                cancelTicketsTransaction.Object);
+                userManager.Object);
 
             // Act
-            var result = await controller.SellOrChangeTickets(destinationNum, request);
+            var result = await controller.SellOrChangeTickets(destinationNum, request, sellTicketsTransaction.Object, changeTicketsTransaction.Object);
 
             // Assert
             var actionResult = Assert.IsType<ActionResult<TransactionRecord>>(result);
@@ -285,11 +245,8 @@ namespace QIES.Web.Controllers.Tests
             var logger = new Mock<ILogger<ServicesController>>();
             var servicesList = new Mock<IServicesList>();
             var userManager = new Mock<IUserManager>();
-            var createServiceTransaction = new Mock<ITransaction<CreateServiceRequest>>();
-            var deleteServiceTransaction = new Mock<ITransaction<DeleteServiceRequest>>();
             var sellTicketsTransaction = new Mock<ITransaction<SellTicketsCommand>>();
             var changeTicketsTransaction = new Mock<ITransaction<ChangeTicketsCommand>>();
-            var cancelTicketsTransaction = new Mock<ITransaction<CancelTicketsRequest>>();
 
             var request = new SellOrChangeTicketsRequest();
             request.SourceServiceNumber = sourceNum;
@@ -306,15 +263,10 @@ namespace QIES.Web.Controllers.Tests
             var controller = new ServicesController(
                 logger.Object,
                 servicesList.Object,
-                userManager.Object,
-                createServiceTransaction.Object,
-                deleteServiceTransaction.Object,
-                sellTicketsTransaction.Object,
-                changeTicketsTransaction.Object,
-                cancelTicketsTransaction.Object);
+                userManager.Object);
 
             // Act
-            var result = await controller.SellOrChangeTickets(destinationNum, request);
+            var result = await controller.SellOrChangeTickets(destinationNum, request, sellTicketsTransaction.Object, changeTicketsTransaction.Object);
 
             // Assert
             var actionResult = Assert.IsType<ActionResult<TransactionRecord>>(result);
@@ -334,11 +286,8 @@ namespace QIES.Web.Controllers.Tests
             var logger = new Mock<ILogger<ServicesController>>();
             var servicesList = new Mock<IServicesList>();
             var userManager = new Mock<IUserManager>();
-            var createServiceTransaction = new Mock<ITransaction<CreateServiceRequest>>();
-            var deleteServiceTransaction = new Mock<ITransaction<DeleteServiceRequest>>();
             var sellTicketsTransaction = new Mock<ITransaction<SellTicketsCommand>>();
             var changeTicketsTransaction = new Mock<ITransaction<ChangeTicketsCommand>>();
-            var cancelTicketsTransaction = new Mock<ITransaction<CancelTicketsRequest>>();
 
             var request = new SellOrChangeTicketsRequest();
             request.SourceServiceNumber = sourceNum;
@@ -357,15 +306,10 @@ namespace QIES.Web.Controllers.Tests
             var controller = new ServicesController(
                 logger.Object,
                 servicesList.Object,
-                userManager.Object,
-                createServiceTransaction.Object,
-                deleteServiceTransaction.Object,
-                sellTicketsTransaction.Object,
-                changeTicketsTransaction.Object,
-                cancelTicketsTransaction.Object);
+                userManager.Object);
 
             // Act
-            var result = await controller.SellOrChangeTickets(destinationNum, request);
+            var result = await controller.SellOrChangeTickets(destinationNum, request, sellTicketsTransaction.Object, changeTicketsTransaction.Object);
 
             // Assert
             var actionResult = Assert.IsType<ActionResult<TransactionRecord>>(result);

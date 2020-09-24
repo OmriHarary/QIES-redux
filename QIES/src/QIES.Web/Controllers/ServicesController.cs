@@ -67,7 +67,7 @@ namespace QIES.Web.Controllers
                 if (userManager.UserType(userId) != LoginType.Planner)
                 {
                     logger.LogWarning("CreateService requested by non-planner user {userId}", userId);
-                    return Forbid();
+                    return Problem(title: "Forbidden", statusCode: Status403Forbidden, detail: "Must be logged in as Planner to create services.");
                 }
 
                 var serviceNumber = new ServiceNumber(request.ServiceNumber);
@@ -98,7 +98,7 @@ namespace QIES.Web.Controllers
                 if (userManager.UserType(userId) != LoginType.Planner)
                 {
                     logger.LogWarning("DeleteService requested by non-planner user {userId}", userId);
-                    return Forbid();
+                    return Problem(title: "Forbidden", statusCode: Status403Forbidden, detail: "Must be logged in as Planner to delete services.");
                 }
 
                 var serviceNumber = new ServiceNumber(id);

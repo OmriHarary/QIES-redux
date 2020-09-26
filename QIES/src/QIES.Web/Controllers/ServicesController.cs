@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using QIES.Api.Models;
 using QIES.Api.Models.Validation;
-using QIES.Common;
 using QIES.Common.Record;
 using QIES.Core;
 using QIES.Core.Commands;
@@ -43,7 +42,11 @@ namespace QIES.Web.Controllers
         // }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<Service>> GetService([ServiceNumber] string id)
+        [ProducesResponseType(Status200OK)]
+        [ProducesResponseType(Status400BadRequest)]
+        [ProducesResponseType(Status404NotFound)]
+        [ProducesDefaultResponseType]
+        public async Task<IActionResult> GetService([ServiceNumber] string id)
         {
             var serviceNumber = new ServiceNumber(id);
 
@@ -55,7 +58,20 @@ namespace QIES.Web.Controllers
             return NotFound();
         }
 
+        /// <summary>
+        /// Create a new service.
+        /// </summary>
+        /// <param name="request"></param>
+        /// <param name="transaction"></param>
+        /// <returns></returns>
         [HttpPost]
+        [ProducesResponseType(Status201Created)]
+        [ProducesResponseType(Status400BadRequest)]
+        [ProducesResponseType(Status401Unauthorized)]
+        [ProducesResponseType(Status403Forbidden)]
+        [ProducesResponseType(Status404NotFound)]
+        [ProducesResponseType(Status409Conflict)]
+        [ProducesDefaultResponseType]
         public async Task<ActionResult<TransactionRecord>> CreateService(
             CreateServiceRequest request,
             [FromServices] ITransaction<CreateServiceRequest> transaction)
@@ -85,7 +101,21 @@ namespace QIES.Web.Controllers
             return Unauthorized();
         }
 
+        /// <summary>
+        /// Delete an existing service.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="request"></param>
+        /// <param name="transaction"></param>
+        /// <returns></returns>
         [HttpDelete("{id}")]
+        [ProducesResponseType(Status200OK)]
+        [ProducesResponseType(Status400BadRequest)]
+        [ProducesResponseType(Status401Unauthorized)]
+        [ProducesResponseType(Status403Forbidden)]
+        [ProducesResponseType(Status404NotFound)]
+        [ProducesResponseType(Status409Conflict)]
+        [ProducesDefaultResponseType]
         public async Task<ActionResult<TransactionRecord>> DeleteService(
             [ServiceNumber] string id,
             DeleteServiceRequest request,
@@ -118,7 +148,21 @@ namespace QIES.Web.Controllers
             return Unauthorized();
         }
 
+        /// <summary>
+        /// Sell tickets for an existing service, or change tickets from one service to another.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="request"></param>
+        /// <param name="sellTransaction"></param>
+        /// <param name="changeTransaction"></param>
+        /// <returns></returns>
         [HttpPost("{id}/tickets")]
+        [ProducesResponseType(Status200OK)]
+        [ProducesResponseType(Status400BadRequest)]
+        [ProducesResponseType(Status401Unauthorized)]
+        [ProducesResponseType(Status404NotFound)]
+        [ProducesResponseType(Status429TooManyRequests)]
+        [ProducesDefaultResponseType]
         public async Task<ActionResult<TransactionRecord>> SellOrChangeTickets(
             [ServiceNumber] string id,
             SellOrChangeTicketsRequest request,
@@ -184,7 +228,20 @@ namespace QIES.Web.Controllers
             return Unauthorized();
         }
 
+        /// <summary>
+        /// Cancel sold tickets.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="request"></param>
+        /// <param name="transaction"></param>
+        /// <returns></returns>
         [HttpDelete("{id}/tickets")]
+        [ProducesResponseType(Status200OK)]
+        [ProducesResponseType(Status400BadRequest)]
+        [ProducesResponseType(Status401Unauthorized)]
+        [ProducesResponseType(Status404NotFound)]
+        [ProducesResponseType(Status429TooManyRequests)]
+        [ProducesDefaultResponseType]
         public async Task<ActionResult<TransactionRecord>> CancelTickets(
             [ServiceNumber] string id,
             CancelTicketsRequest request,

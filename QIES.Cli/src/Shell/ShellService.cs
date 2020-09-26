@@ -4,6 +4,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using QIES.Cli.Client;
+using QIES.Core.Users;
 
 namespace QIES.Cli.Shell
 {
@@ -18,25 +19,25 @@ namespace QIES.Cli.Shell
         private readonly ILogger<ShellService> logger;
         private readonly QIESClient client;
         private readonly Input input;
-        private int activeLogin;
+        private LoginType activeLogin;
 
         public ShellService(ILogger<ShellService> logger, QIESClient client)
         {
             this.logger = logger;
             this.client = client;
             activeLogin = 0;
-            input = new Input(userPrompts[activeLogin].Prompt);
+            input = new Input(userPrompts[(int)activeLogin].Prompt);
         }
 
         public async Task<int> RunAsync()
         {
             var run = true;
-            var message = userPrompts[activeLogin].Message;
+            var message = userPrompts[(int)activeLogin].Message;
             string command;
 
             while (run)
             {
-                input.Prompt = userPrompts[activeLogin].Prompt;
+                input.Prompt = userPrompts[(int)activeLogin].Prompt;
                 command = input.TakeInput(message);
 
                 var (success, response) = command switch
@@ -54,7 +55,7 @@ namespace QIES.Cli.Shell
                 run = !(command == "exit" && success);
                 if (run)
                 {
-                    message = $"{response}\n{userPrompts[activeLogin].Message}";
+                    message = $"{response}\n{userPrompts[(int)activeLogin].Message}";
                 }
             }
 
@@ -64,7 +65,7 @@ namespace QIES.Cli.Shell
         private async Task<(bool, string)> Login()
         {
             var userType = input.TakeInput("Login as agent or planner.");
-            int newLogin;
+            LoginType newLogin;
             try
             {
                 newLogin = await client.LoginAsync(userType);
@@ -76,7 +77,7 @@ namespace QIES.Cli.Shell
             }
 
             activeLogin = newLogin;
-            var message = newLogin == 1 ? "Successfully logged in as Agent." : "Successfully logged in as Planner.";
+            var message = newLogin == LoginType.Agent ? "Successfully logged in as Agent." : "Successfully logged in as Planner.";
 
             return (true, message);
         }

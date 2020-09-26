@@ -53,7 +53,7 @@ namespace QIES.Web.Controllers
             var response = new LoginResponse
             {
                 Id = user.Id,
-                Type = (int)user.Type
+                Type = user.Type
             };
 
             return Ok(response);

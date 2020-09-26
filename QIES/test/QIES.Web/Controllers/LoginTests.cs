@@ -36,7 +36,7 @@ namespace QIES.Web.Controllers.Tests
             var actionResult = Assert.IsType<ActionResult<LoginResponse>>(result);
             var okObjectResult = Assert.IsType<OkObjectResult>(actionResult.Result);
             var response = Assert.IsType<LoginResponse>(okObjectResult.Value);
-            Assert.Equal((int)LoginType.Agent, response.Type);
+            Assert.Equal(LoginType.Agent, response.Type);
         }
 
         [Fact]
@@ -63,7 +63,7 @@ namespace QIES.Web.Controllers.Tests
             var actionResult = Assert.IsType<ActionResult<LoginResponse>>(result);
             var okObjectResult = Assert.IsType<OkObjectResult>(actionResult.Result);
             var response = Assert.IsType<LoginResponse>(okObjectResult.Value);
-            Assert.Equal((int)LoginType.Planner, response.Type);
+            Assert.Equal(LoginType.Planner, response.Type);
         }
 
         [Fact]

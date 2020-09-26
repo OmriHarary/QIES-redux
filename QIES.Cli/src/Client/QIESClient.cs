@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using QIES.Api.Models;
 using QIES.Api.Responses;
+using QIES.Core.Users;
 
 namespace QIES.Cli.Client
 {
@@ -26,7 +27,7 @@ namespace QIES.Cli.Client
         //     return response.IsSuccessStatusCode;
         // }
 
-        public async Task<int> LoginAsync(string loginType)
+        public async Task<LoginType> LoginAsync(string loginType)
         {
             var request = new LoginRequest();
             request.Login = loginType;

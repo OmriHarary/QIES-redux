@@ -2,7 +2,7 @@ using QIES.Api.Models.Validation;
 
 namespace QIES.Api.Models
 {
-    public class SellOrChangeTicketsRequest : AuthenticatedRequest
+    public class SellOrChangeTicketsRequest
     {
         [NumberTickets]
         public string NumberTickets { get; set; }

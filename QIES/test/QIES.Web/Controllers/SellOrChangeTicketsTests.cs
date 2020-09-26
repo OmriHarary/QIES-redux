@@ -22,6 +22,7 @@ namespace QIES.Web.Controllers.Tests
             // Arrange
             var serviceNumber = "11111";
             var numberTickets = "1";
+            var userId = Guid.NewGuid();
 
             var logger = new Mock<ILogger<ServicesController>>();
             var servicesList = new Mock<IServicesList>();
@@ -31,8 +32,7 @@ namespace QIES.Web.Controllers.Tests
 
             var request = new SellOrChangeTicketsRequest
             {
-                NumberTickets = numberTickets,
-                UserId = Guid.NewGuid()
+                NumberTickets = numberTickets
             };
 
             userManager.Setup(userManager => userManager.IsLoggedIn(It.IsAny<Guid>()))
@@ -44,7 +44,42 @@ namespace QIES.Web.Controllers.Tests
                 userManager.Object);
 
             // Act
-            var result = await controller.SellOrChangeTickets(serviceNumber, request, sellTicketsTransaction.Object, changeTicketsTransaction.Object);
+            var result = await controller.SellOrChangeTickets(serviceNumber, request, userId, sellTicketsTransaction.Object, changeTicketsTransaction.Object);
+
+            // Assert
+            var actionResult = Assert.IsType<ActionResult<TransactionRecord>>(result);
+            Assert.IsType<UnauthorizedResult>(actionResult.Result);
+        }
+
+        [Fact]
+        public async Task SellOrChangeTicket_NoUserId_Unauthorized()
+        {
+            // Arrange
+            var serviceNumber = "11111";
+            var numberTickets = "1";
+            Guid? userId = null;
+
+            var logger = new Mock<ILogger<ServicesController>>();
+            var servicesList = new Mock<IServicesList>();
+            var userManager = new Mock<IUserManager>();
+            var sellTicketsTransaction = new Mock<ITransaction<SellTicketsCommand>>();
+            var changeTicketsTransaction = new Mock<ITransaction<ChangeTicketsCommand>>();
+
+            var request = new SellOrChangeTicketsRequest
+            {
+                NumberTickets = numberTickets
+            };
+
+            userManager.Setup(userManager => userManager.IsLoggedIn(It.IsAny<Guid>()))
+                .Returns(false);
+
+            var controller = new ServicesController(
+                logger.Object,
+                servicesList.Object,
+                userManager.Object);
+
+            // Act
+            var result = await controller.SellOrChangeTickets(serviceNumber, request, userId, sellTicketsTransaction.Object, changeTicketsTransaction.Object);
 
             // Assert
             var actionResult = Assert.IsType<ActionResult<TransactionRecord>>(result);
@@ -58,6 +93,7 @@ namespace QIES.Web.Controllers.Tests
             var serviceNum = "11111";
             var serviceNumber = new ServiceNumber(serviceNum);
             var numberTickets = "1";
+            var userId = Guid.NewGuid();
 
             var logger = new Mock<ILogger<ServicesController>>();
             var servicesList = new Mock<IServicesList>();
@@ -67,8 +103,7 @@ namespace QIES.Web.Controllers.Tests
 
             var request = new SellOrChangeTicketsRequest
             {
-                NumberTickets = numberTickets,
-                UserId = Guid.NewGuid()
+                NumberTickets = numberTickets
             };
 
             userManager.Setup(userManager => userManager.IsLoggedIn(It.IsAny<Guid>()))
@@ -89,7 +124,7 @@ namespace QIES.Web.Controllers.Tests
                 userManager.Object);
 
             // Act
-            var result = await controller.SellOrChangeTickets(serviceNum, request, sellTicketsTransaction.Object, changeTicketsTransaction.Object);
+            var result = await controller.SellOrChangeTickets(serviceNum, request, userId, sellTicketsTransaction.Object, changeTicketsTransaction.Object);
 
             // Assert
             sellTicketsTransaction.Verify();
@@ -112,6 +147,7 @@ namespace QIES.Web.Controllers.Tests
             var destinationNum = "11112";
             var destinationServiceNumber = new ServiceNumber(destinationNum);
             var numberTickets = "1";
+            var userId = Guid.NewGuid();
 
             var logger = new Mock<ILogger<ServicesController>>();
             var servicesList = new Mock<IServicesList>();
@@ -122,8 +158,7 @@ namespace QIES.Web.Controllers.Tests
             var request = new SellOrChangeTicketsRequest
             {
                 SourceServiceNumber = sourceNum,
-                NumberTickets = numberTickets,
-                UserId = Guid.NewGuid()
+                NumberTickets = numberTickets
             };
 
             userManager.Setup(userManager => userManager.IsLoggedIn(It.IsAny<Guid>()))
@@ -147,7 +182,7 @@ namespace QIES.Web.Controllers.Tests
                 userManager.Object);
 
             // Act
-            var result = await controller.SellOrChangeTickets(destinationNum, request, sellTicketsTransaction.Object, changeTicketsTransaction.Object);
+            var result = await controller.SellOrChangeTickets(destinationNum, request, userId, sellTicketsTransaction.Object, changeTicketsTransaction.Object);
 
             // Assert
             changeTicketsTransaction.Verify();
@@ -168,6 +203,7 @@ namespace QIES.Web.Controllers.Tests
             var serviceNum = "11111";
             var serviceNumber = new ServiceNumber(serviceNum);
             var numberTickets = "1";
+            var userId = Guid.NewGuid();
 
             var logger = new Mock<ILogger<ServicesController>>();
             var servicesList = new Mock<IServicesList>();
@@ -177,8 +213,7 @@ namespace QIES.Web.Controllers.Tests
 
             var request = new SellOrChangeTicketsRequest
             {
-                NumberTickets = numberTickets,
-                UserId = Guid.NewGuid()
+                NumberTickets = numberTickets
             };
 
             userManager.Setup(userManager => userManager.IsLoggedIn(It.IsAny<Guid>()))
@@ -192,7 +227,7 @@ namespace QIES.Web.Controllers.Tests
                 userManager.Object);
 
             // Act
-            var result = await controller.SellOrChangeTickets(serviceNum, request, sellTicketsTransaction.Object, changeTicketsTransaction.Object);
+            var result = await controller.SellOrChangeTickets(serviceNum, request, userId, sellTicketsTransaction.Object, changeTicketsTransaction.Object);
 
             // Assert
             var actionResult = Assert.IsType<ActionResult<TransactionRecord>>(result);
@@ -208,6 +243,7 @@ namespace QIES.Web.Controllers.Tests
             var destinationNum = "11112";
             var destinationServiceNumber = new ServiceNumber(destinationNum);
             var numberTickets = "1";
+            var userId = Guid.NewGuid();
 
             var logger = new Mock<ILogger<ServicesController>>();
             var servicesList = new Mock<IServicesList>();
@@ -218,8 +254,7 @@ namespace QIES.Web.Controllers.Tests
             var request = new SellOrChangeTicketsRequest
             {
                 SourceServiceNumber = sourceNum,
-                NumberTickets = numberTickets,
-                UserId = Guid.NewGuid()
+                NumberTickets = numberTickets
             };
 
             userManager.Setup(userManager => userManager.IsLoggedIn(It.IsAny<Guid>()))
@@ -235,7 +270,7 @@ namespace QIES.Web.Controllers.Tests
                 userManager.Object);
 
             // Act
-            var result = await controller.SellOrChangeTickets(destinationNum, request, sellTicketsTransaction.Object, changeTicketsTransaction.Object);
+            var result = await controller.SellOrChangeTickets(destinationNum, request, userId, sellTicketsTransaction.Object, changeTicketsTransaction.Object);
 
             // Assert
             var actionResult = Assert.IsType<ActionResult<TransactionRecord>>(result);
@@ -251,6 +286,7 @@ namespace QIES.Web.Controllers.Tests
             var destinationNum = "11112";
             var destinationServiceNumber = new ServiceNumber(destinationNum);
             var numberTickets = "1";
+            var userId = Guid.NewGuid();
 
             var logger = new Mock<ILogger<ServicesController>>();
             var servicesList = new Mock<IServicesList>();
@@ -261,8 +297,7 @@ namespace QIES.Web.Controllers.Tests
             var request = new SellOrChangeTicketsRequest
             {
                 SourceServiceNumber = sourceNum,
-                NumberTickets = numberTickets,
-                UserId = Guid.NewGuid()
+                NumberTickets = numberTickets
             };
 
             userManager.Setup(userManager => userManager.IsLoggedIn(It.IsAny<Guid>()))
@@ -278,7 +313,7 @@ namespace QIES.Web.Controllers.Tests
                 userManager.Object);
 
             // Act
-            var result = await controller.SellOrChangeTickets(destinationNum, request, sellTicketsTransaction.Object, changeTicketsTransaction.Object);
+            var result = await controller.SellOrChangeTickets(destinationNum, request, userId, sellTicketsTransaction.Object, changeTicketsTransaction.Object);
 
             // Assert
             var actionResult = Assert.IsType<ActionResult<TransactionRecord>>(result);
@@ -294,6 +329,7 @@ namespace QIES.Web.Controllers.Tests
             var destinationNum = "11112";
             var destinationServiceNumber = new ServiceNumber(destinationNum);
             var numberTickets = "21";
+            var userId = Guid.NewGuid();
 
             var logger = new Mock<ILogger<ServicesController>>();
             var servicesList = new Mock<IServicesList>();
@@ -304,8 +340,7 @@ namespace QIES.Web.Controllers.Tests
             var request = new SellOrChangeTicketsRequest
             {
                 SourceServiceNumber = sourceNum,
-                NumberTickets = numberTickets,
-                UserId = Guid.NewGuid()
+                NumberTickets = numberTickets
             };
 
             userManager.Setup(userManager => userManager.IsLoggedIn(It.IsAny<Guid>()))
@@ -323,7 +358,7 @@ namespace QIES.Web.Controllers.Tests
                 userManager.Object);
 
             // Act
-            var result = await controller.SellOrChangeTickets(destinationNum, request, sellTicketsTransaction.Object, changeTicketsTransaction.Object);
+            var result = await controller.SellOrChangeTickets(destinationNum, request, userId, sellTicketsTransaction.Object, changeTicketsTransaction.Object);
 
             // Assert
             var actionResult = Assert.IsType<ActionResult<TransactionRecord>>(result);

@@ -62,6 +62,7 @@ namespace QIES.Web.Controllers
         /// Create a new service.
         /// </summary>
         /// <param name="request"></param>
+        /// <param name="xUserId"></param>
         /// <param name="transaction"></param>
         /// <returns></returns>
         [HttpPost]
@@ -74,11 +75,12 @@ namespace QIES.Web.Controllers
         [ProducesDefaultResponseType]
         public async Task<ActionResult<TransactionRecord>> CreateService(
             CreateServiceRequest request,
+            [FromHeader(Name = "X-User-Id")] Guid? xUserId,
             [FromServices] ITransaction<CreateServiceRequest> transaction)
         {
             logger.LogInformation("CreateService requested for {serviceNumber}", request.ServiceNumber);
 
-            if (request.UserId is Guid userId && userManager.IsLoggedIn(userId))
+            if (xUserId is Guid userId && userManager.IsLoggedIn(userId))
             {
                 if (userManager.UserType(userId) != LoginType.Planner)
                 {
@@ -106,6 +108,7 @@ namespace QIES.Web.Controllers
         /// </summary>
         /// <param name="id"></param>
         /// <param name="request"></param>
+        /// <param name="xUserId"></param>
         /// <param name="transaction"></param>
         /// <returns></returns>
         [HttpDelete("{id}")]
@@ -119,11 +122,12 @@ namespace QIES.Web.Controllers
         public async Task<ActionResult<TransactionRecord>> DeleteService(
             [ServiceNumber] string id,
             DeleteServiceRequest request,
+            [FromHeader(Name = "X-User-Id")] Guid? xUserId,
             [FromServices] ITransaction<DeleteServiceRequest> transaction)
         {
             logger.LogInformation("DeleteService requested for {serviceNumber}", id);
 
-            if (request.UserId is Guid userId && userManager.IsLoggedIn(userId))
+            if (xUserId is Guid userId && userManager.IsLoggedIn(userId))
             {
                 if (userManager.UserType(userId) != LoginType.Planner)
                 {
@@ -153,6 +157,7 @@ namespace QIES.Web.Controllers
         /// </summary>
         /// <param name="id"></param>
         /// <param name="request"></param>
+        /// <param name="xUserId"></param>
         /// <param name="sellTransaction"></param>
         /// <param name="changeTransaction"></param>
         /// <returns></returns>
@@ -166,12 +171,13 @@ namespace QIES.Web.Controllers
         public async Task<ActionResult<TransactionRecord>> SellOrChangeTickets(
             [ServiceNumber] string id,
             SellOrChangeTicketsRequest request,
+            [FromHeader(Name = "X-User-Id")] Guid? xUserId,
             [FromServices] ITransaction<SellTicketsCommand> sellTransaction,
             [FromServices] ITransaction<ChangeTicketsCommand> changeTransaction)
         {
             logger.LogInformation("SellOrChangeTickets requested for {serviceNumber}", id);
 
-            if (request.UserId is Guid userId && userManager.IsLoggedIn(userId))
+            if (xUserId is Guid userId && userManager.IsLoggedIn(userId))
             {
                 var serviceNumber = new ServiceNumber(id);
                 TransactionRecord record;
@@ -233,6 +239,7 @@ namespace QIES.Web.Controllers
         /// </summary>
         /// <param name="id"></param>
         /// <param name="request"></param>
+        /// <param name="xUserId"></param>
         /// <param name="transaction"></param>
         /// <returns></returns>
         [HttpDelete("{id}/tickets")]
@@ -245,11 +252,12 @@ namespace QIES.Web.Controllers
         public async Task<ActionResult<TransactionRecord>> CancelTickets(
             [ServiceNumber] string id,
             CancelTicketsRequest request,
+            [FromHeader(Name = "X-User-Id")] Guid? xUserId,
             [FromServices] ITransaction<CancelTicketsRequest> transaction)
         {
             logger.LogInformation("CancelTickets requested for {serviceNumber}", id);
 
-            if (request.UserId is Guid userId && userManager.IsLoggedIn(userId))
+            if (xUserId is Guid userId && userManager.IsLoggedIn(userId))
             {
                 var serviceNumber = new ServiceNumber(id);
 

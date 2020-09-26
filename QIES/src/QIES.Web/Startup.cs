@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.OpenApi.Models;
 using QIES.Core;
 using QIES.Core.Services;
 using QIES.Core.Users;
@@ -58,6 +57,7 @@ namespace QIES.Web
             {
                 c.RoutePrefix = "openapi";
                 c.SpecUrl = "v1/openapi.json";
+                c.ExpandResponses("");
             });
 
             app.UseHttpsRedirection();

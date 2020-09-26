@@ -1,5 +1,6 @@
 using System;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Moq;
@@ -23,6 +24,7 @@ namespace QIES.Web.Controllers.Tests
             var serviceNumber = new ServiceNumber(newServiceNum);
             var newServiceName = "New Service";
             var newServiceDate = "20201010";
+            var userId = Guid.NewGuid();
 
             var logger = new Mock<ILogger<ServicesController>>();
             var servicesList = new Mock<IServicesList>();
@@ -31,7 +33,6 @@ namespace QIES.Web.Controllers.Tests
 
             var request = new CreateServiceRequest
             {
-                UserId = Guid.NewGuid(),
                 ServiceNumber = newServiceNum,
                 ServiceName = newServiceName,
                 ServiceDate = newServiceDate
@@ -57,7 +58,7 @@ namespace QIES.Web.Controllers.Tests
                 userManager.Object);
 
             // Act
-            var result = await controller.CreateService(request, createServiceTransaction.Object);
+            var result = await controller.CreateService(request, userId, createServiceTransaction.Object);
 
             // Assert
             var actionResult = Assert.IsType<ActionResult<TransactionRecord>>(result);
@@ -68,6 +69,12 @@ namespace QIES.Web.Controllers.Tests
         public async Task CreateService_LoggedInAsAgent_Forbidden()
         {
             // Arrange
+            var newServiceNum = "11111";
+            var serviceNumber = new ServiceNumber(newServiceNum);
+            var newServiceName = "New Service";
+            var newServiceDate = "20201010";
+            var userId = Guid.NewGuid();
+
             var logger = new Mock<ILogger<ServicesController>>();
             var servicesList = new Mock<IServicesList>();
             var userManager = new Mock<IUserManager>();
@@ -75,7 +82,9 @@ namespace QIES.Web.Controllers.Tests
 
             var request = new CreateServiceRequest
             {
-                UserId = Guid.NewGuid()
+                ServiceNumber = newServiceNum,
+                ServiceName = newServiceName,
+                ServiceDate = newServiceDate
             };
 
             userManager.Setup(userManager => userManager.IsLoggedIn(It.IsAny<Guid>()))
@@ -89,17 +98,24 @@ namespace QIES.Web.Controllers.Tests
                 userManager.Object);
 
             // Act
-            var result = await controller.CreateService(request, createServiceTransaction.Object);
+            var result = await controller.CreateService(request, userId, createServiceTransaction.Object);
 
             // Assert
             var actionResult = Assert.IsType<ActionResult<TransactionRecord>>(result);
-            Assert.IsType<ForbidResult>(actionResult.Result);
+            var objectResult = Assert.IsType<ObjectResult>(actionResult.Result);
+            Assert.Equal(StatusCodes.Status403Forbidden, objectResult.StatusCode);
         }
 
         [Fact]
         public async Task CreateService_NotLoggedIn_Unauthorized()
         {
             // Arrange
+            var newServiceNum = "11111";
+            var serviceNumber = new ServiceNumber(newServiceNum);
+            var newServiceName = "New Service";
+            var newServiceDate = "20201010";
+            var userId = Guid.NewGuid();
+
             var logger = new Mock<ILogger<ServicesController>>();
             var servicesList = new Mock<IServicesList>();
             var userManager = new Mock<IUserManager>();
@@ -107,7 +123,9 @@ namespace QIES.Web.Controllers.Tests
 
             var request = new CreateServiceRequest
             {
-                UserId = Guid.NewGuid()
+                ServiceNumber = newServiceNum,
+                ServiceName = newServiceName,
+                ServiceDate = newServiceDate
             };
 
             userManager.Setup(userManager => userManager.IsLoggedIn(It.IsAny<Guid>()))
@@ -119,7 +137,41 @@ namespace QIES.Web.Controllers.Tests
                 userManager.Object);
 
             // Act
-            var result = await controller.CreateService(request, createServiceTransaction.Object);
+            var result = await controller.CreateService(request, userId, createServiceTransaction.Object);
+
+            // Assert
+            var actionResult = Assert.IsType<ActionResult<TransactionRecord>>(result);
+            Assert.IsType<UnauthorizedResult>(actionResult.Result);
+        }
+
+        [Fact]
+        public async Task CreateService_NoUserId_Unauthorized()
+        {
+            // Arrange
+            var newServiceNum = "11111";
+            var newServiceName = "New Service";
+            var newServiceDate = "20201010";
+            Guid? userId = null;
+
+            var logger = new Mock<ILogger<ServicesController>>();
+            var servicesList = new Mock<IServicesList>();
+            var userManager = new Mock<IUserManager>();
+            var createServiceTransaction = new Mock<ITransaction<CreateServiceRequest>>();
+
+            var request = new CreateServiceRequest
+            {
+                ServiceNumber = newServiceNum,
+                ServiceName = newServiceName,
+                ServiceDate = newServiceDate
+            };
+
+            var controller = new ServicesController(
+                logger.Object,
+                servicesList.Object,
+                userManager.Object);
+
+            // Act
+            var result = await controller.CreateService(request, userId, createServiceTransaction.Object);
 
             // Assert
             var actionResult = Assert.IsType<ActionResult<TransactionRecord>>(result);
@@ -134,6 +186,7 @@ namespace QIES.Web.Controllers.Tests
             var serviceNumber = new ServiceNumber(newServiceNum);
             var newServiceName = "New Service";
             var newServiceDate = "20201010";
+            var userId = Guid.NewGuid();
 
             var logger = new Mock<ILogger<ServicesController>>();
             var servicesList = new Mock<IServicesList>();
@@ -142,7 +195,6 @@ namespace QIES.Web.Controllers.Tests
 
             var request = new CreateServiceRequest
             {
-                UserId = Guid.NewGuid(),
                 ServiceNumber = newServiceNum,
                 ServiceName = newServiceName,
                 ServiceDate = newServiceDate
@@ -161,7 +213,7 @@ namespace QIES.Web.Controllers.Tests
                 userManager.Object);
 
             // Act
-            var result = await controller.CreateService(request, createServiceTransaction.Object);
+            var result = await controller.CreateService(request, userId, createServiceTransaction.Object);
 
             // Assert
             var actionResult = Assert.IsType<ActionResult<TransactionRecord>>(result);

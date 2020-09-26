@@ -1,7 +1,5 @@
 namespace QIES.Core.Commands
 {
-    public class SellTicketsCommand
-    {
-        public int NumberTickets { get; set; }
-    }
+    public record SellTicketsCommand(string ServiceNumber, int NumberTickets)
+        : TransactionCommand(ServiceNumber);
 }

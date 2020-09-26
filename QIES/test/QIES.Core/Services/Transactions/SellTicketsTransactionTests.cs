@@ -24,10 +24,7 @@ namespace QIES.Core.Services.Tests
             userManager.Setup(userManager => userManager.UserTransactionQueue(It.IsAny<Guid>()))
                 .Returns(transactionQueue.Object);
 
-            var command = new SellTicketsCommand()
-            {
-                NumberTickets = numberTickets
-            };
+            var command = new SellTicketsCommand(serviceNumber, numberTickets);
 
             var transaction = new SellTicketsTransaction(logger.Object, userManager.Object);
 
@@ -57,10 +54,7 @@ namespace QIES.Core.Services.Tests
             userManager.Setup(userManager => userManager.UserTransactionQueue(It.IsAny<Guid>()))
                 .Returns(transactionQueue.Object);
 
-            var command = new SellTicketsCommand()
-            {
-                NumberTickets = numberTickets
-            };
+            var command = new SellTicketsCommand(serviceNumber, numberTickets);
 
             var transaction = new SellTicketsTransaction(logger.Object, userManager.Object);
 

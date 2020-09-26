@@ -31,11 +31,7 @@ namespace QIES.Core.Services.Tests
             userManager.Setup(userManager => userManager.User(It.IsAny<Guid>()))
                 .Returns(agent);
 
-            var command = new ChangeTicketsCommand()
-            {
-                SourceServiceNumber = sourceServiceNumber,
-                NumberTickets = numberTickets
-            };
+            var command = new ChangeTicketsCommand(destinationServiceNumber, numberTickets, sourceServiceNumber);
 
             var transaction = new ChangeTicketsTransaction(logger.Object, userManager.Object);
 
@@ -75,11 +71,7 @@ namespace QIES.Core.Services.Tests
             userManager.Setup(userManager => userManager.User(It.IsAny<Guid>()))
                 .Returns(agent);
 
-            var command = new ChangeTicketsCommand()
-            {
-                SourceServiceNumber = sourceServiceNumber,
-                NumberTickets = numberTickets
-            };
+            var command = new ChangeTicketsCommand(destinationServiceNumber, numberTickets, sourceServiceNumber);
 
             var transaction = new ChangeTicketsTransaction(logger.Object, userManager.Object);
 
@@ -107,11 +99,7 @@ namespace QIES.Core.Services.Tests
             userManager.Setup(userManager => userManager.User(It.IsAny<Guid>()))
                 .Returns(agent);
 
-            var command = new ChangeTicketsCommand()
-            {
-                SourceServiceNumber = sourceServiceNumber,
-                NumberTickets = numberTickets
-            };
+            var command = new ChangeTicketsCommand(destinationServiceNumber, numberTickets, sourceServiceNumber);
 
             agent.ChangedTickets = 10;
             var transaction = new ChangeTicketsTransaction(logger.Object, userManager.Object);
@@ -140,11 +128,7 @@ namespace QIES.Core.Services.Tests
             userManager.Setup(userManager => userManager.User(It.IsAny<Guid>()))
                 .Returns(planner);
 
-            var command = new ChangeTicketsCommand()
-            {
-                SourceServiceNumber = sourceServiceNumber,
-                NumberTickets = numberTickets
-            };
+            var command = new ChangeTicketsCommand(destinationServiceNumber, numberTickets, sourceServiceNumber);
 
             var transaction = new ChangeTicketsTransaction(logger.Object, userManager.Object);
 
@@ -176,11 +160,7 @@ namespace QIES.Core.Services.Tests
             userManager.Setup(userManager => userManager.UserTransactionQueue(It.IsAny<Guid>()))
                 .Returns(transactionQueue.Object);
 
-            var command = new ChangeTicketsCommand()
-            {
-                SourceServiceNumber = sourceServiceNumber,
-                NumberTickets = numberTickets
-            };
+            var command = new ChangeTicketsCommand(destinationServiceNumber, numberTickets, sourceServiceNumber);
 
             var transaction = new ChangeTicketsTransaction(logger.Object, userManager.Object);
 

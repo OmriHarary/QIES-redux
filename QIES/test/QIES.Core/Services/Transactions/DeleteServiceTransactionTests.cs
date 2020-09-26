@@ -2,7 +2,6 @@ using System;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using Moq;
-using QIES.Api.Models;
 using QIES.Common.Record;
 using QIES.Core.Commands;
 using QIES.Core.Users;

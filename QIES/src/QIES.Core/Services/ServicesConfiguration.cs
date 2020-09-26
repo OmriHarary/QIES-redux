@@ -1,6 +1,4 @@
 using Microsoft.Extensions.DependencyInjection;
-using QIES.Api.Models;
-using QIES.Common.Record;
 using QIES.Core.Commands;
 
 namespace QIES.Core.Services

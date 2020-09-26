@@ -9,10 +9,7 @@ namespace QIES.Infra
     {
         private readonly ConcurrentDictionary<Guid, (User, TransactionQueue)> users;
 
-        public UserManager()
-        {
-            this.users = new ConcurrentDictionary<Guid, (User, TransactionQueue)>();
-        }
+        public UserManager() => users = new ConcurrentDictionary<Guid, (User, TransactionQueue)>();
 
         public bool IsLoggedIn(Guid userId) => users.ContainsKey(userId);
 

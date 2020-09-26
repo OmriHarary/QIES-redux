@@ -28,11 +28,7 @@ namespace QIES.Web.Controllers.Tests
             var logger = new Mock<ILogger<ServicesController>>();
             var servicesList = new Mock<IServicesList>();
             var userManager = new Mock<IUserManager>();
-            var createServiceTransaction = new Mock<ITransaction<CreateServiceRequest>>();
-            var deleteServiceTransaction = new Mock<ITransaction<DeleteServiceRequest>>();
-            var sellTicketsTransaction = new Mock<ITransaction<SellTicketsCommand>>();
-            var changeTicketsTransaction = new Mock<ITransaction<ChangeTicketsCommand>>();
-            var cancelTicketsTransaction = new Mock<ITransaction<CancelTicketsRequest>>();
+            var deleteServiceTransaction = new Mock<ITransaction<DeleteServiceCommand>>();
 
             var request = new DeleteServiceRequest
             {
@@ -45,7 +41,7 @@ namespace QIES.Web.Controllers.Tests
                 .Returns(LoginType.Planner);
             servicesList.Setup(servicesList => servicesList.IsInList(serviceNumber))
                 .Returns(true);
-            deleteServiceTransaction.Setup(transaction => transaction.MakeTransaction(serviceNum, request, It.IsAny<Guid>()))
+            deleteServiceTransaction.Setup(transaction => transaction.MakeTransaction(It.IsAny<DeleteServiceCommand>(), It.IsAny<Guid>()))
                 .ReturnsAsync(new TransactionRecord(TransactionCode.DEL)
                     {
                         SourceNumber = serviceNumber,
@@ -78,11 +74,7 @@ namespace QIES.Web.Controllers.Tests
             var logger = new Mock<ILogger<ServicesController>>();
             var servicesList = new Mock<IServicesList>();
             var userManager = new Mock<IUserManager>();
-            var createServiceTransaction = new Mock<ITransaction<CreateServiceRequest>>();
-            var deleteServiceTransaction = new Mock<ITransaction<DeleteServiceRequest>>();
-            var sellTicketsTransaction = new Mock<ITransaction<SellTicketsCommand>>();
-            var changeTicketsTransaction = new Mock<ITransaction<ChangeTicketsCommand>>();
-            var cancelTicketsTransaction = new Mock<ITransaction<CancelTicketsRequest>>();
+            var deleteServiceTransaction = new Mock<ITransaction<DeleteServiceCommand>>();
 
             var request = new DeleteServiceRequest
             {
@@ -121,11 +113,7 @@ namespace QIES.Web.Controllers.Tests
             var logger = new Mock<ILogger<ServicesController>>();
             var servicesList = new Mock<IServicesList>();
             var userManager = new Mock<IUserManager>();
-            var createServiceTransaction = new Mock<ITransaction<CreateServiceRequest>>();
-            var deleteServiceTransaction = new Mock<ITransaction<DeleteServiceRequest>>();
-            var sellTicketsTransaction = new Mock<ITransaction<SellTicketsCommand>>();
-            var changeTicketsTransaction = new Mock<ITransaction<ChangeTicketsCommand>>();
-            var cancelTicketsTransaction = new Mock<ITransaction<CancelTicketsRequest>>();
+            var deleteServiceTransaction = new Mock<ITransaction<DeleteServiceCommand>>();
 
             var request = new DeleteServiceRequest
             {
@@ -159,11 +147,7 @@ namespace QIES.Web.Controllers.Tests
             var logger = new Mock<ILogger<ServicesController>>();
             var servicesList = new Mock<IServicesList>();
             var userManager = new Mock<IUserManager>();
-            var createServiceTransaction = new Mock<ITransaction<CreateServiceRequest>>();
-            var deleteServiceTransaction = new Mock<ITransaction<DeleteServiceRequest>>();
-            var sellTicketsTransaction = new Mock<ITransaction<SellTicketsCommand>>();
-            var changeTicketsTransaction = new Mock<ITransaction<ChangeTicketsCommand>>();
-            var cancelTicketsTransaction = new Mock<ITransaction<CancelTicketsRequest>>();
+            var deleteServiceTransaction = new Mock<ITransaction<DeleteServiceCommand>>();
 
             var request = new DeleteServiceRequest
             {
@@ -195,11 +179,7 @@ namespace QIES.Web.Controllers.Tests
             var logger = new Mock<ILogger<ServicesController>>();
             var servicesList = new Mock<IServicesList>();
             var userManager = new Mock<IUserManager>();
-            var createServiceTransaction = new Mock<ITransaction<CreateServiceRequest>>();
-            var deleteServiceTransaction = new Mock<ITransaction<DeleteServiceRequest>>();
-            var sellTicketsTransaction = new Mock<ITransaction<SellTicketsCommand>>();
-            var changeTicketsTransaction = new Mock<ITransaction<ChangeTicketsCommand>>();
-            var cancelTicketsTransaction = new Mock<ITransaction<CancelTicketsRequest>>();
+            var deleteServiceTransaction = new Mock<ITransaction<DeleteServiceCommand>>();
 
             var request = new DeleteServiceRequest
             {

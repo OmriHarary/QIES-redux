@@ -29,7 +29,7 @@ namespace QIES.Core.Services.Tests
             var transaction = new SellTicketsTransaction(logger.Object, userManager.Object);
 
             // Act
-            var record = await transaction.MakeTransaction(serviceNumber, command, Guid.NewGuid());
+            var record = await transaction.MakeTransaction(command, Guid.NewGuid());
 
             // Assert
             var expectedRecord = new TransactionRecord(TransactionCode.SEL)
@@ -59,7 +59,7 @@ namespace QIES.Core.Services.Tests
             var transaction = new SellTicketsTransaction(logger.Object, userManager.Object);
 
             // Act
-            var record = await transaction.MakeTransaction(serviceNumber, command, Guid.NewGuid());
+            var record = await transaction.MakeTransaction(command, Guid.NewGuid());
 
             // Assert
             transactionQueue.Verify(transactionQueue => transactionQueue.Push(record));

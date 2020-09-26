@@ -76,7 +76,7 @@ namespace QIES.Web.Controllers
         public async Task<ActionResult<TransactionRecord>> CreateService(
             CreateServiceRequest request,
             [FromHeader(Name = "X-User-Id")] Guid? xUserId,
-            [FromServices] ITransaction<CreateServiceRequest> transaction)
+            [FromServices] ITransaction<CreateServiceCommand> transaction)
         {
             logger.LogInformation("CreateService requested for {serviceNumber}", request.ServiceNumber);
 
@@ -96,7 +96,8 @@ namespace QIES.Web.Controllers
                     return Conflict();
                 }
 
-                var record = await transaction.MakeTransaction(request.ServiceNumber, request, userId);
+                var command = new CreateServiceCommand(request.ServiceNumber, request.ServiceDate, request.ServiceName);
+                var record = await transaction.MakeTransaction(command, userId);
                 return CreatedAtAction(nameof(GetService), new { id = serviceNumber }, record);
             }
             logger.LogWarning("Could not create service. User unauthenticated");
@@ -123,7 +124,7 @@ namespace QIES.Web.Controllers
             [ServiceNumber] string id,
             DeleteServiceRequest request,
             [FromHeader(Name = "X-User-Id")] Guid? xUserId,
-            [FromServices] ITransaction<DeleteServiceRequest> transaction)
+            [FromServices] ITransaction<DeleteServiceCommand> transaction)
         {
             logger.LogInformation("DeleteService requested for {serviceNumber}", id);
 
@@ -143,7 +144,8 @@ namespace QIES.Web.Controllers
                     return NotFound();
                 }
 
-                var record = await transaction.MakeTransaction(id, request, userId);
+                var command = new DeleteServiceCommand(id, request.ServiceName);
+                var record = await transaction.MakeTransaction(command, userId);
                 servicesList.DeleteService(serviceNumber);
 
                 return Ok(record);
@@ -192,7 +194,7 @@ namespace QIES.Web.Controllers
 
                     var command = new SellTicketsCommand(id, int.Parse(request.NumberTickets));
 
-                    record = await sellTransaction.MakeTransaction(id, command, userId);
+                    record = await sellTransaction.MakeTransaction(command, userId);
                 }
                 else // Change. id is dest number
                 {
@@ -213,7 +215,7 @@ namespace QIES.Web.Controllers
 
                     try
                     {
-                        record = await changeTransaction.MakeTransaction(id, command, userId);
+                        record = await changeTransaction.MakeTransaction(command, userId);
                     }
                     catch (AgentLimitExceededException e)
                     {
@@ -246,7 +248,7 @@ namespace QIES.Web.Controllers
             [ServiceNumber] string id,
             CancelTicketsRequest request,
             [FromHeader(Name = "X-User-Id")] Guid? xUserId,
-            [FromServices] ITransaction<CancelTicketsRequest> transaction)
+            [FromServices] ITransaction<CancelTicketsCommand> transaction)
         {
             logger.LogInformation("CancelTickets requested for {serviceNumber}", id);
 
@@ -261,7 +263,8 @@ namespace QIES.Web.Controllers
 
                 try
                 {
-                    var record = await transaction.MakeTransaction(id, request, userId);
+                    var command = new CancelTicketsCommand(id, int.Parse(request.NumberTickets));
+                    var record = await transaction.MakeTransaction(command, userId);
                     return Ok(record);
                 }
                 catch (AgentLimitExceededException e)

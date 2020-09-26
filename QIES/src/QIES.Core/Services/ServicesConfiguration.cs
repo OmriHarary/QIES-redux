@@ -11,11 +11,11 @@ namespace QIES.Core.Services
         {
             services.AddTransient<ILoginService, LoginService>();
             services.AddTransient<ILogoutService, LogoutService>();
-            services.AddTransient<ITransaction<CreateServiceRequest>, CreateServiceTransaction>();
-            services.AddTransient<ITransaction<DeleteServiceRequest>, DeleteServiceTransaction>();
+            services.AddTransient<ITransaction<CreateServiceCommand>, CreateServiceTransaction>();
+            services.AddTransient<ITransaction<DeleteServiceCommand>, DeleteServiceTransaction>();
             services.AddTransient<ITransaction<SellTicketsCommand>, SellTicketsTransaction>();
             services.AddTransient<ITransaction<ChangeTicketsCommand>, ChangeTicketsTransaction>();
-            services.AddTransient<ITransaction<CancelTicketsRequest>, CancelTicketsTransaction>();
+            services.AddTransient<ITransaction<CancelTicketsCommand>, CancelTicketsTransaction>();
             return services;
         }
     }

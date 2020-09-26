@@ -4,6 +4,7 @@ using Microsoft.Extensions.Logging;
 using Moq;
 using QIES.Api.Models;
 using QIES.Common.Record;
+using QIES.Core.Commands;
 using QIES.Core.Users;
 using Xunit;
 
@@ -24,15 +25,12 @@ namespace QIES.Core.Services.Tests
             userManager.Setup(userManager => userManager.UserTransactionQueue(It.IsAny<Guid>()))
                 .Returns(transactionQueue.Object);
 
-            var request = new DeleteServiceRequest()
-            {
-                ServiceName = serviceName
-            };
+            var command = new DeleteServiceCommand(serviceNumber, serviceName);
 
             var transaction = new DeleteServiceTransaction(logger.Object, userManager.Object);
 
             // Act
-            var record = await transaction.MakeTransaction(serviceNumber, request, Guid.NewGuid());
+            var record = await transaction.MakeTransaction(command, Guid.NewGuid());
 
             // Assert
             var expectedRecord = new TransactionRecord(TransactionCode.DEL)
@@ -57,15 +55,12 @@ namespace QIES.Core.Services.Tests
             userManager.Setup(userManager => userManager.UserTransactionQueue(It.IsAny<Guid>()))
                 .Returns(transactionQueue.Object);
 
-            var command = new DeleteServiceRequest()
-            {
-                ServiceName = serviceName
-            };
+            var command = new DeleteServiceCommand(serviceNumber, serviceName);
 
             var transaction = new DeleteServiceTransaction(logger.Object, userManager.Object);
 
             // Act
-            var record = await transaction.MakeTransaction(serviceNumber, command, Guid.NewGuid());
+            var record = await transaction.MakeTransaction(command, Guid.NewGuid());
 
             // Assert
             transactionQueue.Verify(transactionQueue => transactionQueue.Push(record));

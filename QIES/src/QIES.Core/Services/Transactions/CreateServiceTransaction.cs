@@ -4,11 +4,12 @@ using Microsoft.Extensions.Logging;
 using QIES.Api.Models;
 using QIES.Common;
 using QIES.Common.Record;
+using QIES.Core.Commands;
 using QIES.Core.Users;
 
 namespace QIES.Core.Services
 {
-    public class CreateServiceTransaction : ITransaction<CreateServiceRequest>
+    public class CreateServiceTransaction : ITransaction<CreateServiceCommand>
     {
         private const TransactionCode Code = TransactionCode.CRE;
         private readonly ILogger<CreateServiceTransaction> logger;
@@ -20,13 +21,13 @@ namespace QIES.Core.Services
             this.userManager = userManager;
         }
 
-        public async Task<TransactionRecord> MakeTransaction(string serviceNumber, CreateServiceRequest request, Guid userId)
+        public async Task<TransactionRecord> MakeTransaction(CreateServiceCommand command, Guid userId)
         {
             var record = new TransactionRecord(Code)
             {
-                SourceNumber = new ServiceNumber(request.ServiceNumber),
-                ServiceDate = new ServiceDate(request.ServiceDate),
-                ServiceName = new ServiceName(request.ServiceName)
+                SourceNumber = new ServiceNumber(command.ServiceNumber),
+                ServiceDate = new ServiceDate(command.ServiceDate),
+                ServiceName = new ServiceName(command.ServiceName)
             };
 
             userManager.UserTransactionQueue(userId).Push(record);

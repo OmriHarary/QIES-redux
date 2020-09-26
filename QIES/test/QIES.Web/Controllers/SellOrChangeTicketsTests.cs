@@ -110,7 +110,7 @@ namespace QIES.Web.Controllers.Tests
                 .Returns(true);
             servicesList.Setup(servicesList => servicesList.IsInList(serviceNumber))
                 .Returns(true);
-            sellTicketsTransaction.Setup(transaction => transaction.MakeTransaction(serviceNum, It.IsAny<SellTicketsCommand>(), It.IsAny<Guid>()))
+            sellTicketsTransaction.Setup(transaction => transaction.MakeTransaction(It.IsAny<SellTicketsCommand>(), It.IsAny<Guid>()))
                 .ReturnsAsync(new TransactionRecord(TransactionCode.SEL)
                     {
                         SourceNumber = serviceNumber,
@@ -129,7 +129,6 @@ namespace QIES.Web.Controllers.Tests
             // Assert
             sellTicketsTransaction.Verify();
             changeTicketsTransaction.Verify(transaction => transaction.MakeTransaction(
-                    It.IsAny<string>(),
                     It.IsAny<ChangeTicketsCommand>(),
                     It.IsAny<Guid>()),
                 Times.Never());
@@ -167,7 +166,7 @@ namespace QIES.Web.Controllers.Tests
                 .Returns(true);
             servicesList.Setup(servicesList => servicesList.IsInList(destinationServiceNumber))
                 .Returns(true);
-            changeTicketsTransaction.Setup(transaction => transaction.MakeTransaction(destinationNum, It.IsAny<ChangeTicketsCommand>(), It.IsAny<Guid>()))
+            changeTicketsTransaction.Setup(transaction => transaction.MakeTransaction(It.IsAny<ChangeTicketsCommand>(), It.IsAny<Guid>()))
                 .ReturnsAsync(new TransactionRecord(TransactionCode.CHG)
                     {
                         SourceNumber = sourceServiceNumber,
@@ -187,7 +186,6 @@ namespace QIES.Web.Controllers.Tests
             // Assert
             changeTicketsTransaction.Verify();
             sellTicketsTransaction.Verify(transaction => transaction.MakeTransaction(
-                    It.IsAny<string>(),
                     It.IsAny<SellTicketsCommand>(),
                     It.IsAny<Guid>()),
                 Times.Never());
@@ -349,7 +347,7 @@ namespace QIES.Web.Controllers.Tests
                 .Returns(true);
             servicesList.Setup(servicesList => servicesList.IsInList(destinationServiceNumber))
                 .Returns(true);
-            changeTicketsTransaction.Setup(transaction => transaction.MakeTransaction(destinationNum, It.IsAny<ChangeTicketsCommand>(), It.IsAny<Guid>()))
+            changeTicketsTransaction.Setup(transaction => transaction.MakeTransaction(It.IsAny<ChangeTicketsCommand>(), It.IsAny<Guid>()))
                 .ThrowsAsync(new AgentLimitExceededException("Cannot change as total session changed tickets would be over 20. User has 20 tickets left to cancel this session."));
 
             var controller = new ServicesController(

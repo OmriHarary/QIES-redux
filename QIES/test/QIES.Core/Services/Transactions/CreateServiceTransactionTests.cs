@@ -4,6 +4,7 @@ using Microsoft.Extensions.Logging;
 using Moq;
 using QIES.Api.Models;
 using QIES.Common.Record;
+using QIES.Core.Commands;
 using QIES.Core.Users;
 using Xunit;
 
@@ -25,17 +26,12 @@ namespace QIES.Core.Services.Tests
             userManager.Setup(userManager => userManager.UserTransactionQueue(It.IsAny<Guid>()))
                 .Returns(transactionQueue.Object);
 
-            var request = new CreateServiceRequest()
-            {
-                ServiceNumber = serviceNumber,
-                ServiceName = serviceName,
-                ServiceDate = serviceDate
-            };
+            var command = new CreateServiceCommand(serviceNumber, serviceDate, serviceName);
 
             var transaction = new CreateServiceTransaction(logger.Object, userManager.Object);
 
             // Act
-            var record = await transaction.MakeTransaction(serviceNumber, request, Guid.NewGuid());
+            var record = await transaction.MakeTransaction(command, Guid.NewGuid());
 
             // Assert
             var expectedRecord = new TransactionRecord(TransactionCode.CRE)
@@ -62,17 +58,12 @@ namespace QIES.Core.Services.Tests
             userManager.Setup(userManager => userManager.UserTransactionQueue(It.IsAny<Guid>()))
                 .Returns(transactionQueue.Object);
 
-            var command = new CreateServiceRequest()
-            {
-                ServiceNumber = serviceNumber,
-                ServiceName = serviceName,
-                ServiceDate = serviceDate
-            };
+            var command = new CreateServiceCommand(serviceNumber, serviceDate, serviceName);
 
             var transaction = new CreateServiceTransaction(logger.Object, userManager.Object);
 
             // Act
-            var record = await transaction.MakeTransaction(serviceNumber, command, Guid.NewGuid());
+            var record = await transaction.MakeTransaction(command, Guid.NewGuid());
 
             // Assert
             transactionQueue.Verify(transactionQueue => transactionQueue.Push(record));

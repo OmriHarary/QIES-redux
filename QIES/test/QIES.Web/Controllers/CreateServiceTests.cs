@@ -29,7 +29,7 @@ namespace QIES.Web.Controllers.Tests
             var logger = new Mock<ILogger<ServicesController>>();
             var servicesList = new Mock<IServicesList>();
             var userManager = new Mock<IUserManager>();
-            var createServiceTransaction = new Mock<ITransaction<CreateServiceRequest>>();
+            var createServiceTransaction = new Mock<ITransaction<CreateServiceCommand>>();
 
             var request = new CreateServiceRequest
             {
@@ -44,7 +44,7 @@ namespace QIES.Web.Controllers.Tests
                 .Returns(LoginType.Planner);
             servicesList.Setup(servicesList => servicesList.IsInList(serviceNumber))
                 .Returns(false);
-            createServiceTransaction.Setup(transaction => transaction.MakeTransaction(newServiceNum, request, It.IsAny<Guid>()))
+            createServiceTransaction.Setup(transaction => transaction.MakeTransaction(It.IsAny<CreateServiceCommand>(), It.IsAny<Guid>()))
                 .ReturnsAsync(new TransactionRecord(TransactionCode.SEL)
                     {
                         SourceNumber = serviceNumber,
@@ -78,7 +78,7 @@ namespace QIES.Web.Controllers.Tests
             var logger = new Mock<ILogger<ServicesController>>();
             var servicesList = new Mock<IServicesList>();
             var userManager = new Mock<IUserManager>();
-            var createServiceTransaction = new Mock<ITransaction<CreateServiceRequest>>();
+            var createServiceTransaction = new Mock<ITransaction<CreateServiceCommand>>();
 
             var request = new CreateServiceRequest
             {
@@ -119,7 +119,7 @@ namespace QIES.Web.Controllers.Tests
             var logger = new Mock<ILogger<ServicesController>>();
             var servicesList = new Mock<IServicesList>();
             var userManager = new Mock<IUserManager>();
-            var createServiceTransaction = new Mock<ITransaction<CreateServiceRequest>>();
+            var createServiceTransaction = new Mock<ITransaction<CreateServiceCommand>>();
 
             var request = new CreateServiceRequest
             {
@@ -156,7 +156,7 @@ namespace QIES.Web.Controllers.Tests
             var logger = new Mock<ILogger<ServicesController>>();
             var servicesList = new Mock<IServicesList>();
             var userManager = new Mock<IUserManager>();
-            var createServiceTransaction = new Mock<ITransaction<CreateServiceRequest>>();
+            var createServiceTransaction = new Mock<ITransaction<CreateServiceCommand>>();
 
             var request = new CreateServiceRequest
             {
@@ -191,7 +191,7 @@ namespace QIES.Web.Controllers.Tests
             var logger = new Mock<ILogger<ServicesController>>();
             var servicesList = new Mock<IServicesList>();
             var userManager = new Mock<IUserManager>();
-            var createServiceTransaction = new Mock<ITransaction<CreateServiceRequest>>();
+            var createServiceTransaction = new Mock<ITransaction<CreateServiceCommand>>();
 
             var request = new CreateServiceRequest
             {

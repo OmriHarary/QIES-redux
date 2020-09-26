@@ -2,8 +2,8 @@ using System;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using Moq;
-using QIES.Api.Models;
 using QIES.Common.Record;
+using QIES.Core.Commands;
 using QIES.Core.Users;
 using Xunit;
 
@@ -17,7 +17,6 @@ namespace QIES.Core.Services.Tests
             // Arrange
             var serviceNum = "11111";
             var serviceNumber = new ServiceNumber(serviceNum);
-            var numberTickets = "1";
             var numTickets = 1;
 
             var logger = new Mock<ILogger<CancelTicketsTransaction>>();
@@ -32,15 +31,12 @@ namespace QIES.Core.Services.Tests
             userManager.Setup(userManager => userManager.User(It.IsAny<Guid>()))
                 .Returns(agent);
 
-            var request = new CancelTicketsRequest()
-            {
-                NumberTickets = numberTickets
-            };
+            var command = new CancelTicketsCommand(serviceNum, numTickets);
 
             var transaction = new CancelTicketsTransaction(logger.Object, userManager.Object);
 
             // Act
-            var record = await transaction.MakeTransaction(serviceNum, request, Guid.NewGuid());
+            var record = await transaction.MakeTransaction(command, Guid.NewGuid());
 
             // Assert
             var expectedRecord = new TransactionRecord(TransactionCode.CAN)
@@ -60,7 +56,7 @@ namespace QIES.Core.Services.Tests
             // Arrange
             var serviceNum = "11111";
             var serviceNumber = new ServiceNumber(serviceNum);
-            var numberTickets = "11";
+            var numTickets = 11;
 
             var logger = new Mock<ILogger<CancelTicketsTransaction>>();
             var userManager = new Mock<IUserManager>();
@@ -74,15 +70,12 @@ namespace QIES.Core.Services.Tests
             userManager.Setup(userManager => userManager.User(It.IsAny<Guid>()))
                 .Returns(agent);
 
-            var request = new CancelTicketsRequest()
-            {
-                NumberTickets = numberTickets
-            };
+            var command = new CancelTicketsCommand(serviceNum, numTickets);
 
             var transaction = new CancelTicketsTransaction(logger.Object, userManager.Object);
 
             // Act & Assert
-            await Assert.ThrowsAsync<AgentLimitExceededException>(() => transaction.MakeTransaction(serviceNum, request, Guid.NewGuid()));
+            await Assert.ThrowsAsync<AgentLimitExceededException>(() => transaction.MakeTransaction(command, Guid.NewGuid()));
         }
 
         [Fact]
@@ -91,7 +84,7 @@ namespace QIES.Core.Services.Tests
             // Arrange
             var serviceNum = "11111";
             var serviceNumber = new ServiceNumber(serviceNum);
-            var numberTickets = "3";
+            var numTickets = 3;
 
             var logger = new Mock<ILogger<CancelTicketsTransaction>>();
             var userManager = new Mock<IUserManager>();
@@ -105,16 +98,13 @@ namespace QIES.Core.Services.Tests
             userManager.Setup(userManager => userManager.User(It.IsAny<Guid>()))
                 .Returns(agent);
 
-            var request = new CancelTicketsRequest()
-            {
-                NumberTickets = numberTickets
-            };
+            var command = new CancelTicketsCommand(serviceNum, numTickets);
 
             agent.CancelledTickets.Add(serviceNumber, 8);
             var transaction = new CancelTicketsTransaction(logger.Object, userManager.Object);
 
             // Act & Assert
-            await Assert.ThrowsAsync<AgentLimitExceededException>(() => transaction.MakeTransaction(serviceNum, request, Guid.NewGuid()));
+            await Assert.ThrowsAsync<AgentLimitExceededException>(() => transaction.MakeTransaction(command, Guid.NewGuid()));
         }
 
         [Fact]
@@ -123,7 +113,7 @@ namespace QIES.Core.Services.Tests
             // Arrange
             var serviceNum = "11111";
             var serviceNumber = new ServiceNumber(serviceNum);
-            var numberTickets = "5";
+            var numTickets = 5;
 
             var logger = new Mock<ILogger<CancelTicketsTransaction>>();
             var userManager = new Mock<IUserManager>();
@@ -137,16 +127,13 @@ namespace QIES.Core.Services.Tests
             userManager.Setup(userManager => userManager.User(It.IsAny<Guid>()))
                 .Returns(agent);
 
-            var request = new CancelTicketsRequest()
-            {
-                NumberTickets = numberTickets
-            };
+            var command = new CancelTicketsCommand(serviceNum, numTickets);
 
             agent.TotalCancelledTickets = 16;
             var transaction = new CancelTicketsTransaction(logger.Object, userManager.Object);
 
             // Act & Assert
-            await Assert.ThrowsAsync<AgentLimitExceededException>(() => transaction.MakeTransaction(serviceNum, request, Guid.NewGuid()));
+            await Assert.ThrowsAsync<AgentLimitExceededException>(() => transaction.MakeTransaction(command, Guid.NewGuid()));
         }
 
         [Fact]
@@ -155,7 +142,6 @@ namespace QIES.Core.Services.Tests
             // Arrange
             var serviceNum = "11111";
             var serviceNumber = new ServiceNumber(serviceNum);
-            var numberTickets = "11";
             var numTickets = 11;
 
             var logger = new Mock<ILogger<CancelTicketsTransaction>>();
@@ -170,15 +156,12 @@ namespace QIES.Core.Services.Tests
             userManager.Setup(userManager => userManager.User(It.IsAny<Guid>()))
                 .Returns(planner);
 
-            var request = new CancelTicketsRequest()
-            {
-                NumberTickets = numberTickets
-            };
+            var command = new CancelTicketsCommand(serviceNum, numTickets);
 
             var transaction = new CancelTicketsTransaction(logger.Object, userManager.Object);
 
             // Act
-            var record = await transaction.MakeTransaction(serviceNum, request, Guid.NewGuid());
+            var record = await transaction.MakeTransaction(command, Guid.NewGuid());
 
             // Assert
             var expectedRecord = new TransactionRecord(TransactionCode.CAN)
@@ -196,7 +179,6 @@ namespace QIES.Core.Services.Tests
             // Arrange
             var serviceNum = "11111";
             var serviceNumber = new ServiceNumber(serviceNum);
-            var numberTickets = "21";
             int numTickets = 21;
 
             var logger = new Mock<ILogger<CancelTicketsTransaction>>();
@@ -211,15 +193,12 @@ namespace QIES.Core.Services.Tests
             userManager.Setup(userManager => userManager.User(It.IsAny<Guid>()))
                 .Returns(planner);
 
-            var request = new CancelTicketsRequest()
-            {
-                NumberTickets = numberTickets
-            };
+            var command = new CancelTicketsCommand(serviceNum, numTickets);
 
             var transaction = new CancelTicketsTransaction(logger.Object, userManager.Object);
 
             // Act
-            var record = await transaction.MakeTransaction(serviceNum, request, Guid.NewGuid());
+            var record = await transaction.MakeTransaction(command, Guid.NewGuid());
 
             // Assert
             var expectedRecord = new TransactionRecord(TransactionCode.CAN)
@@ -237,7 +216,7 @@ namespace QIES.Core.Services.Tests
             // Arrange
             var serviceNum = "11111";
             var serviceNumber = new ServiceNumber(serviceNum);
-            var numberTickets = "1";
+            var numTickets = 1;
 
             var logger = new Mock<ILogger<CancelTicketsTransaction>>();
             var userManager = new Mock<IUserManager>();
@@ -246,15 +225,12 @@ namespace QIES.Core.Services.Tests
             userManager.Setup(userManager => userManager.UserTransactionQueue(It.IsAny<Guid>()))
                 .Returns(transactionQueue.Object);
 
-            var request = new CancelTicketsRequest()
-            {
-                NumberTickets = numberTickets
-            };
+            var command = new CancelTicketsCommand(serviceNum, numTickets);
 
             var transaction = new CancelTicketsTransaction(logger.Object, userManager.Object);
 
             // Act
-            var record = await transaction.MakeTransaction(serviceNum, request, Guid.NewGuid());
+            var record = await transaction.MakeTransaction(command, Guid.NewGuid());
 
             // Assert
             transactionQueue.Verify(transactionQueue => transactionQueue.Push(record));

@@ -36,7 +36,7 @@ namespace QIES.Core.Services.Tests
             var transaction = new ChangeTicketsTransaction(logger.Object, userManager.Object);
 
             // Act
-            var record = await transaction.MakeTransaction(destinationServiceNumber, command, Guid.NewGuid());
+            var record = await transaction.MakeTransaction(command, Guid.NewGuid());
 
             // Assert
             var expectedRecord = new TransactionRecord(TransactionCode.CHG)
@@ -76,7 +76,7 @@ namespace QIES.Core.Services.Tests
             var transaction = new ChangeTicketsTransaction(logger.Object, userManager.Object);
 
             // Act & Assert
-            await Assert.ThrowsAsync<AgentLimitExceededException>(() => transaction.MakeTransaction(destinationServiceNumber, command, Guid.NewGuid()));
+            await Assert.ThrowsAsync<AgentLimitExceededException>(() => transaction.MakeTransaction(command, Guid.NewGuid()));
         }
 
         [Fact]
@@ -105,7 +105,7 @@ namespace QIES.Core.Services.Tests
             var transaction = new ChangeTicketsTransaction(logger.Object, userManager.Object);
 
             // Act & Assert
-            await Assert.ThrowsAsync<AgentLimitExceededException>(() => transaction.MakeTransaction(destinationServiceNumber, command, Guid.NewGuid()));
+            await Assert.ThrowsAsync<AgentLimitExceededException>(() => transaction.MakeTransaction(command, Guid.NewGuid()));
         }
 
         [Fact]
@@ -133,7 +133,7 @@ namespace QIES.Core.Services.Tests
             var transaction = new ChangeTicketsTransaction(logger.Object, userManager.Object);
 
             // Act
-            var record = await transaction.MakeTransaction(destinationServiceNumber, command, Guid.NewGuid());
+            var record = await transaction.MakeTransaction(command, Guid.NewGuid());
 
             // Assert
             var expectedRecord = new TransactionRecord(TransactionCode.CHG)
@@ -165,7 +165,7 @@ namespace QIES.Core.Services.Tests
             var transaction = new ChangeTicketsTransaction(logger.Object, userManager.Object);
 
             // Act
-            var record = await transaction.MakeTransaction(destinationServiceNumber, command, Guid.NewGuid());
+            var record = await transaction.MakeTransaction(command, Guid.NewGuid());
 
             // Assert
             transactionQueue.Verify(transactionQueue => transactionQueue.Push(record));

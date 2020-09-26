@@ -19,11 +19,11 @@ namespace QIES.Core.Services
             this.userManager = userManager;
         }
 
-        public async Task<TransactionRecord> MakeTransaction(string serviceNumber, SellTicketsCommand command, Guid userId)
+        public async Task<TransactionRecord> MakeTransaction(SellTicketsCommand command, Guid userId)
         {
             var record = new TransactionRecord(Code)
             {
-                SourceNumber = new ServiceNumber(serviceNumber),
+                SourceNumber = new ServiceNumber(command.ServiceNumber),
                 NumberTickets = new NumberTickets(command.NumberTickets)
             };
 

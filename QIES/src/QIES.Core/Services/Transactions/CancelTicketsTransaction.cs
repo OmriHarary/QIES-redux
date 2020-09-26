@@ -3,11 +3,12 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using QIES.Api.Models;
 using QIES.Common.Record;
+using QIES.Core.Commands;
 using QIES.Core.Users;
 
 namespace QIES.Core.Services
 {
-    public class CancelTicketsTransaction : ITransaction<CancelTicketsRequest>
+    public class CancelTicketsTransaction : ITransaction<CancelTicketsCommand>
     {
         private const TransactionCode Code = TransactionCode.CAN;
         private readonly ILogger<CancelTicketsTransaction> logger;
@@ -19,12 +20,12 @@ namespace QIES.Core.Services
             this.userManager = userManager;
         }
 
-        public async Task<TransactionRecord> MakeTransaction(string serviceNumber, CancelTicketsRequest request, Guid userId)
+        public async Task<TransactionRecord> MakeTransaction(CancelTicketsCommand command, Guid userId)
         {
             var record = new TransactionRecord(Code)
             {
-                SourceNumber = new ServiceNumber(serviceNumber),
-                NumberTickets = new NumberTickets(int.Parse(request.NumberTickets))
+                SourceNumber = new ServiceNumber(command.ServiceNumber),
+                NumberTickets = new NumberTickets(command.NumberTickets)
             };
 
             if (userManager.UserType(userId) == LoginType.Agent && userManager.User(userId) is Agent agent)

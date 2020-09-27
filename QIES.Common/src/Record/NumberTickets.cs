@@ -1,7 +1,10 @@
 using System;
+using System.Text.Json.Serialization;
+using QIES.Common.Record.Json;
 
 namespace QIES.Common.Record
 {
+    [JsonConverter(typeof(NumberTicketsJsonConverter))]
     public class NumberTickets : IEquatable<NumberTickets>
     {
         private const int Default = 0;

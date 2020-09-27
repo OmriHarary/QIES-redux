@@ -1,7 +1,10 @@
 using System;
+using System.Text.Json.Serialization;
+using QIES.Common.Record.Json;
 
 namespace QIES.Common.Record
 {
+    [JsonConverter(typeof(ServiceDateJsonConverter))]
     public class ServiceDate : IEquatable<ServiceDate>
     {
         private const string Default = "0";

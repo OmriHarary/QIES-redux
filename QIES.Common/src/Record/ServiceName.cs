@@ -1,7 +1,10 @@
 using System;
+using System.Text.Json.Serialization;
+using QIES.Common.Record.Json;
 
 namespace QIES.Common.Record
 {
+    [JsonConverter(typeof(ServiceNameJsonConverter))]
     public class ServiceName : IEquatable<ServiceName>
     {
         private const string Default = "****";

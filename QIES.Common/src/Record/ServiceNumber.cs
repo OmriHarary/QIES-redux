@@ -5,32 +5,28 @@ using QIES.Common.Record.Json;
 namespace QIES.Common.Record
 {
     [JsonConverter(typeof(ServiceNumberJsonConverter))]
-    public class ServiceNumber : IEquatable<ServiceNumber>
+    public record ServiceNumber
     {
-        private const string Default = "00000";
-        public string Number { get; private set; }
+        internal const string EmptyValue = "00000";
+        public static readonly ServiceNumber Empty = new ();
+
+        public string Number { get; private init; }
 
         public ServiceNumber(string number)
         {
             if (!IsValid(number))
             {
-                throw new System.ArgumentException();
+                throw new ArgumentException($"Invalid value: {number}", nameof(number));
             }
-            this.Number = number;
+            Number = number;
         }
 
-        public ServiceNumber()
+        private ServiceNumber()
         {
-            this.Number = Default;
+            Number = EmptyValue;
         }
 
-        public bool Equals(ServiceNumber? other) => Number == other?.Number;
-        public override bool Equals(object? obj) => obj is ServiceNumber otherNumber && Equals(otherNumber);
         public override string ToString() => Number;
-        public override int GetHashCode() => HashCode.Combine(Number);
-
-        public static bool operator ==(ServiceNumber lhs, ServiceNumber rhs) => lhs?.Equals(rhs) ?? rhs is null;
-        public static bool operator !=(ServiceNumber lhs, ServiceNumber rhs) => !(lhs == rhs);
 
         public static bool IsValid(string value)
         {
@@ -47,6 +43,5 @@ namespace QIES.Common.Record
             }
             return false;
         }
-
     }
 }

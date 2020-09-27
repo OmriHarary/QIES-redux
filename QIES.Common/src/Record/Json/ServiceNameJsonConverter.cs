@@ -9,8 +9,13 @@ namespace QIES.Common.Record.Json
         public override ServiceName Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         {
             var serviceName = reader.GetString();
-            if (serviceName is not null && ServiceName.IsValid(serviceName))
-                return new ServiceName(serviceName);
+            if (serviceName is not null)
+            {
+                if (serviceName == ServiceName.EmptyValue)
+                    return ServiceName.Empty;
+                if (ServiceName.IsValid(serviceName))
+                    return new ServiceName(serviceName);
+            }
 
             throw new JsonException();
         }

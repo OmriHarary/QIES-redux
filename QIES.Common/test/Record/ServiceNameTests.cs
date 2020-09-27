@@ -80,7 +80,7 @@ namespace QIES.Common.Tests.Record
         public void ToString_Unset_DefaultValue()
         {
             const string ExpectedDefault = "****";
-            var serviceName = new ServiceName();
+            var serviceName = ServiceName.Empty;
 
             var tostring = serviceName.ToString();
 

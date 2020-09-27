@@ -9,8 +9,13 @@ namespace QIES.Common.Record.Json
         public override ServiceDate Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         {
             var serviceDate = reader.GetString();
-            if (serviceDate is not null && ServiceDate.IsValid(serviceDate))
-                return new ServiceDate(serviceDate);
+            if (serviceDate is not null)
+            {
+                if (serviceDate == ServiceDate.EmptyValue)
+                    return ServiceDate.Empty;
+                if (ServiceDate.IsValid(serviceDate))
+                    return new ServiceDate(serviceDate);
+            }
 
             throw new JsonException();
         }

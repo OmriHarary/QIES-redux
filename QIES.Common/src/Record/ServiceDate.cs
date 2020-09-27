@@ -5,32 +5,28 @@ using QIES.Common.Record.Json;
 namespace QIES.Common.Record
 {
     [JsonConverter(typeof(ServiceDateJsonConverter))]
-    public class ServiceDate : IEquatable<ServiceDate>
+    public record ServiceDate
     {
-        private const string Default = "0";
-        public string Date { get; private set; }
+        internal const string EmptyValue = "0";
+        public static readonly ServiceDate Empty = new ();
+
+        public string Date { get; private init; }
 
         public ServiceDate(string date)
         {
             if (!IsValid(date))
             {
-                throw new System.ArgumentException();
+                throw new ArgumentException($"Invalid value: {date}", nameof(date));
             }
-            this.Date = date;
+            Date = date;
         }
 
-        public ServiceDate()
+        private ServiceDate()
         {
-            this.Date = Default;
+            Date = EmptyValue;
         }
 
-        public bool Equals(ServiceDate? other) => Date == other?.Date;
-        public override bool Equals(object? obj) => obj is ServiceDate otherDate && Equals(otherDate);
         public override string ToString() => Date;
-        public override int GetHashCode() => System.HashCode.Combine(Date);
-
-        public static bool operator ==(ServiceDate lhs, ServiceDate rhs) => lhs?.Equals(rhs) ?? rhs is null;
-        public static bool operator !=(ServiceDate lhs, ServiceDate rhs) => !(lhs == rhs);
 
         public static bool IsValid(string value)
         {
@@ -47,6 +43,5 @@ namespace QIES.Common.Record
                     && (m >= 1 && m <= 12)
                     && (d >= 1 && d <= 31);
         }
-
     }
 }

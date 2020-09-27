@@ -5,34 +5,29 @@ using QIES.Common.Record.Json;
 namespace QIES.Common.Record
 {
     [JsonConverter(typeof(NumberTicketsJsonConverter))]
-    public class NumberTickets : IEquatable<NumberTickets>
+    public record NumberTickets
     {
-        private const int Default = 0;
-        public int Number { get; private set; }
+        internal const int EmptyValue = 0;
+        public static readonly NumberTickets Empty = new ();
+
+        public int Number { get; private init; }
 
         public NumberTickets(int number)
         {
             if (!IsValid(number))
             {
-                throw new System.ArgumentException();
+                throw new ArgumentException($"Invalid value: {number}", nameof(number));
             }
-            this.Number = number;
+            Number = number;
         }
 
-        public NumberTickets()
+        private NumberTickets()
         {
-            this.Number = Default;
+            Number = EmptyValue;
         }
 
-        public bool Equals(NumberTickets? other) => Number == other?.Number;
-        public override bool Equals(object? obj) => obj is NumberTickets otherNum && Equals(otherNum);
         public override string ToString() => Number.ToString();
-        public override int GetHashCode() => HashCode.Combine(Number);
-
-        public static bool operator ==(NumberTickets lhs, NumberTickets rhs) => lhs?.Equals(rhs) ?? rhs is null;
-        public static bool operator !=(NumberTickets lhs, NumberTickets rhs) => !(lhs == rhs);
 
         public static bool IsValid(int value) => value >= 1 && value <= 1000;
-
     }
 }

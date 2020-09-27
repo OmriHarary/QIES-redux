@@ -39,7 +39,7 @@ namespace QIES.Common.Tests.Record
         public void ToString_Unset_DefaultValue()
         {
             const string ExpectedDefault = "00000";
-            var serviceNumber = new ServiceNumber();
+            var serviceNumber = ServiceNumber.Empty;
 
             var tostring = serviceNumber.ToString();
 

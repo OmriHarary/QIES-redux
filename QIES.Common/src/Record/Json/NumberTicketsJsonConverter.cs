@@ -9,6 +9,8 @@ namespace QIES.Common.Record.Json
         public override NumberTickets Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         {
             var numberTickets = reader.GetInt32();
+            if (numberTickets == NumberTickets.EmptyValue)
+                return NumberTickets.Empty;
             if (NumberTickets.IsValid(numberTickets))
                 return new NumberTickets(numberTickets);
 

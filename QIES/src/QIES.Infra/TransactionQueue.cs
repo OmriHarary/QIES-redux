@@ -1,5 +1,5 @@
 using System.Collections.Concurrent;
-using QIES.Common.Record;
+using QIES.Common.Records;
 using QIES.Core;
 
 namespace QIES.Infra

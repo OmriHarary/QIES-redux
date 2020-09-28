@@ -1,5 +1,5 @@
 using System.ComponentModel.DataAnnotations;
-using QIES.Common.Record;
+using QIES.Common.Records;
 
 namespace QIES.Api.Models.Validation
 {

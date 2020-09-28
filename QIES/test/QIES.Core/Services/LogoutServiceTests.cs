@@ -2,7 +2,7 @@ using System;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using Moq;
-using QIES.Common.Record;
+using QIES.Common.Records;
 using QIES.Core.Users;
 using Xunit;
 

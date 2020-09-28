@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using QIES.Api.Models;
 using QIES.Api.Models.Validation;
-using QIES.Common.Record;
+using QIES.Common.Records;
 using QIES.Core;
 using QIES.Core.Commands;
 using QIES.Core.Services;

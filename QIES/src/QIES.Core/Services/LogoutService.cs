@@ -1,7 +1,7 @@
 using System;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
-using QIES.Common.Record;
+using QIES.Common.Records;
 using QIES.Core.Users;
 
 namespace QIES.Core.Services

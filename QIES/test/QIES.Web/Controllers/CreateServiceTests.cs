@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Moq;
 using QIES.Api.Models;
-using QIES.Common.Record;
+using QIES.Common.Records;
 using QIES.Core;
 using QIES.Core.Commands;
 using QIES.Core.Services;

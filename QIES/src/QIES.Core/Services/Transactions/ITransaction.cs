@@ -1,6 +1,6 @@
 using System;
 using System.Threading.Tasks;
-using QIES.Common.Record;
+using QIES.Common.Records;
 using QIES.Core.Commands;
 
 namespace QIES.Core.Services

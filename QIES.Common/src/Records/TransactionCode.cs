@@ -1,4 +1,4 @@
-namespace QIES.Common.Record
+namespace QIES.Common.Records
 {
     public enum TransactionCode
     {

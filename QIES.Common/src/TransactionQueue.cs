@@ -1,11 +1,11 @@
 using System.Collections.Generic;
-using QIES.Common.Record;
+using QIES.Common.Records;
 
 namespace QIES.Common
 {
     public class TransactionQueue
     {
-        private Queue<TransactionRecord> records;
+        private readonly Queue<TransactionRecord> records;
 
         public TransactionQueue() => records = new Queue<TransactionRecord>();
 

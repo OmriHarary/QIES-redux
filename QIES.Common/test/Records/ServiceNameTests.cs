@@ -1,7 +1,6 @@
 using Xunit;
-using QIES.Common.Record;
 
-namespace QIES.Common.Tests.Record
+namespace QIES.Common.Records.Tests
 {
     public class ServiceNameTests
     {
@@ -80,7 +79,7 @@ namespace QIES.Common.Tests.Record
         public void ToString_Unset_DefaultValue()
         {
             const string ExpectedDefault = "****";
-            var serviceName = new ServiceName();
+            var serviceName = ServiceName.Empty;
 
             var tostring = serviceName.ToString();
 

@@ -1,5 +1,5 @@
 using System;
-using QIES.Common.Record;
+using QIES.Common.Records;
 
 namespace QIES.Common
 {
@@ -12,17 +12,17 @@ namespace QIES.Common
 
         public Service()
         {
-            this.ServiceCapacity = 30;
-            this.ServiceNumber = new ServiceNumber();
-            this.ServiceName = new ServiceName();
-            this.TicketsSold = new NumberTickets();
+            ServiceCapacity = 30;
+            ServiceNumber = ServiceNumber.Empty;
+            ServiceName = ServiceName.Empty;
+            TicketsSold = NumberTickets.Empty;
         }
 
         public void AddTickets(int toAdd)
         {
             if (TicketsSold.Number + toAdd > ServiceCapacity)
             {
-                throw new System.ArgumentException();
+                throw new ArgumentException("Addition would exceed capacity.", nameof(toAdd));
             }
             TicketsSold = new NumberTickets(TicketsSold.Number + toAdd);
         }
@@ -31,7 +31,7 @@ namespace QIES.Common
         {
             if (TicketsSold.Number - toRemove < 0)
             {
-                throw new System.ArgumentException();
+                throw new ArgumentException("Removal would reduce below 0.", nameof(toRemove));
             }
             TicketsSold = new NumberTickets(TicketsSold.Number - toRemove);
         }

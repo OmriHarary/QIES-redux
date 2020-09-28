@@ -1,8 +1,8 @@
 using System;
 using System.Text.Json.Serialization;
-using QIES.Common.Record.Json;
+using QIES.Common.Records.Json;
 
-namespace QIES.Common.Record
+namespace QIES.Common.Records
 {
     [JsonConverter(typeof(NumberTicketsJsonConverter))]
     public record NumberTickets

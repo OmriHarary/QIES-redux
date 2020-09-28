@@ -2,7 +2,7 @@ using System;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
-namespace QIES.Common.Record.Json
+namespace QIES.Common.Records.Json
 {
     internal sealed class ServiceNumberJsonConverter : JsonConverter<ServiceNumber>
     {

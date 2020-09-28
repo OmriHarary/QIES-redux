@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using QIES.Common.Record;
+using QIES.Common.Records;
 
 namespace QIES.Common
 {

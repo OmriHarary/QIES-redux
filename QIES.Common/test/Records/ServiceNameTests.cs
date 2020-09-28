@@ -1,7 +1,6 @@
 using Xunit;
-using QIES.Common.Record;
 
-namespace QIES.Common.Tests.Record
+namespace QIES.Common.Records.Tests
 {
     public class ServiceNameTests
     {

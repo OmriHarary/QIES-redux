@@ -1,6 +1,6 @@
 using System;
 
-namespace QIES.Common.Record
+namespace QIES.Common.Records
 {
     public record TransactionRecord(TransactionCode Code)
     {

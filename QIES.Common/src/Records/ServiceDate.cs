@@ -33,10 +33,9 @@ namespace QIES.Common.Records
             if (value.Length != 8)
                 return false;
 
-            int y, m, d;
-            var yParse = int.TryParse(value.Substring(0, 4), out y);
-            var mParse = int.TryParse(value.Substring(4, 2), out m);
-            var dParse = int.TryParse(value.Substring(6), out d);
+            var yParse = int.TryParse(value[0..4],  out int y);
+            var mParse = int.TryParse(value[4..6],  out int m);
+            var dParse = int.TryParse(value[6..],   out int d);
 
             return (yParse && mParse && dParse)
                     && (y >= 1980 && y <= 2999)

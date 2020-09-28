@@ -1,7 +1,6 @@
 using Xunit;
-using QIES.Common.Record;
 
-namespace QIES.Common.Tests.Record
+namespace QIES.Common.Records.Tests
 {
     public class ServiceDateTests
     {
@@ -159,7 +158,7 @@ namespace QIES.Common.Tests.Record
         public void ToString_Unset_DefaultValue()
         {
             const string ExpectedDefault = "0";
-            var serviceDate = new ServiceDate();
+            var serviceDate = ServiceDate.Empty;
 
             var tostring = serviceDate.ToString();
 

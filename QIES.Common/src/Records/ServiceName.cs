@@ -1,33 +1,32 @@
 using System;
+using System.Text.Json.Serialization;
+using QIES.Common.Records.Json;
 
-namespace QIES.Common.Record
+namespace QIES.Common.Records
 {
-    public class ServiceName : IEquatable<ServiceName>
+    [JsonConverter(typeof(ServiceNameJsonConverter))]
+    public record ServiceName
     {
-        private const string Default = "****";
-        public string Name { get; private set; }
+        internal const string EmptyValue = "****";
+        public static readonly ServiceName Empty = new ();
+
+        public string Name { get; private init; }
 
         public ServiceName(string name)
         {
             if (!IsValid(name))
             {
-                throw new System.ArgumentException();
+                throw new ArgumentException($"Invalid value: {name}", nameof(name));
             }
-            this.Name = name;
+            Name = name;
         }
 
-        public ServiceName()
+        private ServiceName()
         {
-            this.Name = Default;
+            Name = EmptyValue;
         }
 
-        public bool Equals(ServiceName? other) => Name == other?.Name;
-        public override bool Equals(object? obj) => obj is ServiceName otherName && Equals(otherName);
         public override string ToString() => Name;
-        public override int GetHashCode() => System.HashCode.Combine(Name);
-
-        public static bool operator ==(ServiceName lhs, ServiceName rhs) => lhs?.Equals(rhs) ?? rhs is null;
-        public static bool operator !=(ServiceName lhs, ServiceName rhs) => !(lhs == rhs);
 
         public static bool IsValid(string value)
         {

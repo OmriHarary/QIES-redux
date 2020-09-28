@@ -1,7 +1,6 @@
 using Xunit;
-using QIES.Common.Record;
 
-namespace QIES.Common.Tests.Record
+namespace QIES.Common.Records.Tests
 {
     public class NumberTicketsTests
     {
@@ -49,7 +48,7 @@ namespace QIES.Common.Tests.Record
         public void ToString_Unset_DefaultValue()
         {
             const string ExpectedDefault = "0";
-            var numberTickets = new NumberTickets();
+            var numberTickets = NumberTickets.Empty;
 
             var tostring = numberTickets.ToString();
 

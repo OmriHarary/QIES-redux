@@ -46,9 +46,9 @@ namespace QIES.Web.Controllers
         [ProducesResponseType(Status400BadRequest)]
         [ProducesResponseType(Status404NotFound)]
         [ProducesDefaultResponseType]
-        public async Task<IActionResult> GetService([ServiceNumber] string id)
+        public async Task<IActionResult> GetService([ServiceNumber] string serviceNum)
         {
-            var serviceNumber = new ServiceNumber(id);
+            var serviceNumber = new ServiceNumber(serviceNum);
 
             if (servicesList.IsInList(serviceNumber))
             {
@@ -65,12 +65,16 @@ namespace QIES.Web.Controllers
         /// <param name="xUserId"></param>
         /// <param name="transaction"></param>
         /// <returns></returns>
+        /// <response code="201"></response>
+        /// <response code="400"></response>
+        /// <response code="401"></response>
+        /// <response code="403"></response>
+        /// <response code="409"></response>
         [HttpPost]
         [ProducesResponseType(Status201Created)]
         [ProducesResponseType(Status400BadRequest)]
         [ProducesResponseType(Status401Unauthorized)]
         [ProducesResponseType(Status403Forbidden)]
-        [ProducesResponseType(Status404NotFound)]
         [ProducesResponseType(Status409Conflict)]
         [ProducesDefaultResponseType]
         public async Task<ActionResult<TransactionRecord>> CreateService(
@@ -105,26 +109,30 @@ namespace QIES.Web.Controllers
         /// <summary>
         /// Delete an existing service.
         /// </summary>
-        /// <param name="id"></param>
+        /// <param name="serviceNum"></param>
         /// <param name="request"></param>
         /// <param name="xUserId"></param>
         /// <param name="transaction"></param>
         /// <returns></returns>
-        [HttpDelete("{id}")]
+        /// <response code="201"></response>
+        /// <response code="400"></response>
+        /// <response code="401"></response>
+        /// <response code="403"></response>
+        /// <response code="404"></response>
+        [HttpDelete("{serviceNum}")]
         [ProducesResponseType(Status200OK)]
         [ProducesResponseType(Status400BadRequest)]
         [ProducesResponseType(Status401Unauthorized)]
         [ProducesResponseType(Status403Forbidden)]
         [ProducesResponseType(Status404NotFound)]
-        [ProducesResponseType(Status409Conflict)]
         [ProducesDefaultResponseType]
         public async Task<ActionResult<TransactionRecord>> DeleteService(
-            [ServiceNumber] string id,
+            [ServiceNumber] string serviceNum,
             DeleteServiceRequest request,
             [FromHeader(Name = "X-User-Id")] Guid? xUserId,
             [FromServices] ITransaction<DeleteServiceCommand> transaction)
         {
-            logger.LogInformation("DeleteService requested for {serviceNumber}", id);
+            logger.LogInformation("DeleteService requested for {serviceNumber}", serviceNum);
 
             if (xUserId is Guid userId && userManager.IsLoggedIn(userId))
             {
@@ -134,7 +142,7 @@ namespace QIES.Web.Controllers
                     return Problem(title: "Forbidden", statusCode: Status403Forbidden, detail: "Must be logged in as Planner to delete services.");
                 }
 
-                var serviceNumber = new ServiceNumber(id);
+                var serviceNumber = new ServiceNumber(serviceNum);
 
                 if (!servicesList.IsInList(serviceNumber))
                 {
@@ -155,13 +163,18 @@ namespace QIES.Web.Controllers
         /// <summary>
         /// Sell tickets for an existing service, or change tickets from one service to another.
         /// </summary>
-        /// <param name="id"></param>
+        /// <param name="serviceNum"></param>
         /// <param name="request"></param>
         /// <param name="xUserId"></param>
         /// <param name="sellTransaction"></param>
         /// <param name="changeTransaction"></param>
         /// <returns></returns>
-        [HttpPost("{id}/tickets")]
+        /// <response code="200"></response>
+        /// <response code="400"></response>
+        /// <response code="401"></response>
+        /// <response code="404"></response>
+        /// <response code="429"></response>
+        [HttpPost("{serviceNum}/tickets")]
         [ProducesResponseType(Status200OK)]
         [ProducesResponseType(Status400BadRequest)]
         [ProducesResponseType(Status401Unauthorized)]
@@ -169,22 +182,22 @@ namespace QIES.Web.Controllers
         [ProducesResponseType(Status429TooManyRequests)]
         [ProducesDefaultResponseType]
         public async Task<ActionResult<TransactionRecord>> SellOrChangeTickets(
-            [ServiceNumber] string id,
+            [ServiceNumber] string serviceNum,
             SellOrChangeTicketsRequest request,
             [FromHeader(Name = "X-User-Id")] Guid? xUserId,
             [FromServices] ITransaction<SellTicketsCommand> sellTransaction,
             [FromServices] ITransaction<ChangeTicketsCommand> changeTransaction)
         {
-            logger.LogInformation("SellOrChangeTickets requested for {serviceNumber}", id);
+            logger.LogInformation("SellOrChangeTickets requested for {serviceNumber}", serviceNum);
 
             if (xUserId is Guid userId && userManager.IsLoggedIn(userId))
             {
-                var serviceNumber = new ServiceNumber(id);
+                var serviceNumber = new ServiceNumber(serviceNum);
                 TransactionRecord record;
 
                 if (request.SourceServiceNumber is null) // Sell
                 {
-                    logger.LogInformation("No source service number in request. Selling tickets for {serviceNumber}", id);
+                    logger.LogInformation("No source service number in request. Selling tickets for {serviceNumber}", serviceNum);
                     if (!servicesList.IsInList(serviceNumber))
                     {
                         logger.LogWarning("Could not sell or change tickets. No service found with number {serviceNumber}", serviceNumber);
@@ -198,7 +211,7 @@ namespace QIES.Web.Controllers
                 else // Change. id is dest number
                 {
                     logger.LogInformation("Found source service number in request. Changing tickets from {sourceServiceNumber} to {destinationServiceNumber}",
-                        request.SourceServiceNumber.Number, id);
+                        request.SourceServiceNumber.Number, serviceNum);
 
                     if (!servicesList.IsInList(serviceNumber))
                     {
@@ -234,12 +247,17 @@ namespace QIES.Web.Controllers
         /// <summary>
         /// Cancel sold tickets.
         /// </summary>
-        /// <param name="id"></param>
+        /// <param name="serviceNum"></param>
         /// <param name="request"></param>
         /// <param name="xUserId"></param>
         /// <param name="transaction"></param>
         /// <returns></returns>
-        [HttpDelete("{id}/tickets")]
+        /// <response code="200"></response>
+        /// <response code="400"></response>
+        /// <response code="401"></response>
+        /// <response code="404"></response>
+        /// <response code="429"></response>
+        [HttpDelete("{serviceNum}/tickets")]
         [ProducesResponseType(Status200OK)]
         [ProducesResponseType(Status400BadRequest)]
         [ProducesResponseType(Status401Unauthorized)]
@@ -247,16 +265,16 @@ namespace QIES.Web.Controllers
         [ProducesResponseType(Status429TooManyRequests)]
         [ProducesDefaultResponseType]
         public async Task<ActionResult<TransactionRecord>> CancelTickets(
-            [ServiceNumber] string id,
+            [ServiceNumber] string serviceNum,
             CancelTicketsRequest request,
             [FromHeader(Name = "X-User-Id")] Guid? xUserId,
             [FromServices] ITransaction<CancelTicketsCommand> transaction)
         {
-            logger.LogInformation("CancelTickets requested for {serviceNumber}", id);
+            logger.LogInformation("CancelTickets requested for {serviceNumber}", serviceNum);
 
             if (xUserId is Guid userId && userManager.IsLoggedIn(userId))
             {
-                var serviceNumber = new ServiceNumber(id);
+                var serviceNumber = new ServiceNumber(serviceNum);
 
                 if (!servicesList.IsInList(serviceNumber))
                 {

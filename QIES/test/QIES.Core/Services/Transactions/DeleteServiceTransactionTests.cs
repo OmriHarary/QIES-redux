@@ -15,8 +15,8 @@ namespace QIES.Core.Services.Tests
         public async Task MakeTransaction_CorrectTransactionRecordCreated()
         {
             // Arrange
-            var serviceNumber = "11211";
-            var serviceName = "ANewService";
+            var serviceNumber = new ServiceNumber("11211");
+            var serviceName = new ServiceName("ANewService");
 
             var logger = new Mock<ILogger<DeleteServiceTransaction>>();
             var userManager = new Mock<IUserManager>();
@@ -34,8 +34,8 @@ namespace QIES.Core.Services.Tests
             // Assert
             var expectedRecord = new TransactionRecord(TransactionCode.DEL)
             {
-                SourceNumber = new ServiceNumber(serviceNumber),
-                ServiceName = new ServiceName(serviceName)
+                SourceNumber = serviceNumber,
+                ServiceName = serviceName
             };
 
             Assert.Equal(expectedRecord, record);
@@ -45,8 +45,8 @@ namespace QIES.Core.Services.Tests
         public async Task MakeTransaction_SameTransactionRecordPushedAsReturned()
         {
             // Arrange
-            var serviceNumber = "11211";
-            var serviceName = "ANewService";
+            var serviceNumber = new ServiceNumber("11211");
+            var serviceName = new ServiceName("ANewService");
 
             var logger = new Mock<ILogger<DeleteServiceTransaction>>();
             var userManager = new Mock<IUserManager>();

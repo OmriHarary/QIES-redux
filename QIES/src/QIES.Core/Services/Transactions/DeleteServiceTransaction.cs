@@ -23,8 +23,8 @@ namespace QIES.Core.Services
         {
             var record = new TransactionRecord(Code)
             {
-                SourceNumber = new ServiceNumber(command.ServiceNumber),
-                ServiceName = new ServiceName(command.ServiceName)
+                SourceNumber = command.ServiceNumber,
+                ServiceName = command.ServiceName
             };
 
             userManager.UserTransactionQueue(userId).Push(record);

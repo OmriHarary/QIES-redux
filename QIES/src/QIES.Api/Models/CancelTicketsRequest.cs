@@ -1,10 +1,9 @@
-using QIES.Api.Models.Validation;
+using QIES.Common.Records;
 
 namespace QIES.Api.Models
 {
     public class CancelTicketsRequest
     {
-        [NumberTickets]
-        public string NumberTickets { get; set; }
+        public NumberTickets NumberTickets { get; set; }
     }
 }

@@ -33,9 +33,9 @@ namespace QIES.Web.Controllers.Tests
 
             var request = new CreateServiceRequest
             {
-                ServiceNumber = newServiceNum,
-                ServiceName = newServiceName,
-                ServiceDate = newServiceDate
+                ServiceNumber = serviceNumber,
+                ServiceName = new ServiceName(newServiceName),
+                ServiceDate = new ServiceDate(newServiceDate)
             };
 
             userManager.Setup(userManager => userManager.IsLoggedIn(It.IsAny<Guid>()))
@@ -82,9 +82,9 @@ namespace QIES.Web.Controllers.Tests
 
             var request = new CreateServiceRequest
             {
-                ServiceNumber = newServiceNum,
-                ServiceName = newServiceName,
-                ServiceDate = newServiceDate
+                ServiceNumber = serviceNumber,
+                ServiceName = new ServiceName(newServiceName),
+                ServiceDate = new ServiceDate(newServiceDate)
             };
 
             userManager.Setup(userManager => userManager.IsLoggedIn(It.IsAny<Guid>()))
@@ -123,9 +123,9 @@ namespace QIES.Web.Controllers.Tests
 
             var request = new CreateServiceRequest
             {
-                ServiceNumber = newServiceNum,
-                ServiceName = newServiceName,
-                ServiceDate = newServiceDate
+                ServiceNumber = serviceNumber,
+                ServiceName = new ServiceName(newServiceName),
+                ServiceDate = new ServiceDate(newServiceDate)
             };
 
             userManager.Setup(userManager => userManager.IsLoggedIn(It.IsAny<Guid>()))
@@ -160,9 +160,9 @@ namespace QIES.Web.Controllers.Tests
 
             var request = new CreateServiceRequest
             {
-                ServiceNumber = newServiceNum,
-                ServiceName = newServiceName,
-                ServiceDate = newServiceDate
+                ServiceNumber = new ServiceNumber(newServiceNum),
+                ServiceName = new ServiceName(newServiceName),
+                ServiceDate = new ServiceDate(newServiceDate)
             };
 
             var controller = new ServicesController(
@@ -195,9 +195,9 @@ namespace QIES.Web.Controllers.Tests
 
             var request = new CreateServiceRequest
             {
-                ServiceNumber = newServiceNum,
-                ServiceName = newServiceName,
-                ServiceDate = newServiceDate
+                ServiceNumber = serviceNumber,
+                ServiceName = new ServiceName(newServiceName),
+                ServiceDate = new ServiceDate(newServiceDate)
             };
 
             userManager.Setup(userManager => userManager.IsLoggedIn(It.IsAny<Guid>()))

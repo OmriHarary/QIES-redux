@@ -23,19 +23,19 @@ namespace QIES.Core.Services
         {
             var record = new TransactionRecord(Code)
             {
-                SourceNumber = new ServiceNumber(command.SourceServiceNumber),
-                DestinationNumber = new ServiceNumber(command.ServiceNumber),
-                NumberTickets = new NumberTickets(command.NumberTickets)
+                SourceNumber = command.SourceServiceNumber,
+                DestinationNumber = command.ServiceNumber,
+                NumberTickets = command.NumberTickets
             };
 
             if (userManager.UserType(userId) == LoginType.Agent && userManager.User(userId) is Agent agent)
             {
-                if (agent.ChangedTickets + command.NumberTickets > 20)
+                if (agent.ChangedTickets + record.NumberTickets.Number > 20)
                 {
                     throw new AgentLimitExceededException("Cannot change as total session changed tickets would be over 20." +
                         $" User has {20 - agent.ChangedTickets} tickets left to change this session.");
                 }
-                agent.ChangedTickets += command.NumberTickets;
+                agent.ChangedTickets += record.NumberTickets.Number;
             }
 
             userManager.UserTransactionQueue(userId).Push(record);

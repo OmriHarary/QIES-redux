@@ -1,14 +1,11 @@
-using QIES.Api.Models.Validation;
+using QIES.Common.Records;
 
 namespace QIES.Api.Models
 {
     public class CreateServiceRequest
     {
-        [ServiceNumber]
-        public string ServiceNumber { get; set; }
-        [ServiceDate]
-        public string ServiceDate { get; set; }
-        [ServiceName]
-        public string ServiceName { get; set; }
+        public ServiceNumber ServiceNumber { get; set; }
+        public ServiceDate ServiceDate { get; set; }
+        public ServiceName ServiceName { get; set; }
     }
 }

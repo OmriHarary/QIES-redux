@@ -32,7 +32,7 @@ namespace QIES.Web.Controllers.Tests
 
             var request = new DeleteServiceRequest
             {
-                ServiceName = serviceName
+                ServiceName = new ServiceName(serviceName)
             };
 
             userManager.Setup(userManager => userManager.IsLoggedIn(It.IsAny<Guid>()))
@@ -78,7 +78,7 @@ namespace QIES.Web.Controllers.Tests
 
             var request = new DeleteServiceRequest
             {
-                ServiceName = serviceName
+                ServiceName = new ServiceName(serviceName)
             };
 
             userManager.Setup(userManager => userManager.IsLoggedIn(It.IsAny<Guid>()))
@@ -117,7 +117,7 @@ namespace QIES.Web.Controllers.Tests
 
             var request = new DeleteServiceRequest
             {
-                ServiceName = serviceName
+                ServiceName = new ServiceName(serviceName)
             };
 
             userManager.Setup(userManager => userManager.IsLoggedIn(It.IsAny<Guid>()))
@@ -151,7 +151,7 @@ namespace QIES.Web.Controllers.Tests
 
             var request = new DeleteServiceRequest
             {
-                ServiceName = serviceName
+                ServiceName = new ServiceName(serviceName)
             };
 
             var controller = new ServicesController(
@@ -173,7 +173,7 @@ namespace QIES.Web.Controllers.Tests
             // Arrange
             var serviceNum = "11111";
             var serviceNumber = new ServiceNumber(serviceNum);
-            var newServiceName = "New Service";
+            var serviceName = "New Service";
             var userId = Guid.NewGuid();
 
             var logger = new Mock<ILogger<ServicesController>>();
@@ -183,7 +183,7 @@ namespace QIES.Web.Controllers.Tests
 
             var request = new DeleteServiceRequest
             {
-                ServiceName = newServiceName
+                ServiceName = new ServiceName(serviceName)
             };
 
             userManager.Setup(userManager => userManager.IsLoggedIn(It.IsAny<Guid>()))

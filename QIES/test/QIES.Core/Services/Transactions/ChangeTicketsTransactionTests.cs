@@ -15,9 +15,12 @@ namespace QIES.Core.Services.Tests
         public async Task MakeTransaction_AsAgent_CorrectTransactionRecordCreated()
         {
             // Arrange
-            var sourceServiceNumber = "11111";
-            var destinationServiceNumber = "11112";
-            var numberTickets = 1;
+            var sourceServiceNum = "11111";
+            var sourceServiceNumber = new ServiceNumber(sourceServiceNum);
+            var destinationServiceNum = "11112";
+            var destinationServiceNumber = new ServiceNumber(destinationServiceNum);
+            var numTickets = 1;
+            var numberTickets = new NumberTickets(numTickets);
 
             var logger = new Mock<ILogger<ChangeTicketsTransaction>>();
             var userManager = new Mock<IUserManager>();
@@ -41,13 +44,13 @@ namespace QIES.Core.Services.Tests
             // Assert
             var expectedRecord = new TransactionRecord(TransactionCode.CHG)
             {
-                SourceNumber = new ServiceNumber(sourceServiceNumber),
-                DestinationNumber = new ServiceNumber(destinationServiceNumber),
-                NumberTickets = new NumberTickets(numberTickets)
+                SourceNumber = sourceServiceNumber,
+                DestinationNumber = destinationServiceNumber,
+                NumberTickets = numberTickets
             };
 
             Assert.Equal(expectedRecord, record);
-            Assert.Equal(numberTickets, agent.ChangedTickets);
+            Assert.Equal(numberTickets.Number, agent.ChangedTickets);
         }
 
 
@@ -55,9 +58,12 @@ namespace QIES.Core.Services.Tests
         public async Task MakeTransaction_AgentServiceLimitExceededSingleAsAgent_AgentLimitExceededExceptionThrown()
         {
             // Arrange
-            var sourceServiceNumber = "11111";
-            var destinationServiceNumber = "11112";
-            var numberTickets = 21;
+            var sourceServiceNum = "11111";
+            var sourceServiceNumber = new ServiceNumber(sourceServiceNum);
+            var destinationServiceNum = "11112";
+            var destinationServiceNumber = new ServiceNumber(destinationServiceNum);
+            var numTickets = 21;
+            var numberTickets = new NumberTickets(numTickets);
 
             var logger = new Mock<ILogger<ChangeTicketsTransaction>>();
             var userManager = new Mock<IUserManager>();
@@ -83,9 +89,12 @@ namespace QIES.Core.Services.Tests
         public async Task MakeTransaction_AgentServiceLimitExceededMultipleAsAgent_AgentLimitExceededExceptionThrown()
         {
             // Arrange
-            var sourceServiceNumber = "11111";
-            var destinationServiceNumber = "11112";
-            var numberTickets = 11;
+            var sourceServiceNum = "11111";
+            var sourceServiceNumber = new ServiceNumber(sourceServiceNum);
+            var destinationServiceNum = "11112";
+            var destinationServiceNumber = new ServiceNumber(destinationServiceNum);
+            var numTickets = 11;
+            var numberTickets = new NumberTickets(numTickets);
 
             var logger = new Mock<ILogger<ChangeTicketsTransaction>>();
             var userManager = new Mock<IUserManager>();
@@ -112,9 +121,12 @@ namespace QIES.Core.Services.Tests
         public async Task MakeTransaction_AgentServiceLimitExceededSingleAsPlanner_NoExceptionThrown()
         {
             // Arrange
-            var sourceServiceNumber = "11111";
-            var destinationServiceNumber = "11112";
-            var numberTickets = 21;
+            var sourceServiceNum = "11111";
+            var sourceServiceNumber = new ServiceNumber(sourceServiceNum);
+            var destinationServiceNum = "11112";
+            var destinationServiceNumber = new ServiceNumber(destinationServiceNum);
+            var numTickets = 21;
+            var numberTickets = new NumberTickets(numTickets);
 
             var logger = new Mock<ILogger<ChangeTicketsTransaction>>();
             var userManager = new Mock<IUserManager>();
@@ -138,9 +150,9 @@ namespace QIES.Core.Services.Tests
             // Assert
             var expectedRecord = new TransactionRecord(TransactionCode.CHG)
             {
-                SourceNumber = new ServiceNumber(sourceServiceNumber),
-                DestinationNumber = new ServiceNumber(destinationServiceNumber),
-                NumberTickets = new NumberTickets(numberTickets)
+                SourceNumber = sourceServiceNumber,
+                DestinationNumber = destinationServiceNumber,
+                NumberTickets = numberTickets
             };
 
             Assert.Equal(expectedRecord, record);
@@ -150,9 +162,12 @@ namespace QIES.Core.Services.Tests
         public async Task MakeTransaction_SameTransactionRecordPushedAsReturned()
         {
             // Arrange
-            var sourceServiceNumber = "11111";
-            var destinationServiceNumber = "11112";
-            var numberTickets = 1;
+            var sourceServiceNum = "11111";
+            var sourceServiceNumber = new ServiceNumber(sourceServiceNum);
+            var destinationServiceNum = "11112";
+            var destinationServiceNumber = new ServiceNumber(destinationServiceNum);
+            var numTickets = 1;
+            var numberTickets = new NumberTickets(numTickets);
 
             var logger = new Mock<ILogger<ChangeTicketsTransaction>>();
             var userManager = new Mock<IUserManager>();

@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.OpenApi.Models;
+using QIES.Common.Records;
 using QIES.Core;
 using QIES.Core.Services;
 using QIES.Core.Users;
@@ -35,6 +37,11 @@ namespace QIES.Web
 
             services.AddSwaggerGen(c =>
             {
+                c.MapType<ServiceNumber>(() => new OpenApiSchema { Type = "string" });
+                c.MapType<ServiceName>(() => new OpenApiSchema { Type = "string", });
+                c.MapType<ServiceDate>(() => new OpenApiSchema { Type = "string", });
+                c.MapType<NumberTickets>(() => new OpenApiSchema { Type = "integer", });
+
                 var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
                 var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
                 c.IncludeXmlComments(xmlPath);

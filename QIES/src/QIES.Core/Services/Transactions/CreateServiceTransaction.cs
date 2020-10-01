@@ -23,9 +23,9 @@ namespace QIES.Core.Services
         {
             var record = new TransactionRecord(Code)
             {
-                SourceNumber = new ServiceNumber(command.ServiceNumber),
-                ServiceDate = new ServiceDate(command.ServiceDate),
-                ServiceName = new ServiceName(command.ServiceName)
+                SourceNumber = command.ServiceNumber,
+                ServiceDate = command.ServiceDate,
+                ServiceName = command.ServiceName
             };
 
             userManager.UserTransactionQueue(userId).Push(record);

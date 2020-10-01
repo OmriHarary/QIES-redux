@@ -1,19 +1,21 @@
+using QIES.Common.Records;
+
 namespace QIES.Core.Commands
 {
-    public abstract record TransactionCommand(string ServiceNumber);
+    public abstract record TransactionCommand(ServiceNumber ServiceNumber);
 
-    public record CancelTicketsCommand(string ServiceNumber, int NumberTickets)
+    public record CancelTicketsCommand(ServiceNumber ServiceNumber, NumberTickets NumberTickets)
         : TransactionCommand(ServiceNumber);
 
-    public record ChangeTicketsCommand(string ServiceNumber, int NumberTickets, string SourceServiceNumber)
+    public record ChangeTicketsCommand(ServiceNumber ServiceNumber, NumberTickets NumberTickets, ServiceNumber SourceServiceNumber)
         : TransactionCommand(ServiceNumber);
 
-    public record CreateServiceCommand(string ServiceNumber, string ServiceDate, string ServiceName)
+    public record CreateServiceCommand(ServiceNumber ServiceNumber, ServiceDate ServiceDate, ServiceName ServiceName)
         : TransactionCommand(ServiceNumber);
 
-    public record DeleteServiceCommand(string ServiceNumber, string ServiceName)
+    public record DeleteServiceCommand(ServiceNumber ServiceNumber, ServiceName ServiceName)
         : TransactionCommand(ServiceNumber);
 
-    public record SellTicketsCommand(string ServiceNumber, int NumberTickets)
+    public record SellTicketsCommand(ServiceNumber ServiceNumber, NumberTickets NumberTickets)
         : TransactionCommand(ServiceNumber);
 }

@@ -22,7 +22,7 @@ namespace QIES.Web.Controllers.Tests
             // Arrange
             var serviceNum = "11111";
             var serviceNumber = new ServiceNumber(serviceNum);
-            var numberTickets = "1";
+            var numberTickets = new NumberTickets(1);
             var userId = Guid.NewGuid();
 
             var logger = new Mock<ILogger<ServicesController>>();
@@ -43,7 +43,7 @@ namespace QIES.Web.Controllers.Tests
                 .ReturnsAsync(new TransactionRecord(TransactionCode.CAN)
                     {
                         SourceNumber = serviceNumber,
-                        NumberTickets = new NumberTickets(int.Parse(numberTickets))
+                        NumberTickets = numberTickets
                     });
 
             var controller = new ServicesController(
@@ -65,7 +65,7 @@ namespace QIES.Web.Controllers.Tests
         {
             // Arrange
             var serviceNumber = "11111";
-            var numberTickets = "1";
+            var numberTickets = new NumberTickets(1);
             var userId = Guid.NewGuid();
 
             var logger = new Mock<ILogger<ServicesController>>();
@@ -99,7 +99,7 @@ namespace QIES.Web.Controllers.Tests
         {
             // Arrange
             var serviceNumber = "11111";
-            var numberTickets = "1";
+            var numberTickets = new NumberTickets(1);
             Guid? userId = null;
 
             var logger = new Mock<ILogger<ServicesController>>();
@@ -131,7 +131,7 @@ namespace QIES.Web.Controllers.Tests
             // Arrange
             var serviceNum = "11111";
             var serviceNumber = new ServiceNumber(serviceNum);
-            var numberTickets = "1";
+            var numberTickets = new NumberTickets(1);
             var userId = Guid.NewGuid();
 
             var logger = new Mock<ILogger<ServicesController>>();
@@ -168,7 +168,7 @@ namespace QIES.Web.Controllers.Tests
             // Arrange
             var serviceNum = "11111";
             var serviceNumber = new ServiceNumber(serviceNum);
-            var numberTickets = "11";
+            var numberTickets = new NumberTickets(11);
             var userId = Guid.NewGuid();
 
             var logger = new Mock<ILogger<ServicesController>>();
@@ -208,7 +208,7 @@ namespace QIES.Web.Controllers.Tests
             // Arrange
             var serviceNum = "11111";
             var serviceNumber = new ServiceNumber(serviceNum);
-            var numberTickets = "21";
+            var numberTickets = new NumberTickets(21);
             var userId = Guid.NewGuid();
 
             var logger = new Mock<ILogger<ServicesController>>();

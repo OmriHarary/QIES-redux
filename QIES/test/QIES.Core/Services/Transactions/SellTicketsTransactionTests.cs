@@ -15,8 +15,8 @@ namespace QIES.Core.Services.Tests
         public async Task MakeTransaction_CorrectTransactionRecordCreated()
         {
             // Arrange
-            var serviceNumber = "11111";
-            var numberTickets = 2;
+            var serviceNumber = new ServiceNumber("11111");
+            var numberTickets = new NumberTickets(2);
 
             var logger = new Mock<ILogger<SellTicketsTransaction>>();
             var userManager = new Mock<IUserManager>();
@@ -34,8 +34,8 @@ namespace QIES.Core.Services.Tests
             // Assert
             var expectedRecord = new TransactionRecord(TransactionCode.SEL)
             {
-                SourceNumber = new ServiceNumber(serviceNumber),
-                NumberTickets = new NumberTickets(numberTickets)
+                SourceNumber = serviceNumber,
+                NumberTickets = numberTickets
             };
 
             Assert.Equal(expectedRecord, record);
@@ -45,8 +45,8 @@ namespace QIES.Core.Services.Tests
         public async Task MakeTransaction_SameTransactionRecordPushedAsReturned()
         {
             // Arrange
-            var serviceNumber = "11111";
-            var numberTickets = 2;
+            var serviceNumber = new ServiceNumber("11111");
+            var numberTickets = new NumberTickets(2);
 
             var logger = new Mock<ILogger<SellTicketsTransaction>>();
             var userManager = new Mock<IUserManager>();

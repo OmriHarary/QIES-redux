@@ -23,8 +23,8 @@ namespace QIES.Core.Services
         {
             var record = new TransactionRecord(Code)
             {
-                SourceNumber = new ServiceNumber(command.ServiceNumber),
-                NumberTickets = new NumberTickets(command.NumberTickets)
+                SourceNumber = command.ServiceNumber,
+                NumberTickets = command.NumberTickets
             };
 
             if (userManager.UserType(userId) == LoginType.Agent && userManager.User(userId) is Agent agent)

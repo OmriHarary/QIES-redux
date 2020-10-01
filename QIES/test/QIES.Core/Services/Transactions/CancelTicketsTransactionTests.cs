@@ -18,6 +18,7 @@ namespace QIES.Core.Services.Tests
             var serviceNum = "11111";
             var serviceNumber = new ServiceNumber(serviceNum);
             var numTickets = 1;
+            var numberTickets = new NumberTickets(numTickets);
 
             var logger = new Mock<ILogger<CancelTicketsTransaction>>();
             var userManager = new Mock<IUserManager>();
@@ -31,7 +32,7 @@ namespace QIES.Core.Services.Tests
             userManager.Setup(userManager => userManager.User(It.IsAny<Guid>()))
                 .Returns(agent);
 
-            var command = new CancelTicketsCommand(serviceNum, numTickets);
+            var command = new CancelTicketsCommand(serviceNumber, numberTickets);
 
             var transaction = new CancelTicketsTransaction(logger.Object, userManager.Object);
 
@@ -42,7 +43,7 @@ namespace QIES.Core.Services.Tests
             var expectedRecord = new TransactionRecord(TransactionCode.CAN)
             {
                 SourceNumber = serviceNumber,
-                NumberTickets = new NumberTickets(numTickets)
+                NumberTickets = numberTickets
             };
 
             Assert.Equal(expectedRecord, record);
@@ -57,6 +58,7 @@ namespace QIES.Core.Services.Tests
             var serviceNum = "11111";
             var serviceNumber = new ServiceNumber(serviceNum);
             var numTickets = 11;
+            var numberTickets = new NumberTickets(numTickets);
 
             var logger = new Mock<ILogger<CancelTicketsTransaction>>();
             var userManager = new Mock<IUserManager>();
@@ -70,7 +72,7 @@ namespace QIES.Core.Services.Tests
             userManager.Setup(userManager => userManager.User(It.IsAny<Guid>()))
                 .Returns(agent);
 
-            var command = new CancelTicketsCommand(serviceNum, numTickets);
+            var command = new CancelTicketsCommand(serviceNumber, numberTickets);
 
             var transaction = new CancelTicketsTransaction(logger.Object, userManager.Object);
 
@@ -85,6 +87,7 @@ namespace QIES.Core.Services.Tests
             var serviceNum = "11111";
             var serviceNumber = new ServiceNumber(serviceNum);
             var numTickets = 3;
+            var numberTickets = new NumberTickets(numTickets);
 
             var logger = new Mock<ILogger<CancelTicketsTransaction>>();
             var userManager = new Mock<IUserManager>();
@@ -98,7 +101,7 @@ namespace QIES.Core.Services.Tests
             userManager.Setup(userManager => userManager.User(It.IsAny<Guid>()))
                 .Returns(agent);
 
-            var command = new CancelTicketsCommand(serviceNum, numTickets);
+            var command = new CancelTicketsCommand(serviceNumber, numberTickets);
 
             agent.CancelledTickets.Add(serviceNumber, 8);
             var transaction = new CancelTicketsTransaction(logger.Object, userManager.Object);
@@ -114,6 +117,7 @@ namespace QIES.Core.Services.Tests
             var serviceNum = "11111";
             var serviceNumber = new ServiceNumber(serviceNum);
             var numTickets = 5;
+            var numberTickets = new NumberTickets(numTickets);
 
             var logger = new Mock<ILogger<CancelTicketsTransaction>>();
             var userManager = new Mock<IUserManager>();
@@ -127,7 +131,7 @@ namespace QIES.Core.Services.Tests
             userManager.Setup(userManager => userManager.User(It.IsAny<Guid>()))
                 .Returns(agent);
 
-            var command = new CancelTicketsCommand(serviceNum, numTickets);
+            var command = new CancelTicketsCommand(serviceNumber, numberTickets);
 
             agent.TotalCancelledTickets = 16;
             var transaction = new CancelTicketsTransaction(logger.Object, userManager.Object);
@@ -143,6 +147,7 @@ namespace QIES.Core.Services.Tests
             var serviceNum = "11111";
             var serviceNumber = new ServiceNumber(serviceNum);
             var numTickets = 11;
+            var numberTickets = new NumberTickets(numTickets);
 
             var logger = new Mock<ILogger<CancelTicketsTransaction>>();
             var userManager = new Mock<IUserManager>();
@@ -156,7 +161,7 @@ namespace QIES.Core.Services.Tests
             userManager.Setup(userManager => userManager.User(It.IsAny<Guid>()))
                 .Returns(planner);
 
-            var command = new CancelTicketsCommand(serviceNum, numTickets);
+            var command = new CancelTicketsCommand(serviceNumber, numberTickets);
 
             var transaction = new CancelTicketsTransaction(logger.Object, userManager.Object);
 
@@ -180,6 +185,7 @@ namespace QIES.Core.Services.Tests
             var serviceNum = "11111";
             var serviceNumber = new ServiceNumber(serviceNum);
             int numTickets = 21;
+            var numberTickets = new NumberTickets(numTickets);
 
             var logger = new Mock<ILogger<CancelTicketsTransaction>>();
             var userManager = new Mock<IUserManager>();
@@ -193,7 +199,7 @@ namespace QIES.Core.Services.Tests
             userManager.Setup(userManager => userManager.User(It.IsAny<Guid>()))
                 .Returns(planner);
 
-            var command = new CancelTicketsCommand(serviceNum, numTickets);
+            var command = new CancelTicketsCommand(serviceNumber, numberTickets);
 
             var transaction = new CancelTicketsTransaction(logger.Object, userManager.Object);
 
@@ -217,6 +223,7 @@ namespace QIES.Core.Services.Tests
             var serviceNum = "11111";
             var serviceNumber = new ServiceNumber(serviceNum);
             var numTickets = 1;
+            var numberTickets = new NumberTickets(numTickets);
 
             var logger = new Mock<ILogger<CancelTicketsTransaction>>();
             var userManager = new Mock<IUserManager>();
@@ -225,7 +232,7 @@ namespace QIES.Core.Services.Tests
             userManager.Setup(userManager => userManager.UserTransactionQueue(It.IsAny<Guid>()))
                 .Returns(transactionQueue.Object);
 
-            var command = new CancelTicketsCommand(serviceNum, numTickets);
+            var command = new CancelTicketsCommand(serviceNumber, numberTickets);
 
             var transaction = new CancelTicketsTransaction(logger.Object, userManager.Object);
 

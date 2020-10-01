@@ -32,7 +32,7 @@ namespace QIES.Web.Controllers.Tests
 
             var request = new SellOrChangeTicketsRequest
             {
-                NumberTickets = numberTickets
+                NumberTickets = new NumberTickets(int.Parse(numberTickets))
             };
 
             userManager.Setup(userManager => userManager.IsLoggedIn(It.IsAny<Guid>()))
@@ -67,7 +67,7 @@ namespace QIES.Web.Controllers.Tests
 
             var request = new SellOrChangeTicketsRequest
             {
-                NumberTickets = numberTickets
+                NumberTickets = new NumberTickets(int.Parse(numberTickets))
             };
 
             userManager.Setup(userManager => userManager.IsLoggedIn(It.IsAny<Guid>()))
@@ -103,7 +103,7 @@ namespace QIES.Web.Controllers.Tests
 
             var request = new SellOrChangeTicketsRequest
             {
-                NumberTickets = numberTickets
+                NumberTickets = new NumberTickets(int.Parse(numberTickets))
             };
 
             userManager.Setup(userManager => userManager.IsLoggedIn(It.IsAny<Guid>()))
@@ -156,8 +156,8 @@ namespace QIES.Web.Controllers.Tests
 
             var request = new SellOrChangeTicketsRequest
             {
-                SourceServiceNumber = sourceNum,
-                NumberTickets = numberTickets
+                SourceServiceNumber = sourceServiceNumber,
+                NumberTickets = new NumberTickets(int.Parse(numberTickets))
             };
 
             userManager.Setup(userManager => userManager.IsLoggedIn(It.IsAny<Guid>()))
@@ -211,7 +211,7 @@ namespace QIES.Web.Controllers.Tests
 
             var request = new SellOrChangeTicketsRequest
             {
-                NumberTickets = numberTickets
+                NumberTickets = new NumberTickets(int.Parse(numberTickets))
             };
 
             userManager.Setup(userManager => userManager.IsLoggedIn(It.IsAny<Guid>()))
@@ -251,8 +251,8 @@ namespace QIES.Web.Controllers.Tests
 
             var request = new SellOrChangeTicketsRequest
             {
-                SourceServiceNumber = sourceNum,
-                NumberTickets = numberTickets
+                SourceServiceNumber = sourceServiceNumber,
+                NumberTickets = new NumberTickets(int.Parse(numberTickets))
             };
 
             userManager.Setup(userManager => userManager.IsLoggedIn(It.IsAny<Guid>()))
@@ -294,8 +294,8 @@ namespace QIES.Web.Controllers.Tests
 
             var request = new SellOrChangeTicketsRequest
             {
-                SourceServiceNumber = sourceNum,
-                NumberTickets = numberTickets
+                SourceServiceNumber = sourceServiceNumber,
+                NumberTickets = new NumberTickets(int.Parse(numberTickets))
             };
 
             userManager.Setup(userManager => userManager.IsLoggedIn(It.IsAny<Guid>()))
@@ -337,8 +337,8 @@ namespace QIES.Web.Controllers.Tests
 
             var request = new SellOrChangeTicketsRequest
             {
-                SourceServiceNumber = sourceNum,
-                NumberTickets = numberTickets
+                SourceServiceNumber = sourceServiceNumber,
+                NumberTickets = new NumberTickets(int.Parse(numberTickets))
             };
 
             userManager.Setup(userManager => userManager.IsLoggedIn(It.IsAny<Guid>()))

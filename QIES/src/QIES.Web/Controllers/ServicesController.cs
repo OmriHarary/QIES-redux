@@ -88,17 +88,15 @@ namespace QIES.Web.Controllers
                     return Problem(title: "Forbidden", statusCode: Status403Forbidden, detail: "Must be logged in as Planner to create services.");
                 }
 
-                var serviceNumber = new ServiceNumber(request.ServiceNumber);
-
-                if (servicesList.IsInList(serviceNumber))
+                if (servicesList.IsInList(request.ServiceNumber))
                 {
-                    logger.LogWarning("Could not create service. Requested service number, {serviceNumber}, already allocated", serviceNumber);
+                    logger.LogWarning("Could not create service. Requested service number, {serviceNumber}, already allocated", request.ServiceNumber);
                     return Conflict();
                 }
 
                 var command = new CreateServiceCommand(request.ServiceNumber, request.ServiceDate, request.ServiceName);
                 var record = await transaction.MakeTransaction(command, userId);
-                return CreatedAtAction(nameof(GetService), new { id = serviceNumber }, record);
+                return CreatedAtAction(nameof(GetService), new { id = request.ServiceNumber }, record);
             }
             logger.LogWarning("Could not create service. User unauthenticated");
             return Unauthorized();
@@ -144,7 +142,7 @@ namespace QIES.Web.Controllers
                     return NotFound();
                 }
 
-                var command = new DeleteServiceCommand(id, request.ServiceName);
+                var command = new DeleteServiceCommand(serviceNumber, request.ServiceName);
                 var record = await transaction.MakeTransaction(command, userId);
                 servicesList.DeleteService(serviceNumber);
 
@@ -186,32 +184,36 @@ namespace QIES.Web.Controllers
 
                 if (request.SourceServiceNumber is null) // Sell
                 {
+                    logger.LogInformation("No source service number in request. Selling tickets for {serviceNumber}", id);
                     if (!servicesList.IsInList(serviceNumber))
                     {
                         logger.LogWarning("Could not sell or change tickets. No service found with number {serviceNumber}", serviceNumber);
                         return NotFound();
                     }
 
-                    var command = new SellTicketsCommand(id, int.Parse(request.NumberTickets));
+                    var command = new SellTicketsCommand(serviceNumber, request.NumberTickets);
 
                     record = await sellTransaction.MakeTransaction(command, userId);
                 }
                 else // Change. id is dest number
                 {
+                    logger.LogInformation("Found source service number in request. Changing tickets from {sourceServiceNumber} to {destinationServiceNumber}",
+                        request.SourceServiceNumber.Number, id);
+
                     if (!servicesList.IsInList(serviceNumber))
                     {
                         logger.LogWarning("Could not change tickets. No service found with number {destinationServiceNumber}", serviceNumber);
                         return NotFound();
                     }
 
-                    var sourceServiceNumber = new ServiceNumber(request.SourceServiceNumber);
+                    var sourceServiceNumber = request.SourceServiceNumber;
                     if (!servicesList.IsInList(sourceServiceNumber))
                     {
                         logger.LogWarning("Could not change tickets. No service found with number {sourceServiceNumber}", sourceServiceNumber);
                         return NotFound();
                     }
 
-                    var command = new ChangeTicketsCommand(id, int.Parse(request.NumberTickets), request.SourceServiceNumber);
+                    var command = new ChangeTicketsCommand(serviceNumber, request.NumberTickets, request.SourceServiceNumber);
 
                     try
                     {
@@ -263,7 +265,7 @@ namespace QIES.Web.Controllers
 
                 try
                 {
-                    var command = new CancelTicketsCommand(id, int.Parse(request.NumberTickets));
+                    var command = new CancelTicketsCommand(serviceNumber, request.NumberTickets);
                     var record = await transaction.MakeTransaction(command, userId);
                     return Ok(record);
                 }

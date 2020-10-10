@@ -14,7 +14,7 @@ namespace QIES.Web.Controllers
     [ApiController]
     [Consumes(Application.Json)]
     [Produces(Application.Json)]
-    [Route("api/[controller]")]
+    [Route("api/v1/[controller]")]
     public class UsersController : ControllerBase
     {
         private readonly ILogger<UsersController> logger;
@@ -31,6 +31,13 @@ namespace QIES.Web.Controllers
             this.logoutService = logoutService;
         }
 
+        /// <summary>
+        /// Start a session.
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        /// <response code="200">Successful login.</response>
+        /// <response code="400">Invalid login requested.</response>
         [HttpPost("login")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -59,6 +66,13 @@ namespace QIES.Web.Controllers
             return Ok(response);
         }
 
+        /// <summary>
+        /// End a session.
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        /// <response code="200">Successful logout.</response>
+        /// <response code="400">Failed to logout.</response>
         [HttpPost("logout")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]

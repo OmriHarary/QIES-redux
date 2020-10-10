@@ -1,14 +1,10 @@
-using System;
 using System.IO;
-using System.Reflection;
 using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.OpenApi.Models;
-using QIES.Common.Records;
 using QIES.Core;
 using QIES.Core.Services;
 using QIES.Core.Users;
@@ -34,18 +30,7 @@ namespace QIES.Web
             services.AddTransactions();
             services.AddControllers()
                 .AddJsonOptions(opts => opts.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));
-
-            services.AddSwaggerGen(c =>
-            {
-                c.MapType<ServiceNumber>(() => new OpenApiSchema { Type = "string" });
-                c.MapType<ServiceName>(() => new OpenApiSchema { Type = "string", });
-                c.MapType<ServiceDate>(() => new OpenApiSchema { Type = "string", });
-                c.MapType<NumberTickets>(() => new OpenApiSchema { Type = "integer", });
-
-                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
-                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
-                c.IncludeXmlComments(xmlPath);
-            });
+            services.AddOpenApi();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -56,16 +41,7 @@ namespace QIES.Web
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseSwagger(c =>
-            {
-                c.RouteTemplate = "openapi/{documentName}/openapi.json";
-            });
-            app.UseReDoc(c =>
-            {
-                c.RoutePrefix = "openapi";
-                c.SpecUrl = "v1/openapi.json";
-                c.ExpandResponses("");
-            });
+            app.UseOpenApi();
 
             app.UseHttpsRedirection();
 

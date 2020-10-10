@@ -41,7 +41,15 @@ namespace QIES.Web.Controllers
         //     return new List<Service>();
         // }
 
-        [HttpGet("{id}")]
+        /// <summary>
+        /// Check service existence.
+        /// </summary>
+        /// <param name="serviceNum" example="11110"></param>
+        /// <returns></returns>
+        /// <response code="200">Specified service found.</response>
+        /// <response code="400">Invalid service number.</response>
+        /// <response code="404">Specified service not found.</response>
+        [HttpGet("{serviceNum}")]
         [ProducesResponseType(Status200OK)]
         [ProducesResponseType(Status400BadRequest)]
         [ProducesResponseType(Status404NotFound)]
@@ -62,7 +70,7 @@ namespace QIES.Web.Controllers
         /// Create a new service.
         /// </summary>
         /// <param name="request"></param>
-        /// <param name="xUserId"></param>
+        /// <param name="xUserId">Current user session ID.</param>
         /// <param name="transaction"></param>
         /// <returns></returns>
         /// <response code="201"></response>
@@ -111,10 +119,10 @@ namespace QIES.Web.Controllers
         /// </summary>
         /// <param name="serviceNum"></param>
         /// <param name="request"></param>
-        /// <param name="xUserId"></param>
+        /// <param name="xUserId">Current user session ID.</param>
         /// <param name="transaction"></param>
         /// <returns></returns>
-        /// <response code="201"></response>
+        /// <response code="200"></response>
         /// <response code="400"></response>
         /// <response code="401"></response>
         /// <response code="403"></response>
@@ -165,7 +173,7 @@ namespace QIES.Web.Controllers
         /// </summary>
         /// <param name="serviceNum"></param>
         /// <param name="request"></param>
-        /// <param name="xUserId"></param>
+        /// <param name="xUserId">Current user session ID.</param>
         /// <param name="sellTransaction"></param>
         /// <param name="changeTransaction"></param>
         /// <returns></returns>
@@ -249,7 +257,7 @@ namespace QIES.Web.Controllers
         /// </summary>
         /// <param name="serviceNum"></param>
         /// <param name="request"></param>
-        /// <param name="xUserId"></param>
+        /// <param name="xUserId">Current user session ID.</param>
         /// <param name="transaction"></param>
         /// <returns></returns>
         /// <response code="200"></response>

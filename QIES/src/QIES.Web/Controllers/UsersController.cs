@@ -59,7 +59,7 @@ namespace QIES.Web.Controllers
             var user = await loginService.DoLogin(login);
             var response = new LoginResponse
             {
-                Id = user.Id,
+                UserId = user.Id,
                 Type = user.Type
             };
 

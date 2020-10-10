@@ -5,7 +5,7 @@ namespace QIES.Api.Responses
 {
     public class LoginResponse
     {
-        public Guid Id { get; set; }
+        public Guid UserId { get; set; }
         public LoginType Type { get; set; }
     }
 }

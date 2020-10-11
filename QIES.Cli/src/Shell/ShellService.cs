@@ -1,21 +1,32 @@
-using System;
 using System.Collections.Generic;
+using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using QIES.Cli.Client;
-using QIES.Core.Users;
+using QIES.Cli.Client.Responses;
+using QIES.Common.Records;
 
 namespace QIES.Cli.Shell
 {
     public class ShellService : IShellService
     {
-        private static readonly (string Prompt, string Message)[] userPrompts = new (string Prompt, string Message)[]
-        {
-            (Prompt: " ----- ", Message: "You are not logged in, please log in before performing any other actions. (login)"),
-            (Prompt: " AGENT ", Message: "Logged in as Agent. Enter command to begin a transaction."),
-            (Prompt: "PLANNER", Message: "Logged in as Planner. Enter command to begin a transaction.")
-        };
+        private static readonly Dictionary<LoginType, (string Prompt, string Message)> userPrompts
+            = new Dictionary<LoginType, (string Prompt, string Message)>()
+            {
+                {
+                    LoginType.None,
+                    (Prompt: " ----- ", Message: "You are not logged in, please log in before performing any other actions. (login)")
+                },
+                {
+                    LoginType.Agent,
+                    (Prompt: " AGENT ", Message: "Logged in as Agent. Enter command to begin a transaction.")
+                },
+                {
+                    LoginType.Planner,
+                    (Prompt: "PLANNER", Message: "Logged in as Planner. Enter command to begin a transaction.")
+                }
+            };
         private readonly ILogger<ShellService> logger;
         private readonly QIESClient client;
         private readonly Input input;
@@ -25,28 +36,28 @@ namespace QIES.Cli.Shell
         {
             this.logger = logger;
             this.client = client;
-            activeLogin = 0;
-            input = new Input(userPrompts[(int)activeLogin].Prompt);
+            activeLogin = LoginType.None;
+            input = new Input(userPrompts[activeLogin].Prompt);
         }
 
         public async Task<int> RunAsync()
         {
             var run = true;
-            var message = userPrompts[(int)activeLogin].Message;
+            var message = userPrompts[activeLogin].Message;
             string command;
 
             while (run)
             {
-                input.Prompt = userPrompts[(int)activeLogin].Prompt;
+                input.Prompt = userPrompts[activeLogin].Prompt;
                 command = input.TakeInput(message);
 
                 var (success, response) = command switch
                 {
                     "login"         => await Login(),
                     "logout"        => await Logout(),
-                    "sellticket"    => await SellTicket(),
-                    "cancelticket"  => await CancelTicket(),
-                    "changeticket"  => await ChangeTicket(),
+                    "sellticket"    => await SellTickets(),
+                    "cancelticket"  => await CancelTickets(),
+                    "changeticket"  => await ChangeTickets(),
                     "createservice" => await CreateService(),
                     "deleteservice" => await DeleteService(),
                     "exit"          => Exit(),
@@ -55,14 +66,14 @@ namespace QIES.Cli.Shell
                 run = !(command == "exit" && success);
                 if (run)
                 {
-                    message = $"{response}\n{userPrompts[(int)activeLogin].Message}";
+                    message = $"{response}\n{userPrompts[activeLogin].Message}";
                 }
             }
 
             return 0;
         }
 
-        private async Task<(bool, string)> Login()
+        public async Task<(bool, string)> Login()
         {
             var userType = input.TakeInput("Login as agent or planner.");
             LoginType newLogin;
@@ -77,12 +88,13 @@ namespace QIES.Cli.Shell
             }
 
             activeLogin = newLogin;
-            var message = newLogin == LoginType.Agent ? "Successfully logged in as Agent." : "Successfully logged in as Planner.";
+            var message = newLogin != LoginType.None ? $"Successfully logged in as {newLogin}"
+                : "Response was successful but did not receive a login type.";
 
-            return (true, message);
+            return (newLogin != LoginType.None, message);
         }
 
-        private async Task<(bool, string)> Logout()
+        public async Task<(bool, string)> Logout()
         {
             try
             {
@@ -91,41 +103,186 @@ namespace QIES.Cli.Shell
             catch (HttpRequestException ex)
             {
                 logger.LogWarning(ex, $"Got an unsuccessful response from attempting to logout: [{ex.StatusCode}]");
-                return (false, ""); // TODO: Failure case message once Logout is fixed on server side
+                return (false, "Logout failed.");
             }
 
             activeLogin = 0;
             return (true, "Logged out.");
         }
 
-        private async Task<(bool, string)> SellTicket()
+        public async Task<(bool, string)> SellTickets()
         {
-            return (false, "Not implemented");
+            var serviceNumberIn = input.TakeInput("Enter service number to sell tickets for.");
+            int numberTicketsIn;
+            try
+            {
+                numberTicketsIn = input.TakeNumericInput("Enter number of tickets to sell.");
+            }
+            catch (System.IO.InvalidDataException)
+            {
+                return (false, "A number was not entered.");
+            }
+
+            TransactionRecord? record;
+            try
+            {
+                record = await client.SellTicketsAsync(serviceNumberIn, numberTicketsIn);
+            }
+            catch (HttpRequestException ex)
+            {
+                logger.LogWarning(ex, $"Got an unsuccessful response from attempting to sell tickets: [{ex.StatusCode}]");
+                return ex.StatusCode switch
+                {
+                    HttpStatusCode.BadRequest   => (false, "Invalid request."),
+                    HttpStatusCode.Unauthorized => (false, "Must be logged in to sell tickets."),
+                    HttpStatusCode.NotFound     => (false, "Requested service does not exist."),
+                    _                           => (false, $"An unexpected error occured: {ex.Message}")
+                };
+            }
+
+            if (record is null)
+                return (false, "Was unable to read response.");
+
+            return (true, $"{record.NumberTickets} ticket(s) sold for service {record.SourceNumber}");
         }
 
-        private async Task<(bool, string)> CancelTicket()
+        public async Task<(bool, string)> CancelTickets()
         {
-            return (false, "Not implemented");
+            var serviceNumberIn = input.TakeInput("Enter service number of ticket you would like to cancel.");
+            int numberTicketsIn;
+            try
+            {
+                numberTicketsIn = input.TakeNumericInput("Enter number of tickets you want to cancel.");
+            }
+            catch (System.IO.InvalidDataException)
+            {
+                return (false, "A number was not entered.");
+            }
+
+            TransactionRecord? record;
+            try
+            {
+                record = await client.CancelTicketsAsync(serviceNumberIn, numberTicketsIn);
+            }
+            catch (HttpRequestException ex)
+            {
+                logger.LogWarning(ex, $"Got an unsuccessful response from attempting to cancel tickets: [{ex.StatusCode}]");
+                return ex.StatusCode switch
+                {
+                    HttpStatusCode.BadRequest       => (false, "Invalid request."),
+                    HttpStatusCode.Unauthorized     => (false, "Must be logged in to cancel tickets."),
+                    HttpStatusCode.NotFound         => (false, "Requested service does not exist."),
+                    HttpStatusCode.TooManyRequests  => (false, ex.Data["detail"]?.ToString() ?? ex.Message),
+                    _                               => (false, $"An unexpected error occured: {ex.Message}")
+                };
+            }
+
+            if (record is null)
+                return (false, "Was unable to read response.");
+
+            return (true, $"{record.NumberTickets} ticket(s) canceled from service {record.SourceNumber}");
         }
 
-        private async Task<(bool, string)> ChangeTicket()
+        public async Task<(bool, string)> ChangeTickets()
         {
-            return (false, "Not implemented");
+            var sourceNumberIn = input.TakeInput("Enter service number of the service you want to change.");
+            var destinationNumberIn = input.TakeInput("Enter service number of the service you want to change to.");
+            int numberTicketsIn;
+            try
+            {
+                numberTicketsIn = input.TakeNumericInput("Enter number of tickets you want to change.");
+            }
+            catch (System.IO.InvalidDataException)
+            {
+                return (false, "A number was not entered.");
+            }
+
+            TransactionRecord? record;
+            try
+            {
+                record = await client.ChangeTicketsAsync(destinationNumberIn, numberTicketsIn, sourceNumberIn);
+            }
+            catch (HttpRequestException ex)
+            {
+                logger.LogWarning(ex, $"Got an unsuccessful response from attempting to change tickets: [{ex.StatusCode}]");
+                return ex.StatusCode switch
+                {
+                    HttpStatusCode.BadRequest       => (false, "Invalid request."),
+                    HttpStatusCode.Unauthorized     => (false, "Must be logged in to cancel tickets."),
+                    HttpStatusCode.NotFound         => (false, "Requested service does not exist."),
+                    HttpStatusCode.TooManyRequests  => (false, ex.Data["detail"]?.ToString() ?? ex.Message),
+                    _                               => (false, $"An unexpected error occured: {ex.Message}")
+                };
+            }
+
+            if (record is null)
+                return (false, "Was unable to read response.");
+
+            return (true, $"{record.NumberTickets} ticket(s) changed from service {record.SourceNumber} to service {record.DestinationNumber}");
         }
 
-        private async Task<(bool, string)> CreateService()
+        public async Task<(bool, string)> CreateService()
         {
-            return (false, "Not implemented");
+            var serviceNumberIn = input.TakeInput("Enter service number of the service you wish to create.");
+            var serviceDateIn = input.TakeInput("Enter service date of the service you wish to create.");
+            var serviceNameIn = input.TakeInput("Enter service name of the service you wish to create.");
+
+            TransactionRecord? record;
+            try
+            {
+                record = await client.CreateServiceAsync(serviceNumberIn, serviceDateIn, serviceNameIn);
+            }
+            catch (HttpRequestException ex)
+            {
+                logger.LogWarning(ex, $"Got an unsuccessful response from attempting to create a service: [{ex.StatusCode}]");
+                return ex.StatusCode switch
+                {
+                    HttpStatusCode.BadRequest       => (false, "Invalid request."),
+                    HttpStatusCode.Unauthorized or
+                    HttpStatusCode.Forbidden        => (false, "Must be logged in as Planner to create services."),
+                    HttpStatusCode.Conflict         => (false, "Requested service already exists."),
+                    _                               => (false, $"An unexpected error occured: {ex.Message}")
+                };
+            }
+
+            if (record is null)
+                return (false, "Was unable to read response.");
+
+            return (true, $"Service {record.SourceNumber} created on {record.ServiceDate} with the name {record.ServiceName}");
         }
 
-        private async Task<(bool, string)> DeleteService()
+        public async Task<(bool, string)> DeleteService()
         {
-            return (false, "Not implemented");
+            var serviceNumberIn = input.TakeInput("Enter service number of the service you wish to delete.");
+            var serviceNameIn = input.TakeInput("Enter service name of the service you wish to delete.");
+
+            TransactionRecord? record;
+            try
+            {
+                record = await client.DeleteServiceAsync(serviceNumberIn, serviceNameIn);
+            }
+            catch (HttpRequestException ex)
+            {
+                logger.LogWarning(ex, $"Got an unsuccessful response from attempting to delete a service: [{ex.StatusCode}]");
+                return ex.StatusCode switch
+                {
+                    HttpStatusCode.BadRequest       => (false, "Invalid request."),
+                    HttpStatusCode.Unauthorized or
+                    HttpStatusCode.Forbidden        => (false, "Must be logged in as Planner to delete services."),
+                    HttpStatusCode.NotFound         => (false, "Requested service does not exist."),
+                    _                               => (false, $"An unexpected error occured: {ex.Message}")
+                };
+            }
+
+            if (record is null)
+                return (false, "Was unable to read response.");
+
+            return (false, $"Service {record.SourceNumber} with service name {record.ServiceName} was deleted");
         }
 
-        private (bool, string) Exit()
+        public (bool, string) Exit()
         {
-            if (activeLogin != 0)
+            if (activeLogin != LoginType.None)
             {
                 return (false, "Please logout before exiting.");
             }

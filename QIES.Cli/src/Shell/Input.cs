@@ -6,7 +6,7 @@ namespace QIES.Cli.Shell
     {
         public string Prompt { get; set; }
 
-        public Input(string prompt) => this.Prompt = prompt;
+        public Input(string prompt) => Prompt = prompt;
 
         public string TakeInput(string message)
         {
@@ -18,8 +18,7 @@ namespace QIES.Cli.Shell
         public int TakeNumericInput(string message)
         {
             var strIn = TakeInput(message);
-            int result;
-            if (!int.TryParse(strIn.Trim(), out result))
+            if (!int.TryParse(strIn.Trim(), out int result))
             {
                 throw new System.IO.InvalidDataException();
             }

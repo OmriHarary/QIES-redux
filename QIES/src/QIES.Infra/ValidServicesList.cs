@@ -1,19 +1,23 @@
 using System.Collections.Concurrent;
 using System.IO;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using QIES.Common.Records;
 using QIES.Core;
+using QIES.Core.Config;
 
 namespace QIES.Infra
 {
     public class ValidServicesList : IServicesList
     {
+        private readonly ILogger<ValidServicesList> logger;
         private readonly ConcurrentDictionary<ServiceNumber, byte> validServices;
 
-        public ValidServicesList(FileInfo validServicesFile)
+        public ValidServicesList(IOptions<ValidServicesListOptions> options, ILogger<ValidServicesList> logger)
         {
+            this.logger = logger;
             validServices = new ConcurrentDictionary<ServiceNumber, byte>();
-            ReadServices(validServicesFile);
+            ReadServices(new FileInfo(options.Value.Path));
         }
 
         private void ReadServices(FileInfo validServicesFile)
@@ -33,7 +37,7 @@ namespace QIES.Infra
             catch (IOException e)
             {
                 // TODO: Actual error handling (the original didn't handle this either)
-                System.Console.Error.WriteLine(e.StackTrace);
+                logger.LogError(e.StackTrace);
             }
         }
 

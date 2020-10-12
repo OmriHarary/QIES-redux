@@ -26,7 +26,9 @@ namespace QIES.Core.Services
             var (success, transactionQueue) = userManager.UserLogout(id);
             if (success && transactionQueue is not null)
             {
-                transactionQueue.Push(new TransactionRecord(Code));
+                var record = new TransactionRecord(Code);
+                logger.LogDebug("Pushing record to queue: {transaction}", record);
+                transactionQueue.Push(record);
                 await summaryWriter.WriteTransactionSummaryFile(transactionQueue, $"{id}.txt");
             }
             return success;

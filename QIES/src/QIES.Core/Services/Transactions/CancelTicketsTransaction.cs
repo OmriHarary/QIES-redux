@@ -48,6 +48,7 @@ namespace QIES.Core.Services
                 agent.TotalCancelledTickets += record.NumberTickets.Number;
             }
 
+            logger.LogDebug("Pushing record to queue: {transaction}", record);
             userManager.UserTransactionQueue(userId).Push(record);
 
             return record;

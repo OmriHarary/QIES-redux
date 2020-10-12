@@ -1,5 +1,6 @@
 using System.Collections.Concurrent;
 using System.IO;
+using Microsoft.Extensions.Logging;
 using QIES.Common.Records;
 using QIES.Core;
 
@@ -15,11 +16,6 @@ namespace QIES.Infra
             ReadServices(validServicesFile);
         }
 
-        public ValidServicesList()
-        {
-            validServices = new ConcurrentDictionary<ServiceNumber, byte>();
-        }
-
         private void ReadServices(FileInfo validServicesFile)
         {
             try
@@ -30,7 +26,7 @@ namespace QIES.Infra
                 {
                     if (line != "00000")
                     {
-                        validServices.TryAdd(new ServiceNumber(line), 0);
+                        AddService(new ServiceNumber(line));
                     }
                 }
             }
@@ -41,19 +37,10 @@ namespace QIES.Infra
             }
         }
 
-        public bool IsInList(ServiceNumber service)
-        {
-            return validServices.Keys.Contains(service);
-        }
+        public bool IsInList(ServiceNumber service) => validServices.Keys.Contains(service);
 
-        public void DeleteService(ServiceNumber service)
-        {
-            validServices.TryRemove(service, out _);
-        }
+        public void DeleteService(ServiceNumber service) => validServices.TryRemove(service, out _);
 
-        public void AddService(ServiceNumber service)
-        {
-            validServices.TryAdd(service, 0);
-        }
+        public void AddService(ServiceNumber service) => validServices.TryAdd(service, 0);
     }
 }

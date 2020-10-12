@@ -9,10 +9,7 @@ namespace QIES.Infra
     {
         private readonly ILogger<SummaryWriter> logger;
 
-        public SummaryWriter(ILogger<SummaryWriter> logger)
-        {
-            this.logger = logger;
-        }
+        public SummaryWriter(ILogger<SummaryWriter> logger) => this.logger = logger;
 
         public async Task WriteTransactionSummaryFile(ITransactionQueue transactionQueue, string path)
         {

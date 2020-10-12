@@ -22,9 +22,9 @@ namespace QIES.Web.Controllers
         private readonly ILogoutService logoutService;
 
         public UsersController(
-                ILogger<UsersController> logger,
-                ILoginService loginService,
-                ILogoutService logoutService)
+            ILogger<UsersController> logger,
+            ILoginService loginService,
+            ILogoutService logoutService)
         {
             this.logger = logger;
             this.loginService = loginService;
@@ -82,6 +82,7 @@ namespace QIES.Web.Controllers
             var success = await logoutService.DoLogout(request.UserId);
             if (success)
             {
+                logger.LogInformation("User {id} logged out.", request.UserId);
                 return Ok();
             }
             return BadRequest();

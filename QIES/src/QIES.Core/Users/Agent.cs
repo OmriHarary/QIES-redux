@@ -9,9 +9,6 @@ namespace QIES.Core.Users
         public int TotalCancelledTickets { get; set; }
         public Dictionary<ServiceNumber, int> CancelledTickets { get; private set; }
 
-        public Agent() : base(LoginType.Agent)
-        {
-            this.CancelledTickets = new Dictionary<ServiceNumber, int>();
-        }
+        public Agent() : base(LoginType.Agent) => CancelledTickets = new Dictionary<ServiceNumber, int>();
     }
 }

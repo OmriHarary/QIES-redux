@@ -27,6 +27,7 @@ namespace QIES.Core.Services
                 NumberTickets = command.NumberTickets
             };
 
+            logger.LogDebug("Pushing record to queue: {transaction}", record);
             userManager.UserTransactionQueue(userId).Push(record);
 
             return record;

@@ -27,6 +27,7 @@ namespace QIES.Core.Services
                 ServiceName = command.ServiceName
             };
 
+            logger.LogDebug("Pushing record to queue: {transaction}", record);
             userManager.UserTransactionQueue(userId).Push(record);
 
             return record;

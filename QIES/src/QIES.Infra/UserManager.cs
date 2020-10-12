@@ -33,10 +33,9 @@ namespace QIES.Infra
             return (success, success ? userTuple.tq : null);
         }
 
-        public LoginType UserType(Guid userId)
-        {
-            return users.TryGetValue(userId, out (User user, TransactionQueue tq) userTuple) ? userTuple.user.Type : LoginType.None;
-        }
+        public LoginType UserType(Guid userId) =>
+            users.TryGetValue(userId, out (User user, TransactionQueue tq) userTuple)
+                ? userTuple.user.Type : LoginType.None;
 
         public User User(Guid userId)
         {

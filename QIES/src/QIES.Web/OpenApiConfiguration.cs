@@ -35,7 +35,8 @@ namespace QIES.Web
                     Pattern = @"^[12]\d{3}[01][0-2][0-3]\d$",
                     Example = new OpenApiString("20181207")
                 });
-                c.MapType<NumberTickets>(() => new OpenApiSchema {
+                c.MapType<NumberTickets>(() => new OpenApiSchema
+                {
                     Type = "integer",
                     Minimum = 1,
                     Maximum = 1000

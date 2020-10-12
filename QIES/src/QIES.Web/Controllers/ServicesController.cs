@@ -35,12 +35,6 @@ namespace QIES.Web.Controllers
             this.userManager = userManager;
         }
 
-        // [HttpGet]
-        // public async Task<ActionResult<IEnumerable<Service>>> GetServices()
-        // {
-        //     return new List<Service>();
-        // }
-
         /// <summary>
         /// Check service existence.
         /// </summary>
@@ -54,17 +48,8 @@ namespace QIES.Web.Controllers
         [ProducesResponseType(Status400BadRequest)]
         [ProducesResponseType(Status404NotFound)]
         [ProducesDefaultResponseType]
-        public async Task<IActionResult> GetService([ServiceNumber] string serviceNum)
-        {
-            var serviceNumber = new ServiceNumber(serviceNum);
-
-            if (servicesList.IsInList(serviceNumber))
-            {
-                return Ok();
-            }
-
-            return NotFound();
-        }
+        public async Task<IActionResult> GetService([ServiceNumber] string serviceNum) =>
+            servicesList.IsInList(new ServiceNumber(serviceNum)) ? Ok() : NotFound();
 
         /// <summary>
         /// Create a new service.
@@ -72,12 +57,12 @@ namespace QIES.Web.Controllers
         /// <param name="request"></param>
         /// <param name="xUserId">Current user session ID.</param>
         /// <param name="transaction"></param>
-        /// <returns></returns>
-        /// <response code="201"></response>
-        /// <response code="400"></response>
-        /// <response code="401"></response>
-        /// <response code="403"></response>
-        /// <response code="409"></response>
+        /// <returns>Record of completed transaction.</returns>
+        /// <response code="201">Service successfully created.</response>
+        /// <response code="400">Invalid request.</response>
+        /// <response code="401">User not logged in.</response>
+        /// <response code="403">User lacks planner permissions.</response>
+        /// <response code="409">Service number already exists.</response>
         [HttpPost]
         [ProducesResponseType(Status201Created)]
         [ProducesResponseType(Status400BadRequest)]
@@ -108,7 +93,9 @@ namespace QIES.Web.Controllers
 
                 var command = new CreateServiceCommand(request.ServiceNumber, request.ServiceDate, request.ServiceName);
                 var record = await transaction.MakeTransaction(command, userId);
-                return CreatedAtAction(nameof(GetService), new { id = request.ServiceNumber }, record);
+
+                logger.LogInformation("Service {serviceNumber} created by user {userId}.", record.SourceNumber, userId);
+                return CreatedAtAction(nameof(GetService), new { serviceNum = record.SourceNumber }, record);
             }
             logger.LogWarning("Could not create service. User unauthenticated");
             return Unauthorized();
@@ -117,16 +104,16 @@ namespace QIES.Web.Controllers
         /// <summary>
         /// Delete an existing service.
         /// </summary>
-        /// <param name="serviceNum"></param>
+        /// <param name="serviceNum">Service number for deletion</param>
         /// <param name="request"></param>
         /// <param name="xUserId">Current user session ID.</param>
         /// <param name="transaction"></param>
-        /// <returns></returns>
-        /// <response code="200"></response>
-        /// <response code="400"></response>
-        /// <response code="401"></response>
-        /// <response code="403"></response>
-        /// <response code="404"></response>
+        /// <returns>Record of completed transaction.</returns>
+        /// <response code="200">Successfully deleted service.</response>
+        /// <response code="400">Invalid request.</response>
+        /// <response code="401">User not logged in.</response>
+        /// <response code="403">User lacks planner permissions.</response>
+        /// <response code="404">Service to delete not found.</response>
         [HttpDelete("{serviceNum}")]
         [ProducesResponseType(Status200OK)]
         [ProducesResponseType(Status400BadRequest)]
@@ -162,6 +149,7 @@ namespace QIES.Web.Controllers
                 var record = await transaction.MakeTransaction(command, userId);
                 servicesList.DeleteService(serviceNumber);
 
+                logger.LogInformation("Service {serviceNumber} deleted by user {userId}.", record.SourceNumber, userId);
                 return Ok(record);
             }
             logger.LogWarning("Could not delete service. User unauthenticated");
@@ -171,17 +159,17 @@ namespace QIES.Web.Controllers
         /// <summary>
         /// Sell tickets for an existing service, or change tickets from one service to another.
         /// </summary>
-        /// <param name="serviceNum"></param>
+        /// <param name="serviceNum">Service number to sell tickets for or change tickets to.</param>
         /// <param name="request"></param>
         /// <param name="xUserId">Current user session ID.</param>
         /// <param name="sellTransaction"></param>
         /// <param name="changeTransaction"></param>
-        /// <returns></returns>
-        /// <response code="200"></response>
-        /// <response code="400"></response>
-        /// <response code="401"></response>
-        /// <response code="404"></response>
-        /// <response code="429"></response>
+        /// <returns>Record of completed transaction.</returns>
+        /// <response code="200">Tickets successfully sold or changed.</response>
+        /// <response code="400">Invalid request.</response>
+        /// <response code="401">User not logged in.</response>
+        /// <response code="404">Specified service not found.</response>
+        /// <response code="429">User with agent permissions exceeded session change limit.</response>
         [HttpPost("{serviceNum}/tickets")]
         [ProducesResponseType(Status200OK)]
         [ProducesResponseType(Status400BadRequest)]
@@ -255,16 +243,16 @@ namespace QIES.Web.Controllers
         /// <summary>
         /// Cancel sold tickets.
         /// </summary>
-        /// <param name="serviceNum"></param>
+        /// <param name="serviceNum">Service number to cancel tickets on.</param>
         /// <param name="request"></param>
         /// <param name="xUserId">Current user session ID.</param>
         /// <param name="transaction"></param>
-        /// <returns></returns>
-        /// <response code="200"></response>
-        /// <response code="400"></response>
-        /// <response code="401"></response>
-        /// <response code="404"></response>
-        /// <response code="429"></response>
+        /// <returns>Record of completed transaction.</returns>
+        /// <response code="200">Tickets successfully cancelled.</response>
+        /// <response code="400">Invalid request.</response>
+        /// <response code="401">User not logged in.</response>
+        /// <response code="404">Specified service not found.</response>
+        /// <response code="429">User with agent permissions exceeded service or session cancellation limit.</response>
         [HttpDelete("{serviceNum}/tickets")]
         [ProducesResponseType(Status200OK)]
         [ProducesResponseType(Status400BadRequest)]

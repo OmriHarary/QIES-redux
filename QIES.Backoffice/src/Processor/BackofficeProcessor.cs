@@ -31,7 +31,7 @@ namespace QIES.Backoffice.Processor
         {
             using (logger.BeginScope(transactionFile.Name))
             {
-                logger.LogInformation($"Processing {transactionFile.FullName}");
+                logger.LogInformation("Processing {transactionFile}", transactionFile.FullName);
 
                 var transactionQueue = new TransactionQueue();
                 using (logger.BeginScope("Parse"))
@@ -72,7 +72,7 @@ namespace QIES.Backoffice.Processor
                     }
                 }
 
-                logger.LogInformation($"Successfully processed {successful}/{count} parsed records.");
+                logger.LogInformation("Successfully processed {successful}/{total} parsed records.", successful, count);
                 var csf = WriteCentralServicesFile();
                 var vsl = WriteValidServicesFile();
 
@@ -95,9 +95,11 @@ namespace QIES.Backoffice.Processor
                 return false;
             }
 
-            var newService = new Service();
-            newService.ServiceNumber = record.SourceNumber;
-            newService.ServiceName = record.ServiceName;
+            var newService = new Service
+            {
+                ServiceNumber = record.SourceNumber,
+                ServiceName = record.ServiceName
+            };
             centralServices.Add(newService);
             logger.LogInformation("New service created");
             return true;

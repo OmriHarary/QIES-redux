@@ -1,12 +1,12 @@
-using QIES.Api.Models.Validation;
+using QIES.Common.Records;
 
 namespace QIES.Api.Models
 {
-    public class SellOrChangeTicketsRequest : AuthenticatedRequest
+    public class SellOrChangeTicketsRequest
     {
-        [NumberTickets]
-        public string NumberTickets { get; set; }
-        [ServiceNumber(allowNull: true)]
-        public string? SourceServiceNumber { get; set; }
+        /// <summary>Number of tickets to sell or change.</summary>
+        public NumberTickets NumberTickets { get; set; }
+        /// <summary>Service number of service to transfer tickets from.</summary>
+        public ServiceNumber? SourceServiceNumber { get; set; }
     }
 }

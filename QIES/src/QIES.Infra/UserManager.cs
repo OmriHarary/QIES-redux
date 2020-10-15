@@ -9,10 +9,7 @@ namespace QIES.Infra
     {
         private readonly ConcurrentDictionary<Guid, (User, TransactionQueue)> users;
 
-        public UserManager()
-        {
-            this.users = new ConcurrentDictionary<Guid, (User, TransactionQueue)>();
-        }
+        public UserManager() => users = new ConcurrentDictionary<Guid, (User, TransactionQueue)>();
 
         public bool IsLoggedIn(Guid userId) => users.ContainsKey(userId);
 
@@ -30,17 +27,20 @@ namespace QIES.Infra
             return agent;
         }
 
-        public (bool, ITransactionQueue) UserLogout(Guid userId)
+        public (bool, ITransactionQueue?) UserLogout(Guid userId)
         {
-            (User user, TransactionQueue tq) userTuple;
-            var success = users.TryRemove(userId, out userTuple);
-            return (success, userTuple.tq);
+            var success = users.TryRemove(userId, out (User user, TransactionQueue tq) userTuple);
+            return (success, success ? userTuple.tq : null);
         }
 
-        public LoginType UserType(Guid userId)
+        public LoginType UserType(Guid userId) =>
+            users.TryGetValue(userId, out (User user, TransactionQueue tq) userTuple)
+                ? userTuple.user.Type : LoginType.None;
+
+        public User User(Guid userId)
         {
-            (User user, TransactionQueue tq) userTuple;
-            return users.TryGetValue(userId, out userTuple) ? userTuple.user.Type : LoginType.None;
+            var (user, _) = users[userId];
+            return user;
         }
 
         public ITransactionQueue UserTransactionQueue(Guid userId)

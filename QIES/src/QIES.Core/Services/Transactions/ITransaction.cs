@@ -1,10 +1,12 @@
 using System;
 using System.Threading.Tasks;
+using QIES.Common.Records;
+using QIES.Core.Commands;
 
 namespace QIES.Core.Services
 {
-    public interface ITransaction<TRequest, TResponse>
+    public interface ITransaction<T> where T : TransactionCommand
     {
-        public Task<TResponse> MakeTransaction(string serviceNumber, TRequest request, Guid userId);
+        public Task<TransactionRecord> MakeTransaction(T command, Guid userId);
     }
 }

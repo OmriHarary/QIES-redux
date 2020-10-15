@@ -1,10 +1,10 @@
-using QIES.Api.Models.Validation;
+using QIES.Common.Records;
 
 namespace QIES.Api.Models
 {
-    public class DeleteServiceRequest : AuthenticatedRequest
+    public class DeleteServiceRequest
     {
-        [ServiceName]
-        public string ServiceName { get; set; }
+        /// <summary>Service number of service to delete.</summary>
+        public ServiceName ServiceName { get; set; }
     }
 }

@@ -4,6 +4,6 @@ namespace QIES.Api.Models
 {
     public class LogoutRequest
     {
-        public Guid Id { get; set; }
+        public Guid UserId { get; set; }
     }
 }

@@ -1,7 +1,7 @@
 using System;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
-using QIES.Common.Record;
+using QIES.Common.Records;
 using QIES.Core.Users;
 
 namespace QIES.Core.Services
@@ -24,11 +24,13 @@ namespace QIES.Core.Services
         public async Task<bool> DoLogout(Guid id)
         {
             var (success, transactionQueue) = userManager.UserLogout(id);
-            if (success)
+            if (success && transactionQueue is not null)
             {
-                transactionQueue.Push(new TransactionRecord(Code));
+                var record = new TransactionRecord(Code);
+                logger.LogDebug("Pushing record to queue: {transaction}", record);
+                transactionQueue.Push(record);
+                await summaryWriter.WriteTransactionSummaryFile(transactionQueue, $"{id}.txt");
             }
-            await summaryWriter.WriteTransactionSummaryFile(transactionQueue, $"{id}.txt");
             return success;
         }
     }

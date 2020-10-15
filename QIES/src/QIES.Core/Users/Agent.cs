@@ -1,17 +1,14 @@
 using System.Collections.Generic;
-using QIES.Common.Record;
+using QIES.Common.Records;
 
 namespace QIES.Core.Users
 {
     public class Agent : User
     {
-        private int changedTickets;
-        private int totalCancelledTickets;
-        private readonly Dictionary<ServiceNumber, int> cancelledTickets;
+        public int ChangedTickets { get; set; }
+        public int TotalCancelledTickets { get; set; }
+        public Dictionary<ServiceNumber, int> CancelledTickets { get; private set; }
 
-        public Agent() : base(LoginType.Agent)
-        {
-            this.cancelledTickets = new Dictionary<ServiceNumber, int>();
-        }
+        public Agent() : base(LoginType.Agent) => CancelledTickets = new Dictionary<ServiceNumber, int>();
     }
 }

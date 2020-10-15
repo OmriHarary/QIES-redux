@@ -8,9 +8,9 @@ namespace QIES.Backoffice.Parser
 {
     public class CentralServicesList : ICentralServicesList
     {
-        private IDictionary<ServiceNumber, Service> services;
+        private readonly IDictionary<ServiceNumber, Service> services;
 
-        public CentralServicesList() => this.services = new ConcurrentDictionary<ServiceNumber, Service>();
+        public CentralServicesList() => services = new ConcurrentDictionary<ServiceNumber, Service>();
 
         public void Add(Service service) => services.Add(service.ServiceNumber, service);
 

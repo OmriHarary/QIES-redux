@@ -9,8 +9,8 @@ namespace QIES.Core.Users
 
         public User(LoginType login)
         {
-            this.Id = Guid.NewGuid();
-            this.Type = login;
+            Id = Guid.NewGuid();
+            Type = login;
         }
     }
 }

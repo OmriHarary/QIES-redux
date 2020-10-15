@@ -1,7 +1,5 @@
 using Microsoft.Extensions.DependencyInjection;
-using QIES.Api.Models;
-using QIES.Common;
-using QIES.Common.Record;
+using QIES.Core.Commands;
 
 namespace QIES.Core.Services
 {
@@ -11,10 +9,11 @@ namespace QIES.Core.Services
         {
             services.AddTransient<ILoginService, LoginService>();
             services.AddTransient<ILogoutService, LogoutService>();
-            services.AddTransient<ITransaction<CreateServiceRequest, Service>, CreateServiceTransaction>();
-            services.AddTransient<ITransaction<DeleteServiceRequest, TransactionRecord>, DeleteServiceTransaction>();
-            services.AddTransient<ITransaction<SellOrChangeTicketsRequest, TransactionRecord>, SellOrChangeTicketsTransaction>();
-            services.AddTransient<ITransaction<CancelTicketsRequest, TransactionRecord>, CancelTicketsTransaction>();
+            services.AddTransient<ITransaction<CreateServiceCommand>, CreateServiceTransaction>();
+            services.AddTransient<ITransaction<DeleteServiceCommand>, DeleteServiceTransaction>();
+            services.AddTransient<ITransaction<SellTicketsCommand>, SellTicketsTransaction>();
+            services.AddTransient<ITransaction<ChangeTicketsCommand>, ChangeTicketsTransaction>();
+            services.AddTransient<ITransaction<CancelTicketsCommand>, CancelTicketsTransaction>();
             return services;
         }
     }

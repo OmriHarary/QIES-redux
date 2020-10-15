@@ -95,9 +95,11 @@ namespace QIES.Backoffice.Processor
                 return false;
             }
 
-            var newService = new Service();
-            newService.ServiceNumber = record.SourceNumber;
-            newService.ServiceName = record.ServiceName;
+            var newService = new Service
+            {
+                ServiceNumber = record.SourceNumber,
+                ServiceName = record.ServiceName
+            };
             centralServices.Add(newService);
             logger.LogInformation("New service created");
             return true;

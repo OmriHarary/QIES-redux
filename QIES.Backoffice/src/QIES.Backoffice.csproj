@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
     <UserSecretsId>dotnet-QIES.Backoffice-C19E15EB-E1A7-4EE0-AAF8-3E68AC63B089</UserSecretsId>
-    <Version>2.0.0</Version>
+    <Version>2.0.1</Version>
     <Nullable>enable</Nullable>
   </PropertyGroup>
 

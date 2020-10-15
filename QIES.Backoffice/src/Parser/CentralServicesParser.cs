@@ -20,7 +20,7 @@ namespace QIES.Backoffice.Parser
             logger.LogInformation("Attempting to parse central services file at {filePath}", filePath);
 
             var success = true;
-            var lines = new string[0];
+            var lines = Array.Empty<string>();
             try
             {
                 lines = File.ReadAllLines(filePath);
@@ -53,25 +53,24 @@ namespace QIES.Backoffice.Parser
             logger.LogDebug("Parsing: [{serviceLine}]", serviceLine);
 
             var fields = serviceLine.Split(' ', 4);
-            var service = new Service();
+            var service = new Service
+            {
+                ServiceNumber = new ServiceNumber(fields[0])
+            };
 
-            service.ServiceNumber = new ServiceNumber(fields[0]);
-
-            int capacity;
-            var capacityParsed = int.TryParse(fields[1], out capacity);
+            var capacityParsed = int.TryParse(fields[1], out int capacity);
             if (!capacityParsed)
             {
-                throw new ArgumentException();
+                throw new ArgumentException("Unable to parse capacity.");
             }
             service.ServiceCapacity = capacity;
 
             if (fields[2] != "0")
             {
-                int tickets;
-                var ticketsParsed = int.TryParse(fields[2], out tickets);
+                var ticketsParsed = int.TryParse(fields[2], out int tickets);
                 if (!ticketsParsed)
                 {
-                    throw new ArgumentException();
+                    throw new ArgumentException("Unable to parse tickets.");
                 }
                 service.TicketsSold = new NumberTickets(tickets);
             }

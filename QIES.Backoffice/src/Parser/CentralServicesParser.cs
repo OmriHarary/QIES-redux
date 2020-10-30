@@ -25,6 +25,11 @@ namespace QIES.Backoffice.Parser
             {
                 lines = File.ReadAllLines(filePath);
             }
+            catch (FileNotFoundException)
+            {
+                logger.LogWarning("File {filePath} not found. Creating.", filePath);
+                File.CreateText(filePath);
+            }
             catch (IOException e)
             {
                 logger.LogError(e, "Unable to read central services file at {filePath}", filePath);

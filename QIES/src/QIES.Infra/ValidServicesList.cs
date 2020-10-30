@@ -26,7 +26,7 @@ namespace QIES.Infra
             {
                 using StreamReader validServicesReader = validServicesFile.OpenText();
                 string? line;
-                while (!((line = validServicesReader.ReadLine()) is null))
+                while ((line = validServicesReader.ReadLine()) is not null)
                 {
                     if (line != "00000")
                     {
@@ -37,7 +37,7 @@ namespace QIES.Infra
             catch (IOException e)
             {
                 // TODO: Actual error handling (the original didn't handle this either)
-                logger.LogError(e.StackTrace);
+                logger.LogError(e, "Error encountered while reading valid services file.");
             }
         }
 

@@ -12,7 +12,7 @@ using QIES.Backoffice.Processor;
 
 namespace QIES.Backoffice
 {
-    public class Worker : BackgroundService
+    public sealed class Worker : BackgroundService
     {
         private readonly ILogger<Worker> logger;
         private readonly ICentralServicesList centralServices;
@@ -23,17 +23,17 @@ namespace QIES.Backoffice
         public IServiceProvider Services { get; }
 
         public Worker(
-                ILogger<Worker> logger,
-                ICentralServicesList centralServices,
-                IOptions<ServicesFilesOptions> sfOptions,
-                IOptions<TransactionSummaryOptions> tsOptions,
-                IServiceProvider services)
+            ILogger<Worker> logger,
+            ICentralServicesList centralServices,
+            IOptions<ServicesFilesOptions> sfOptions,
+            IOptions<TransactionSummaryOptions> tsOptions,
+            IServiceProvider services)
         {
             this.logger = logger;
             this.centralServices = centralServices;
-            this.servicesFilesOptions = sfOptions.Value;
-            this.transactionSummaryOptions = tsOptions.Value;
-            this.Services = services;
+            servicesFilesOptions = sfOptions.Value;
+            transactionSummaryOptions = tsOptions.Value;
+            Services = services;
         }
 
         protected override async Task ExecuteAsync(CancellationToken cancellationToken)
@@ -47,8 +47,15 @@ namespace QIES.Backoffice
             if (!Directory.Exists(transactionSummaryOptions.Directory))
             {
                 var ex = new DirectoryNotFoundException();
-                logger.LogCritical(ex, "Specified input directory {directory} does not exist.", transactionSummaryOptions.Directory);
+                logger.LogCritical(ex, "Specified transaction summary input directory {directory} does not exist.", transactionSummaryOptions.Directory);
                 return Task.FromException(ex);
+            }
+
+            // Create empty valid services file if not already present, for Web component to pick up.
+            if (!File.Exists(servicesFilesOptions.ValidServicesFile))
+            {
+                logger.LogWarning("File {filePath} not found. Creating.", servicesFilesOptions.ValidServicesFile);
+                File.CreateText(servicesFilesOptions.ValidServicesFile);
             }
 
             using (var scope = Services.CreateScope())
@@ -58,13 +65,16 @@ namespace QIES.Backoffice
                 if (!parsed)
                 {
                     logger.LogCritical("Central services file parsing failed.");
-                    return Task.FromException(new System.Exception()); // TODO: Replace with a specific exception
+                    return Task.FromException(new IOException());
                 }
             }
 
             summaryFileWatcher = new FileSystemWatcher(transactionSummaryOptions.Directory, transactionSummaryOptions.Filter)
             {
-                NotifyFilter = NotifyFilters.CreationTime | NotifyFilters.LastWrite | NotifyFilters.FileName | NotifyFilters.DirectoryName
+                NotifyFilter = NotifyFilters.CreationTime
+                               | NotifyFilters.LastWrite
+                               | NotifyFilters.FileName
+                               | NotifyFilters.DirectoryName
             };
 
             summaryFileWatcher.Created += OnFileCreated;

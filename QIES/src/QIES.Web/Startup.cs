@@ -25,6 +25,7 @@ namespace QIES.Web
         public void ConfigureServices(IServiceCollection services)
         {
             services.Configure<ValidServicesListOptions>(Configuration.GetSection(ValidServicesListOptions.Section));
+            services.Configure<TransactionSummaryOptions>(Configuration.GetSection(TransactionSummaryOptions.Section));
             services.AddSingleton<IServicesList, ValidServicesList>();
             services.AddSingleton<IUserManager>(sp => new UserManager());
             services.AddTransient<ISummaryWriter, SummaryWriter>();

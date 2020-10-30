@@ -1,0 +1,21 @@
+version: "3.8"
+services:
+  qies:
+    image: ghcr.io/omriharary/qies/web:1.0.1
+    build: ./QIES/
+    ports:
+    - "5000:80"
+    volumes:
+    - "service_files:/var/opt:ro"
+    - "summary_files:/var/tmp"
+
+  backoffice:
+    image: ghcr.io/omriharary/qies/backoffice:2.0.2
+    build: ./QIES.Backoffice/
+    volumes:
+    - "service_files:/var/opt"
+    - "summary_files:/var/tmp"
+
+volumes:
+  service_files: {}
+  summary_files: {}

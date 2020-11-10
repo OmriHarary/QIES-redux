@@ -18,7 +18,7 @@ namespace QIES.Backoffice
         private readonly ICentralServicesList centralServices;
         private readonly ServicesFilesOptions servicesFilesOptions;
         private readonly TransactionSummaryOptions transactionSummaryOptions;
-        private FileSystemWatcher summaryFileWatcher;
+        private readonly FileSystemWatcher summaryFileWatcher;
 
         public IServiceProvider Services { get; }
 
@@ -34,6 +34,13 @@ namespace QIES.Backoffice
             servicesFilesOptions = sfOptions.Value;
             transactionSummaryOptions = tsOptions.Value;
             Services = services;
+            summaryFileWatcher = new FileSystemWatcher(transactionSummaryOptions.Directory, transactionSummaryOptions.Filter)
+            {
+                NotifyFilter = NotifyFilters.CreationTime
+                               | NotifyFilters.LastWrite
+                               | NotifyFilters.FileName
+                               | NotifyFilters.DirectoryName
+            };
         }
 
         protected override async Task ExecuteAsync(CancellationToken cancellationToken)
@@ -69,14 +76,6 @@ namespace QIES.Backoffice
                 }
             }
 
-            summaryFileWatcher = new FileSystemWatcher(transactionSummaryOptions.Directory, transactionSummaryOptions.Filter)
-            {
-                NotifyFilter = NotifyFilters.CreationTime
-                               | NotifyFilters.LastWrite
-                               | NotifyFilters.FileName
-                               | NotifyFilters.DirectoryName
-            };
-
             summaryFileWatcher.Created += OnFileCreated;
             summaryFileWatcher.EnableRaisingEvents = true;
 
@@ -96,7 +95,7 @@ namespace QIES.Backoffice
                     processor.Process(file);
                 }
 
-                file.Delete();
+                file.Delete(); // TODO: Should handle failures differently, not just delete and move on
             }
         }
 
@@ -111,7 +110,7 @@ namespace QIES.Backoffice
 
         public override void Dispose()
         {
-            summaryFileWatcher?.Dispose();
+            summaryFileWatcher.Dispose();
             base.Dispose();
         }
     }

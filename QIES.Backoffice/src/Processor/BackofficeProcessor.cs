@@ -16,10 +16,10 @@ namespace QIES.Backoffice.Processor
         private readonly ICentralServicesList centralServices;
 
         public BackofficeProcessor(
-                ILogger<BackofficeProcessor> logger,
-                IOptions<ServicesFilesOptions> options,
-                IParser<TransactionQueue> transactionSummaryParser,
-                ICentralServicesList centralServices)
+            ILogger<BackofficeProcessor> logger,
+            IOptions<ServicesFilesOptions> options,
+            IParser<TransactionQueue> transactionSummaryParser,
+            ICentralServicesList centralServices)
         {
             this.logger = logger;
             this.outputPaths = options.Value;
@@ -36,8 +36,7 @@ namespace QIES.Backoffice.Processor
                 var transactionQueue = new TransactionQueue();
                 using (logger.BeginScope("Parse"))
                 {
-                    var parsed = transactionSummaryParser.TryParseFile(transactionFile.FullName, transactionQueue);
-                    if (!parsed)
+                    if (!transactionSummaryParser.TryParseFile(transactionFile.FullName, transactionQueue))
                     {
                         logger.LogError("Skipping unreadable transaction summary file.");
                         return;

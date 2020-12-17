@@ -72,6 +72,9 @@ namespace QIES.Backoffice.Processor
                 }
 
                 logger.LogInformation("Successfully processed {successful}/{total} parsed records.", successful, count);
+
+                // NOTE: Not inlined in the following if so that csf failure doesn't skip vsl by short circuiting.
+                //          Reminder for next time I think about refactoring this.
                 var csf = WriteCentralServicesFile();
                 var vsl = WriteValidServicesFile();
 

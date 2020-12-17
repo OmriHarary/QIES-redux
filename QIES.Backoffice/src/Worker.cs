@@ -82,7 +82,7 @@ namespace QIES.Backoffice
             return base.StartAsync(cancellationToken);
         }
 
-        protected void OnFileCreated(object source, FileSystemEventArgs args)
+        public void OnFileCreated(object source, FileSystemEventArgs args)
         {
             if (args.ChangeType == WatcherChangeTypes.Created)
             {

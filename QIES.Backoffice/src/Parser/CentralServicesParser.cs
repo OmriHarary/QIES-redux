@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.IO;
 using Microsoft.Extensions.Logging;
 using QIES.Backoffice.Parser.Files;
@@ -21,21 +20,21 @@ namespace QIES.Backoffice.Parser
         {
             logger.LogInformation("Attempting to parse central services file at {filePath}", csFile.Path);
 
-            var success = true;
-            var lines = new List<string>();
+            string[] lines;
             try
             {
-                lines.AddRange(csFile.ReadAllLines());
+                lines = csFile.ReadAllLines();
             }
             catch (FileNotFoundException)
             {
                 logger.LogWarning("File {filePath} not found. Creating.", csFile.Path);
                 csFile.Create();
+                return true;
             }
             catch (IOException e)
             {
                 logger.LogError(e, "Unable to read central services file at {filePath}", csFile.Path);
-                success = false; // TODO: Early return?
+                return false;
             }
 
             foreach (var line in lines)
@@ -46,14 +45,12 @@ namespace QIES.Backoffice.Parser
                 }
                 catch (ArgumentException e)
                 {
-                    // NOTE: Skip invalid lines instead of failing entirely?
                     logger.LogError(e, "Unparsable line in central services file: [{line}]", line);
-                    success = false; // TODO: Early return?
-                    break;
+                    return false;
                 }
             }
 
-            return success;
+            return true;
         }
 
         private Service ParseLine(string serviceLine)

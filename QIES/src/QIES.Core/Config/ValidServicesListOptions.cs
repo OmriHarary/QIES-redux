@@ -1,5 +1,3 @@
-using System.IO;
-
 namespace QIES.Core.Config
 {
     public class ValidServicesListOptions

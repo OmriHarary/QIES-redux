@@ -1,8 +1,9 @@
 using System;
 using System.IO;
 using Microsoft.Extensions.Logging;
+using QIES.Backoffice.Parser.Files;
 using QIES.Common;
-using QIES.Common.Record;
+using QIES.Common.Records;
 
 namespace QIES.Backoffice.Parser
 {
@@ -15,20 +16,25 @@ namespace QIES.Backoffice.Parser
             this.logger = logger;
         }
 
-        public bool TryParseFile(string filePath, CentralServicesList output)
+        public bool TryParseFile(IParserInputFile csFile, CentralServicesList output)
         {
-            logger.LogInformation("Attempting to parse central services file at {filePath}", filePath);
+            logger.LogInformation("Attempting to parse central services file at {filePath}", csFile.Path);
 
-            var success = true;
-            var lines = Array.Empty<string>();
+            string[] lines;
             try
             {
-                lines = File.ReadAllLines(filePath);
+                lines = csFile.ReadAllLines();
+            }
+            catch (FileNotFoundException)
+            {
+                logger.LogWarning("File {filePath} not found. Creating.", csFile.Path);
+                csFile.Create();
+                return true;
             }
             catch (IOException e)
             {
-                logger.LogError(e, "Unable to read central services file at {filePath}", filePath);
-                success = false;
+                logger.LogError(e, "Unable to read central services file at {filePath}", csFile.Path);
+                return false;
             }
 
             foreach (var line in lines)
@@ -40,12 +46,11 @@ namespace QIES.Backoffice.Parser
                 catch (ArgumentException e)
                 {
                     logger.LogError(e, "Unparsable line in central services file: [{line}]", line);
-                    success = false;
-                    break;
+                    return false;
                 }
             }
 
-            return success;
+            return true;
         }
 
         private Service ParseLine(string serviceLine)

@@ -8,6 +8,8 @@ services:
     volumes:
     - "service_files:/var/opt:ro"
     - "summary_files:/var/tmp"
+    depends_on:
+    - backoffice
 
   backoffice:
     image: ghcr.io/omriharary/qies/backoffice:2.0.2

@@ -3,6 +3,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using QIES.Backoffice.Config;
 using QIES.Backoffice.Parser;
+using QIES.Backoffice.Parser.Files;
 using QIES.Common;
 using QIES.Common.Record;
 
@@ -36,7 +37,7 @@ namespace QIES.Backoffice.Processor
                 var transactionQueue = new TransactionQueue();
                 using (logger.BeginScope("Parse"))
                 {
-                    if (!transactionSummaryParser.TryParseFile(transactionFile.FullName, transactionQueue))
+                    if (!transactionSummaryParser.TryParseFile(new ParserInputFile(transactionFile.FullName), transactionQueue))
                     {
                         logger.LogError("Skipping unreadable transaction summary file.");
                         return;
@@ -89,7 +90,7 @@ namespace QIES.Backoffice.Processor
             }
         }
 
-        private bool ProcessCRE(TransactionRecord record)
+        public bool ProcessCRE(TransactionRecord record)
         {
             if (centralServices.Contains(record.SourceNumber))
             {
@@ -107,7 +108,7 @@ namespace QIES.Backoffice.Processor
             return true;
         }
 
-        private bool ProcessDEL(TransactionRecord record)
+        public bool ProcessDEL(TransactionRecord record)
         {
             if (!centralServices.Contains(record.SourceNumber))
             {
@@ -127,7 +128,7 @@ namespace QIES.Backoffice.Processor
             return true;
         }
 
-        private bool ProcessSEL(TransactionRecord record)
+        public bool ProcessSEL(TransactionRecord record)
         {
             if (!centralServices.Contains(record.SourceNumber))
             {
@@ -149,7 +150,7 @@ namespace QIES.Backoffice.Processor
             }
         }
 
-        private bool ProcessCAN(TransactionRecord record)
+        public bool ProcessCAN(TransactionRecord record)
         {
             if (!centralServices.Contains(record.SourceNumber))
             {
@@ -171,7 +172,7 @@ namespace QIES.Backoffice.Processor
             }
         }
 
-        private bool ProcessCHG(TransactionRecord record)
+        public bool ProcessCHG(TransactionRecord record)
         {
             if (!centralServices.Contains(record.SourceNumber))
             {

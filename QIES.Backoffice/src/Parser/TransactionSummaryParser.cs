@@ -1,6 +1,8 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using Microsoft.Extensions.Logging;
+using QIES.Backoffice.Parser.Files;
 using QIES.Common;
 using QIES.Common.Record;
 
@@ -15,16 +17,16 @@ namespace QIES.Backoffice.Parser
             this.logger = logger;
         }
 
-        public bool TryParseFile(string filePath, TransactionQueue output)
+        public bool TryParseFile(IParserInputFile tsFile, TransactionQueue output)
         {
             string[] lines;
             try
             {
-                lines = File.ReadAllLines(filePath);
+                lines = tsFile.ReadAllLines();
             }
             catch (IOException e)
             {
-                logger.LogError(e, "Unable to read transaction summary file at {filePath}", filePath);
+                logger.LogError(e, "Unable to read transaction summary file at {filePath}", tsFile.Path);
                 return false;
             }
 

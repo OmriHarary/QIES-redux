@@ -8,6 +8,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using QIES.Backoffice.Config;
 using QIES.Backoffice.Parser;
+using QIES.Backoffice.Parser.Files;
 using QIES.Backoffice.Processor;
 
 namespace QIES.Backoffice
@@ -62,13 +63,13 @@ namespace QIES.Backoffice
             if (!File.Exists(servicesFilesOptions.ValidServicesFile))
             {
                 logger.LogWarning("File {filePath} not found. Creating.", servicesFilesOptions.ValidServicesFile);
-                File.CreateText(servicesFilesOptions.ValidServicesFile);
+                File.CreateText(servicesFilesOptions.ValidServicesFile).Close();
             }
 
             using (var scope = Services.CreateScope())
             {
                 var centralServicesParser = scope.ServiceProvider.GetRequiredService<IParser<CentralServicesList>>();
-                var parsed = centralServicesParser.TryParseFile(servicesFilesOptions.CentralServicesFile, (CentralServicesList)centralServices);
+                var parsed = centralServicesParser.TryParseFile(new ParserInputFile(servicesFilesOptions.CentralServicesFile), (CentralServicesList)centralServices);
                 if (!parsed)
                 {
                     logger.LogCritical("Central services file parsing failed.");

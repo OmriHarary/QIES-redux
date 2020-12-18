@@ -1,6 +1,8 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using Microsoft.Extensions.Logging;
+using QIES.Backoffice.Parser.Files;
 using QIES.Common;
 using QIES.Common.Record;
 
@@ -15,25 +17,25 @@ namespace QIES.Backoffice.Parser
             this.logger = logger;
         }
 
-        public bool TryParseFile(string filePath, CentralServicesList output)
+        public bool TryParseFile(IParserInputFile csFile, CentralServicesList output)
         {
-            logger.LogInformation("Attempting to parse central services file at {filePath}", filePath);
+            logger.LogInformation("Attempting to parse central services file at {filePath}", csFile.Path);
 
             var success = true;
-            var lines = Array.Empty<string>();
+            var lines = new List<string>();
             try
             {
-                lines = File.ReadAllLines(filePath);
+                lines.AddRange(csFile.ReadAllLines());
             }
             catch (FileNotFoundException)
             {
-                logger.LogWarning("File {filePath} not found. Creating.", filePath);
-                File.CreateText(filePath);
+                logger.LogWarning("File {filePath} not found. Creating.", csFile.Path);
+                csFile.Create();
             }
             catch (IOException e)
             {
-                logger.LogError(e, "Unable to read central services file at {filePath}", filePath);
-                success = false;
+                logger.LogError(e, "Unable to read central services file at {filePath}", csFile.Path);
+                success = false; // TODO: Early return?
             }
 
             foreach (var line in lines)
@@ -44,8 +46,9 @@ namespace QIES.Backoffice.Parser
                 }
                 catch (ArgumentException e)
                 {
+                    // NOTE: Skip invalid lines instead of failing entirely?
                     logger.LogError(e, "Unparsable line in central services file: [{line}]", line);
-                    success = false;
+                    success = false; // TODO: Early return?
                     break;
                 }
             }

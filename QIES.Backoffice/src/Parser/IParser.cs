@@ -1,7 +1,9 @@
+using QIES.Backoffice.Parser.Files;
+
 namespace QIES.Backoffice.Parser
 {
     public interface IParser<T>
     {
-        public bool TryParseFile(string filePath, T output);
+        public bool TryParseFile(IParserInputFile file, T output);
     }
 }

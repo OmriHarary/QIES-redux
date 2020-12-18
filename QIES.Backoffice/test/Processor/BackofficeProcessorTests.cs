@@ -29,10 +29,10 @@ namespace QIES.Backoffice.Processor.Tests
                 ServiceName = new ServiceName("this is the name"),
                 ServiceDate = new ServiceDate("20181212")
             };
-        
+
             // Act
             var result = processor.ProcessCRE(record);
-        
+
             // Assert
             var expectedService = new Service
             {
@@ -62,10 +62,10 @@ namespace QIES.Backoffice.Processor.Tests
                 ServiceName = new ServiceName("this is the name"),
                 ServiceDate = new ServiceDate("20181212")
             };
-        
+
             // Act
             var result = processor.ProcessCRE(record);
-        
+
             // Assert
             Assert.False(result);
         }
@@ -95,10 +95,10 @@ namespace QIES.Backoffice.Processor.Tests
                 SourceNumber = new ServiceNumber("90000"),
                 ServiceName = new ServiceName("sdf")
             };
-        
+
             // Act
             var result = processor.ProcessDEL(record);
-        
+
             // Assert
             Assert.True(result);
             centralServices.Verify(centralServices => centralServices.Delete(toDelete.ServiceNumber));
@@ -121,10 +121,10 @@ namespace QIES.Backoffice.Processor.Tests
                 SourceNumber = new ServiceNumber("90000"),
                 ServiceName = new ServiceName("sdf")
             };
-        
+
             // Act
             var result = processor.ProcessDEL(record);
-        
+
             // Assert
             Assert.False(result);
         }
@@ -155,10 +155,10 @@ namespace QIES.Backoffice.Processor.Tests
                 SourceNumber = new ServiceNumber("90000"),
                 ServiceName = new ServiceName("sdf")
             };
-        
+
             // Act
             var result = processor.ProcessDEL(record);
-        
+
             // Assert
             Assert.False(result);
         }
@@ -187,10 +187,10 @@ namespace QIES.Backoffice.Processor.Tests
                 SourceNumber = new ServiceNumber("11111"),
                 NumberTickets = new NumberTickets(12)
             };
-        
+
             // Act
             var result = processor.ProcessSEL(record);
-        
+
             // Assert
             Assert.True(result);
             Assert.Equal(new NumberTickets(12), service.TicketsSold);
@@ -213,10 +213,10 @@ namespace QIES.Backoffice.Processor.Tests
                 SourceNumber = new ServiceNumber("11111"),
                 NumberTickets = new NumberTickets(12)
             };
-        
+
             // Act
             var result = processor.ProcessSEL(record);
-        
+
             // Assert
             Assert.False(result);
         }
@@ -246,10 +246,10 @@ namespace QIES.Backoffice.Processor.Tests
                 SourceNumber = new ServiceNumber("11111"),
                 NumberTickets = new NumberTickets(12)
             };
-        
+
             // Act
             var result = processor.ProcessSEL(record);
-        
+
             // Assert
             Assert.False(result);
         }
@@ -279,10 +279,10 @@ namespace QIES.Backoffice.Processor.Tests
                 SourceNumber = new ServiceNumber("11111"),
                 NumberTickets = new NumberTickets(4)
             };
-        
+
             // Act
             var result = processor.ProcessCAN(record);
-        
+
             // Assert
             Assert.True(result);
             Assert.Equal(new NumberTickets(1), service.TicketsSold);
@@ -305,10 +305,10 @@ namespace QIES.Backoffice.Processor.Tests
                 SourceNumber = new ServiceNumber("11111"),
                 NumberTickets = new NumberTickets(4)
             };
-        
+
             // Act
             var result = processor.ProcessCAN(record);
-        
+
             // Assert
             Assert.False(result);
         }
@@ -338,10 +338,10 @@ namespace QIES.Backoffice.Processor.Tests
                 SourceNumber = new ServiceNumber("11111"),
                 NumberTickets = new NumberTickets(4)
             };
-        
+
             // Act
             var result = processor.ProcessCAN(record);
-        
+
             // Assert
             Assert.False(result);
         }
@@ -380,10 +380,10 @@ namespace QIES.Backoffice.Processor.Tests
                 NumberTickets = new NumberTickets(7),
                 DestinationNumber = new ServiceNumber("22222")
             };
-        
+
             // Act
             var result = processor.ProcessCHG(record);
-        
+
             // Assert
             Assert.True(result);
             Assert.Equal(new NumberTickets(1), sourceService.TicketsSold);
@@ -422,10 +422,10 @@ namespace QIES.Backoffice.Processor.Tests
                 NumberTickets = new NumberTickets(7),
                 DestinationNumber = new ServiceNumber("22222")
             };
-        
+
             // Act
             var result = processor.ProcessCHG(record);
-        
+
             // Assert
             Assert.False(result);
         }
@@ -462,10 +462,10 @@ namespace QIES.Backoffice.Processor.Tests
                 NumberTickets = new NumberTickets(7),
                 DestinationNumber = new ServiceNumber("22222")
             };
-        
+
             // Act
             var result = processor.ProcessCHG(record);
-        
+
             // Assert
             Assert.False(result);
         }
@@ -504,10 +504,10 @@ namespace QIES.Backoffice.Processor.Tests
                 NumberTickets = new NumberTickets(7),
                 DestinationNumber = new ServiceNumber("22222")
             };
-        
+
             // Act
             var result = processor.ProcessCHG(record);
-        
+
             // Assert
             Assert.False(result);
         }
@@ -547,10 +547,10 @@ namespace QIES.Backoffice.Processor.Tests
                 NumberTickets = new NumberTickets(7),
                 DestinationNumber = new ServiceNumber("22222")
             };
-        
+
             // Act
             var result = processor.ProcessCHG(record);
-        
+
             // Assert
             Assert.False(result);
         }

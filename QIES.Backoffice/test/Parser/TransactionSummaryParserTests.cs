@@ -3,7 +3,7 @@ using Microsoft.Extensions.Logging;
 using Moq;
 using QIES.Backoffice.Parser.Files;
 using QIES.Common;
-using QIES.Common.Record;
+using QIES.Common.Records;
 using Xunit;
 
 namespace QIES.Backoffice.Parser.Tests
@@ -48,10 +48,7 @@ namespace QIES.Backoffice.Parser.Tests
             var expected = new TransactionRecord(TransactionCode.SEL)
             {
                 SourceNumber = new ServiceNumber("11111"),
-                NumberTickets = new NumberTickets(12),
-                DestinationNumber = new ServiceNumber(),
-                ServiceName = new ServiceName(),
-                ServiceDate = new ServiceDate()
+                NumberTickets = new NumberTickets(12)
             };
 
             Assert.True(result);
@@ -78,10 +75,7 @@ namespace QIES.Backoffice.Parser.Tests
             var expected = new TransactionRecord(TransactionCode.CAN)
             {
                 SourceNumber = new ServiceNumber("11111"),
-                NumberTickets = new NumberTickets(4),
-                DestinationNumber = new ServiceNumber(),
-                ServiceName = new ServiceName(),
-                ServiceDate = new ServiceDate()
+                NumberTickets = new NumberTickets(4)
             };
 
             Assert.True(result);
@@ -108,10 +102,7 @@ namespace QIES.Backoffice.Parser.Tests
             var expected = new TransactionRecord(TransactionCode.DEL)
             {
                 SourceNumber = new ServiceNumber("90000"),
-                NumberTickets = new NumberTickets(),
-                DestinationNumber = new ServiceNumber(),
-                ServiceName = new ServiceName("sdf"),
-                ServiceDate = new ServiceDate()
+                ServiceName = new ServiceName("sdf")
             };
 
             Assert.True(result);
@@ -138,8 +129,6 @@ namespace QIES.Backoffice.Parser.Tests
             var expected = new TransactionRecord(TransactionCode.CRE)
             {
                 SourceNumber = new ServiceNumber("12312"),
-                NumberTickets = new NumberTickets(),
-                DestinationNumber = new ServiceNumber(),
                 ServiceName = new ServiceName("this is the name"),
                 ServiceDate = new ServiceDate("20181212")
             };
@@ -169,9 +158,7 @@ namespace QIES.Backoffice.Parser.Tests
             {
                 SourceNumber = new ServiceNumber("11111"),
                 NumberTickets = new NumberTickets(7),
-                DestinationNumber = new ServiceNumber("22222"),
-                ServiceName = new ServiceName(),
-                ServiceDate = new ServiceDate()
+                DestinationNumber = new ServiceNumber("22222")
             };
 
             Assert.True(result);
@@ -195,14 +182,7 @@ namespace QIES.Backoffice.Parser.Tests
             var transaction = output.Pop();
 
             // Assert
-            var expected = new TransactionRecord(TransactionCode.EOS)
-            {
-                SourceNumber = new ServiceNumber(),
-                NumberTickets = new NumberTickets(),
-                DestinationNumber = new ServiceNumber(),
-                ServiceName = new ServiceName(),
-                ServiceDate = new ServiceDate()
-            };
+            var expected = new TransactionRecord(TransactionCode.EOS);
 
             Assert.True(result);
             Assert.Equal(expected, transaction);

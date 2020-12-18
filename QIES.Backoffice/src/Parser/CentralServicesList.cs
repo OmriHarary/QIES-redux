@@ -2,7 +2,7 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using QIES.Common;
-using QIES.Common.Record;
+using QIES.Common.Records;
 
 namespace QIES.Backoffice.Parser
 {

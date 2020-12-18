@@ -4,7 +4,7 @@ using System.IO;
 using Microsoft.Extensions.Logging;
 using QIES.Backoffice.Parser.Files;
 using QIES.Common;
-using QIES.Common.Record;
+using QIES.Common.Records;
 
 namespace QIES.Backoffice.Parser
 {

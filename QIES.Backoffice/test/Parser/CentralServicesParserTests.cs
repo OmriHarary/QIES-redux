@@ -3,7 +3,7 @@ using Microsoft.Extensions.Logging;
 using Moq;
 using QIES.Backoffice.Parser.Files;
 using QIES.Common;
-using QIES.Common.Record;
+using QIES.Common.Records;
 using Xunit;
 
 namespace QIES.Backoffice.Parser.Tests

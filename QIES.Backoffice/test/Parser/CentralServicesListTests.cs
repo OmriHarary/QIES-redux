@@ -1,6 +1,6 @@
 using Xunit;
 using QIES.Common;
-using QIES.Common.Record;
+using QIES.Common.Records;
 
 namespace QIES.Backoffice.Parser.Tests
 {

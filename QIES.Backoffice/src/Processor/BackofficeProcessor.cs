@@ -5,7 +5,7 @@ using QIES.Backoffice.Config;
 using QIES.Backoffice.Parser;
 using QIES.Backoffice.Parser.Files;
 using QIES.Common;
-using QIES.Common.Record;
+using QIES.Common.Records;
 
 namespace QIES.Backoffice.Processor
 {

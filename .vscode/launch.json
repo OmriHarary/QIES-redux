@@ -9,7 +9,7 @@
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "build Web",
-            "program": "${workspaceFolder}/QIES/src/QIES.Web/bin/Debug/net5.0/QIES.Web.dll",
+            "program": "${workspaceFolder}/QIES/src/QIES.Web/bin/Debug/net7.0/QIES.Web.dll",
             "args": [],
             "cwd": "${workspaceFolder}/QIES/src/QIES.Web",
             "stopAtEntry": false,
@@ -30,7 +30,7 @@
             "request": "launch",
             "preLaunchTask": "build CLI",
             // If you have changed target frameworks, make sure to update the program path.
-            "program": "${workspaceFolder}/QIES.Cli/src/bin/Debug/net5.0/QIES.Cli.dll",
+            "program": "${workspaceFolder}/QIES.Cli/src/bin/Debug/net7.0/QIES.Cli.dll",
             "args": [ "http://localhost:5000" ],
             "cwd": "${workspaceFolder}/QIES.Cli/src",
             // For more information about the 'console' field, see https://aka.ms/VSCode-CS-LaunchJson-Console
@@ -52,7 +52,7 @@
             "request": "launch",
             "preLaunchTask": "build backoffice",
             // If you have changed target frameworks, make sure to update the program path.
-            "program": "${workspaceFolder}/QIES.Backoffice/src/bin/Debug/net5.0/QIES.Backoffice.dll",
+            "program": "${workspaceFolder}/QIES.Backoffice/src/bin/Debug/net7.0/QIES.Backoffice.dll",
             "args": [],
             "cwd": "${workspaceFolder}/QIES.Backoffice/src",
             // For more information about the 'console' field, see https://aka.ms/VSCode-CS-LaunchJson-Console

@@ -1,8 +1,11 @@
 version: "3.8"
 services:
   qies:
-    image: ghcr.io/omriharary/qies/web:1.0.1
-    build: ./QIES/
+    image: ghcr.io/omriharary/qies/web:1.0.2
+    build:
+      context: ./QIES/
+      secrets:
+      - nuget
     ports:
     - "5000:80"
     volumes:
@@ -12,8 +15,11 @@ services:
     - backoffice
 
   backoffice:
-    image: ghcr.io/omriharary/qies/backoffice:2.0.2
-    build: ./QIES.Backoffice/
+    image: ghcr.io/omriharary/qies/backoffice:2.0.3
+    build:
+      context: ./QIES.Backoffice/
+      secrets:
+      - nuget
     volumes:
     - "service_files:/var/opt"
     - "summary_files:/var/tmp"
@@ -21,3 +27,7 @@ services:
 volumes:
   service_files: {}
   summary_files: {}
+
+secrets:
+  nuget:
+    file: ~/.nuget/NuGet/NuGet.Config

@@ -1,5 +1,5 @@
 #!/bin/bash
-executable="./QIES.Cli/src/bin/Debug/net5.0/QIES.Cli.dll"
+executable="./QIES.Cli/src/bin/Debug/net7.0/QIES.Cli.dll"
 
 if [ ! -f "$executable" ]
 then

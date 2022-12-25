@@ -1,9 +1,9 @@
+using System.Reflection;
 using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using OpenTelemetry;
-using OpenTelemetry.Exporter;
 using OpenTelemetry.Metrics;
 using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
@@ -21,9 +21,18 @@ builder.Logging.AddJsonConsole();
 
 builder.Services.AddOpenTelemetry()
     .ConfigureResource(resourceBuilder => resourceBuilder
-        .AddService(serviceName: builder.Environment.ApplicationName))
+        .AddService(
+            serviceName: builder.Environment.ApplicationName,
+            serviceVersion: Assembly.GetExecutingAssembly().GetName().Version?.ToString() ?? "unknown"))
     .WithTracing(builder => builder
-        .AddAspNetCoreInstrumentation()
+        .AddAspNetCoreInstrumentation(opts =>
+        {
+            opts.RecordException = true;
+            opts.EnrichWithHttpRequest = (activity, httpRequest) =>
+            {
+                activity.SetTag("userId", httpRequest.Headers["X-User-Id"]);
+            };
+        })
         .AddOtlpExporter())
     .WithMetrics(builder => builder
         .AddAspNetCoreInstrumentation()

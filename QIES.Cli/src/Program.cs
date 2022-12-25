@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reflection;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -23,7 +24,9 @@ namespace QIES.Cli
 
             using var tracerProvider = Sdk.CreateTracerProviderBuilder()
                 .ConfigureResource(builder => builder
-                    .AddService(serviceName: "QIES.Shell"))
+                    .AddService(
+                        serviceName: "QIES.Shell",
+                        serviceVersion: Assembly.GetExecutingAssembly().GetName().Version?.ToString() ?? "unknown"))
                 .AddHttpClientInstrumentation()
                 .AddOtlpExporter()
                 .Build();

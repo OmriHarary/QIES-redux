@@ -2,6 +2,9 @@ using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using OpenTelemetry;
+using OpenTelemetry.Trace;
+using OpenTelemetry.Resources;
 using QIES.Core;
 using QIES.Core.Config;
 using QIES.Core.Services;
@@ -13,6 +16,14 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Logging.ClearProviders();
 builder.Logging.AddJsonConsole();
+
+builder.Services.AddOpenTelemetry()
+    .ConfigureResource(resourceBuilder => resourceBuilder
+        .AddService(serviceName: builder.Environment.ApplicationName))
+    .WithTracing(builder => builder
+        .AddAspNetCoreInstrumentation()
+        .AddOtlpExporter())
+    .StartWithHost();
 
 builder.Services.Configure<ValidServicesListOptions>(
     builder.Configuration.GetSection(ValidServicesListOptions.Section));

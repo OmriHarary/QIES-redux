@@ -1,7 +1,7 @@
 version: "3.8"
 services:
   qies:
-    image: ghcr.io/omriharary/qies/web:1.0.2
+    image: ghcr.io/omriharary/qies/web:1.1.0-beta
     build:
       context: ./QIES/
       secrets:

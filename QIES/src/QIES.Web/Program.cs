@@ -3,8 +3,10 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using OpenTelemetry;
-using OpenTelemetry.Trace;
+using OpenTelemetry.Exporter;
+using OpenTelemetry.Metrics;
 using OpenTelemetry.Resources;
+using OpenTelemetry.Trace;
 using QIES.Core;
 using QIES.Core.Config;
 using QIES.Core.Services;
@@ -23,6 +25,10 @@ builder.Services.AddOpenTelemetry()
     .WithTracing(builder => builder
         .AddAspNetCoreInstrumentation()
         .AddOtlpExporter())
+    .WithMetrics(builder => builder
+        .AddAspNetCoreInstrumentation()
+        .AddRuntimeInstrumentation()
+        .AddPrometheusExporter())
     .StartWithHost();
 
 builder.Services.Configure<ValidServicesListOptions>(
@@ -40,6 +46,7 @@ builder.Services.AddOpenApi();
 var app = builder.Build();
 
 app.UseOpenApi();
+app.UseOpenTelemetryPrometheusScrapingEndpoint();
 app.UseHttpsRedirection();
 app.UseAuthorization();
 app.MapControllers();

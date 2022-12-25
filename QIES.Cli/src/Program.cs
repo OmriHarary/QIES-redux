@@ -3,6 +3,9 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using OpenTelemetry;
+using OpenTelemetry.Resources;
+using OpenTelemetry.Trace;
 using QIES.Cli.Client;
 using QIES.Cli.Shell;
 
@@ -17,6 +20,13 @@ namespace QIES.Cli
                 Console.Error.WriteLine($"Incorrect number of arguments: {args.Length}");
                 return 1;
             }
+
+            using var tracerProvider = Sdk.CreateTracerProviderBuilder()
+                .ConfigureResource(builder => builder
+                    .AddService(serviceName: "QIES.Shell"))
+                .AddHttpClientInstrumentation()
+                .AddOtlpExporter()
+                .Build();
 
             var builder = new HostBuilder()
                 .ConfigureLogging(logging =>

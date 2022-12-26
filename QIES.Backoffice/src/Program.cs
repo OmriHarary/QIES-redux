@@ -1,6 +1,11 @@
+using System.Reflection;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using OpenTelemetry;
+using OpenTelemetry.Metrics;
+using OpenTelemetry.Resources;
+using OpenTelemetry.Trace;
 using QIES.Backoffice.Config;
 using QIES.Backoffice.Parser;
 using QIES.Backoffice.Processor;
@@ -31,10 +36,23 @@ namespace QIES.Backoffice
                 .ConfigureLogging(logging =>
                 {
                     logging.ClearProviders();
-                    logging.AddConsole();
+                    logging.AddJsonConsole();
                 })
                 .ConfigureServices((hostContext, services) =>
                 {
+                    services.AddOpenTelemetry()
+                        .ConfigureResource(resourceBuilder => resourceBuilder
+                            .AddService(
+                                serviceName: hostContext.HostingEnvironment.ApplicationName,
+                                serviceVersion: Assembly.GetExecutingAssembly().GetName().Version?.ToString() ?? "unknown"))
+                        .WithTracing(builder => builder
+                            .AddOtlpExporter())
+                        .WithMetrics(builder => builder
+                            .AddRuntimeInstrumentation()
+                            .AddPrometheusHttpListener(
+                                options => options.UriPrefixes = new string[] { "http://localhost:5001/" }))
+                        .StartWithHost();
+
                     services.Configure<TransactionSummaryOptions>(hostContext.Configuration.GetSection(TransactionSummaryOptions.Section));
                     services.Configure<ServicesFilesOptions>(hostContext.Configuration.GetSection(ServicesFilesOptions.Section));
                     services.AddScoped<IParser<TransactionQueue>, TransactionSummaryParser>();

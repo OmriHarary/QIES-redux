@@ -16,11 +16,13 @@ services:
     - backoffice
 
   backoffice:
-    image: ghcr.io/omriharary/qies/backoffice:2.0.3
+    image: ghcr.io/omriharary/qies/backoffice:2.1.0-beta
     build:
       context: ./QIES.Backoffice/
       secrets:
       - nuget
+    environment:
+    - OTEL_EXPORTER_OTLP_ENDPOINT=http://jaeger:4317
     volumes:
     - "service_files:/var/opt"
     - "summary_files:/var/tmp"

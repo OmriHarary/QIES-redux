@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using System.IO;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -30,6 +31,8 @@ namespace QIES.Backoffice.Processor
 
         public void Process(FileInfo transactionFile)
         {
+            using var processActivity = Program.BackofficeActivitySource.StartActivity(transactionFile.Name);
+
             using (logger.BeginScope(transactionFile.Name))
             {
                 logger.LogInformation("Processing {transactionFile}", transactionFile.FullName);
@@ -40,6 +43,7 @@ namespace QIES.Backoffice.Processor
                     if (!transactionSummaryParser.TryParseFile(new ParserInputFile(transactionFile.FullName), transactionQueue))
                     {
                         logger.LogError("Skipping unreadable transaction summary file.");
+                        processActivity?.SetStatus(ActivityStatusCode.Error, "Transaction summary file unreadable.");
                         return;
                     }
                 }
@@ -92,6 +96,8 @@ namespace QIES.Backoffice.Processor
 
         public bool ProcessCRE(TransactionRecord record)
         {
+            using var processCREActivity = Program.BackofficeActivitySource.StartActivity(nameof(ProcessCRE));
+
             if (centralServices.Contains(record.SourceNumber))
             {
                 logger.LogWarning("Failed to create new service. A service with that number already exists.");
@@ -110,6 +116,8 @@ namespace QIES.Backoffice.Processor
 
         public bool ProcessDEL(TransactionRecord record)
         {
+            using var processDELActivity = Program.BackofficeActivitySource.StartActivity(nameof(ProcessDEL));
+
             if (!centralServices.Contains(record.SourceNumber))
             {
                 logger.LogWarning("Failed to delete service. Service does not exist.");
@@ -130,6 +138,8 @@ namespace QIES.Backoffice.Processor
 
         public bool ProcessSEL(TransactionRecord record)
         {
+            using var processSELActivity = Program.BackofficeActivitySource.StartActivity(nameof(ProcessSEL));
+
             if (!centralServices.Contains(record.SourceNumber))
             {
                 logger.LogWarning("Failed to sell tickets. Service does not exist");
@@ -152,6 +162,8 @@ namespace QIES.Backoffice.Processor
 
         public bool ProcessCAN(TransactionRecord record)
         {
+            using var processCANActivity = Program.BackofficeActivitySource.StartActivity(nameof(ProcessCAN));
+
             if (!centralServices.Contains(record.SourceNumber))
             {
                 logger.LogWarning("Failed to cancel tickets. The service does not exist.");
@@ -174,6 +186,8 @@ namespace QIES.Backoffice.Processor
 
         public bool ProcessCHG(TransactionRecord record)
         {
+            using var processCHGActivity = Program.BackofficeActivitySource.StartActivity(nameof(ProcessCHG));
+
             if (!centralServices.Contains(record.SourceNumber))
             {
                 logger.LogWarning("Failed to change tickets. Source service does not exist.");

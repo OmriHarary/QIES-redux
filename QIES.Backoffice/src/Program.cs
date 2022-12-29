@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using System.Reflection;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -15,6 +16,8 @@ namespace QIES.Backoffice
 {
     public class Program
     {
+        public static readonly ActivitySource BackofficeActivitySource = new("QIES.Backoffice");
+
         public static int Main(string[] args)
         {
             var exit = 0;
@@ -46,6 +49,7 @@ namespace QIES.Backoffice
                                 serviceName: hostContext.HostingEnvironment.ApplicationName,
                                 serviceVersion: Assembly.GetExecutingAssembly().GetName().Version?.ToString() ?? "unknown"))
                         .WithTracing(builder => builder
+                            .AddSource(BackofficeActivitySource.Name)
                             .AddOtlpExporter())
                         .WithMetrics(builder => builder
                             .AddRuntimeInstrumentation()

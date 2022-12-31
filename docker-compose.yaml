@@ -1,6 +1,6 @@
 services:
   qies:
-    image: ghcr.io/omriharary/qies/web:1.1.0-beta
+    image: ghcr.io/omriharary/qies/web:1.1.0
     build:
       context: ./QIES/
       secrets:
@@ -16,7 +16,7 @@ services:
     - backoffice
 
   backoffice:
-    image: ghcr.io/omriharary/qies/backoffice:2.1.0-beta
+    image: ghcr.io/omriharary/qies/backoffice:2.1.0
     build:
       context: ./QIES.Backoffice/
       secrets:
